@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>N/ONE: 프로젝트 마스터 플랜 인터랙티브 리포트</title>
+    <title>N/ONE: 프로젝트 마스터 플랜 v7.0</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,25 +19,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Urbanist:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- Embedded CSS for Specific Constraints -->
     <style>
-        /* <!-- Chosen Palette: Warm Neutral Light (#F5F5F4) with High Contrast Dark Accents (#1C1917) --> */
-        /* <!-- Application Structure Plan: 
-             1. Hero: Brand Philosophy.
-             2. Universe Map (Canvas): Visualizing scarcity and zoning.
-             3. Hierarchy (Tabs): Interactive comparison of tiers.
-             4. Economy (Calculator & Sunburst): Simulating the AI economy logic.
-             5. Revenue (Line Chart): Financial projection.
-             6. Roadmap (Timeline): Development phases.
-             Rationale: Prioritizes understanding the complex mechanics (Space/Economy) through interaction. --> */
-        /* <!-- Visualization & Content Choices:
-             - Universe Map: Custom Canvas. Goal: Show zoning density. Interaction: Hover tooltips.
-             - Population: Doughnut Chart. Goal: Emphasize 94% Nomad vs 1% Royal.
-             - Economy Flow: Plotly Sunburst. Goal: Visualize Sources vs Sinks.
-             - Revenue: Line Chart. Goal: Show J-curve growth.
-             - No SVG/Mermaid used. --> */
-        /* <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. --> */
-
         body {
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #F5F5F4; /* Stone 100 */
@@ -58,7 +40,7 @@
             max-height: 500px;
         }
 
-        /* Canvas container for the Universe Map */
+        /* Canvas container */
         #universe-container {
             position: relative;
             width: 100%;
@@ -87,20 +69,10 @@
             line-height: 1.7;
         }
 
-        /* Custom Scrollbar for sleek look */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #F5F5F4; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #D6D3D1; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #A8A29E; 
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #F5F5F4; }
+        ::-webkit-scrollbar-thumb { background: #D6D3D1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #A8A29E; }
     </style>
 </head>
 <body class="antialiased">
@@ -175,7 +147,6 @@
                 <div class="lg:col-span-2">
                     <div id="universe-container">
                         <canvas id="universeCanvas"></canvas>
-                        <!-- Tooltip -->
                         <div id="zone-tooltip" class="absolute hidden bg-white/95 p-4 rounded-lg shadow-xl text-sm border border-gray-200 pointer-events-none z-10 w-64 backdrop-blur">
                             <div class="flex justify-between items-center mb-2 border-b pb-1">
                                 <h4 id="tooltip-title" class="font-bold text-lg brand-font"></h4>
