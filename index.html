@@ -21,29 +21,27 @@
 
     <!-- Embedded CSS for Specific Constraints -->
     <style>
-        /* Placeholder Comments */
-        /* <!-- Chosen Palette: Warm Neutral Light Background with High Contrast Dark Accents (Void Black, Platinum Gold, Verified Blue, Entropy Red) --> */
-        /* <!-- Application Structure Plan: The app is structured as a strategic dashboard for stakeholders. 
-             1. Hero: Brand Essence. 
-             2. The Universe: Interactive Canvas simulation of the zoning logic.
-             3. Hierarchy & Population: Comparative grid for Tiers.
-             4. Economy Engine: Calculator and visualizations for the internal currency flow.
-             5. Revenue Projection: Financial growth charts.
-             6. Roadmap: Interactive timeline.
-             This structure prioritizes understanding the complex ecosystem mechanics over linear reading. --> */
+        /* <!-- Chosen Palette: Warm Neutral Light (#F5F5F4) with High Contrast Dark Accents (#1C1917) --> */
+        /* <!-- Application Structure Plan: 
+             1. Hero: Brand Philosophy.
+             2. Universe Map (Canvas): Visualizing scarcity and zoning.
+             3. Hierarchy (Tabs): Interactive comparison of tiers.
+             4. Economy (Calculator & Sunburst): Simulating the AI economy logic.
+             5. Revenue (Line Chart): Financial projection.
+             6. Roadmap (Timeline): Development phases.
+             Rationale: Prioritizes understanding the complex mechanics (Space/Economy) through interaction. --> */
         /* <!-- Visualization & Content Choices:
-             - Universe Map: Custom HTML5 Canvas. Goal: Visualize the scarcity and density logic. Interaction: Hover effects.
-             - Population Cap: Chart.js Doughnut. Goal: Show the extreme ratio of Nomad vs Royal.
-             - Revenue Growth: Chart.js Line/Area. Goal: Visualize the S-curve growth based on retention.
-             - Economy: Plotly Sunburst. Goal: Breakdown of Sources vs Sinks.
-             - Tax Calculator: JS Logic. Goal: Let users simulate the 'Entropy Tax'.
+             - Universe Map: Custom Canvas. Goal: Show zoning density. Interaction: Hover tooltips.
+             - Population: Doughnut Chart. Goal: Emphasize 94% Nomad vs 1% Royal.
+             - Economy Flow: Plotly Sunburst. Goal: Visualize Sources vs Sinks.
+             - Revenue: Line Chart. Goal: Show J-curve growth.
              - No SVG/Mermaid used. --> */
         /* <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. --> */
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #F5F5F4; /* Warm Neutral Light */
-            color: #1C1917;
+            background-color: #F5F5F4; /* Stone 100 */
+            color: #1C1917; /* Stone 900 */
         }
         
         h1, h2, h3, .brand-font {
@@ -53,7 +51,7 @@
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 800px; /* Explicit max-width as requested */
+            max-width: 800px;
             margin-left: auto;
             margin-right: auto;
             height: 400px;
@@ -72,18 +70,14 @@
         }
 
         .nav-link.active {
-            border-bottom: 2px solid #000;
+            border-bottom: 2px solid #1C1917;
             font-weight: 700;
         }
         
-        .tier-card {
+        .tier-btn {
             transition: all 0.3s ease;
         }
-        .tier-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
+        
         .section-intro {
             border-left: 4px solid #1C1917;
             padding-left: 1rem;
@@ -92,121 +86,157 @@
             font-size: 1.1rem;
             line-height: 1.7;
         }
+
+        /* Custom Scrollbar for sleek look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F5F5F4; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D6D3D1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A8A29E; 
+        }
     </style>
 </head>
 <body class="antialiased">
 
     <!-- Navigation -->
-    <nav class="sticky top-0 z-50 bg-[#F5F5F4]/90 backdrop-blur-md border-b border-gray-200">
+    <nav class="sticky top-0 z-50 bg-[#F5F5F4]/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <span class="brand-font text-2xl font-bold tracking-tighter">N/ONE</span>
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <span class="brand-font text-3xl font-bold tracking-tighter">N/ONE</span>
+                    <span class="text-xs font-mono bg-black text-white px-2 py-0.5 rounded">v7.0</span>
                 </div>
                 <div class="hidden md:flex space-x-8 items-center" id="nav-menu">
-                    <button data-target="section-intro" class="nav-link text-sm font-medium hover:text-gray-900 transition-colors">프로젝트 개요</button>
-                    <button data-target="section-universe" class="nav-link text-sm font-medium hover:text-gray-900 transition-colors">공간과 인원</button>
-                    <button data-target="section-hierarchy" class="nav-link text-sm font-medium hover:text-gray-900 transition-colors">계급 시스템</button>
+                    <button data-target="section-intro" class="nav-link text-sm font-medium hover:text-gray-900 transition-colors">개요</button>
+                    <button data-target="section-universe" class="nav-link text-sm font-medium hover:text-gray-900 transition-colors">공간 & 인원</button>
+                    <button data-target="section-hierarchy" class="nav-link text-sm font-medium hover:text-gray-900 transition-colors">계급 & 헤리티지</button>
                     <button data-target="section-economy" class="nav-link text-sm font-medium hover:text-gray-900 transition-colors">경제 & AI</button>
-                    <button data-target="section-revenue" class="nav-link text-sm font-medium hover:text-gray-900 transition-colors">수익 시뮬레이션</button>
-                    <button data-target="section-roadmap" class="nav-link text-sm font-medium hover:text-gray-900 transition-colors">로드맵</button>
+                    <button data-target="section-revenue" class="nav-link text-sm font-medium hover:text-gray-900 transition-colors">수익 & 로드맵</button>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header id="section-intro" class="pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div class="text-center">
-            <h1 class="text-6xl md:text-8xl font-black mb-6 tracking-tighter">N/ONE</h1>
-            <p class="text-xl md:text-2xl text-gray-600 font-light mb-8 brand-font">"Less is More. Be the One in None."</p>
-            <div class="flex flex-wrap justify-center gap-4 text-sm font-medium">
-                <span class="px-4 py-2 bg-black text-white rounded-full">디지털 사회 실험</span>
-                <span class="px-4 py-2 bg-gray-200 text-gray-800 rounded-full">투트랙 전략</span>
-                <span class="px-4 py-2 bg-gray-200 text-gray-800 rounded-full">AI 경제</span>
-                <span class="px-4 py-2 bg-gray-200 text-gray-800 rounded-full">영구적 소멸</span>
-            </div>
-        </div>
-        
-        <div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100">
-                <div class="text-2xl mb-2">💎</div>
-                <h3 class="font-bold mb-2">절대 희소성</h3>
-                <p class="text-gray-600 text-sm">1,000,000명의 Hard Cap. 1픽셀의 공간도 낭비되지 않는 권력 구조.</p>
-            </div>
-            <div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100">
-                <div class="text-2xl mb-2">🤖</div>
-                <h3 class="font-bold mb-2">AI 경제</h3>
-                <p class="text-gray-600 text-sm">Invisible Hand AI가 금리와 인플레이션을 12시간마다 실시간 조절.</p>
-            </div>
-            <div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100">
-                <div class="text-2xl mb-2">☠️</div>
-                <h3 class="font-bold mb-2">영구적 죽음</h3>
-                <p class="text-gray-600 text-sm">구독 해지는 곧 소멸입니다. 복구는 불가능한 Permadeath 시스템.</p>
-            </div>
-            <div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100">
-                <div class="text-2xl mb-2">👑</div>
-                <h3 class="font-bold mb-2">헤리티지</h3>
-                <p class="text-gray-600 text-sm">돈과 영향력으로만 도달할 수 있는 상위 0.1%의 히든 계급.</p>
+    <header id="section-intro" class="pt-24 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center max-w-4xl mx-auto">
+            <h1 class="text-6xl md:text-8xl font-black mb-6 tracking-tighter text-gray-900">N/ONE</h1>
+            <p class="text-xl md:text-3xl text-gray-600 font-light mb-10 brand-font italic">"Less is More. Be the One in None."</p>
+            
+            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 text-left">
+                <h3 class="text-lg font-bold mb-4 border-b pb-2">기획 의도: 디지털 사회 실험</h3>
+                <p class="text-gray-600 mb-6 leading-relaxed">
+                    현대인의 <strong>존재 불안</strong>, <strong>계급 사회</strong>, 그리고 <strong>매몰 비용(Sunk Cost)</strong> 심리를 시각화합니다. 
+                    기능적 공허함(Void) 속에서 사용자는 자신의 '별'을 지키기 위해 비용을 지불하며, 역설적으로 그 안에서 강렬한 소속감과 존재감을 느낍니다.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                        <span class="text-2xl">🧘</span>
+                        <div>
+                            <span class="font-bold block text-sm">Passive Track</span>
+                            <span class="text-xs text-gray-500">구독만 유지하면 별은 자동으로 성장합니다. 침묵의 관조.</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                        <span class="text-2xl">💼</span>
+                        <div>
+                            <span class="font-bold block text-sm">Active Track</span>
+                            <span class="text-xs text-gray-500">예치, 경매, 과시를 통한 치열한 자산 증식과 권력 행사.</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- The Universe Section -->
-    <section id="section-universe" class="py-16 bg-white">
+    <!-- Universe Section -->
+    <section id="section-universe" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold mb-6">공간과 인원 시스템 (Space & Population)</h2>
+            <div class="flex items-center gap-4 mb-6">
+                <h2 class="text-4xl font-bold">공간과 인원 (Space & Population)</h2>
+                <span class="bg-black text-white text-xs px-3 py-1 rounded-full">Hard Cap: 1,000,000</span>
+            </div>
+            
             <div class="section-intro">
-                N/ONE 우주는 반지름 10,000 Unit의 물리적 공간으로, 인구 밀도와 권력에 따라 철저하게 4단계(성역, 코어, 링, 아우터)로 구획됩니다. 
-                아래 시각화 도구를 통해 각 구역의 할당 인원과 밀도를 직관적으로 확인할 수 있습니다. 마우스를 올려 각 구역의 상세 정보를 확인하세요.
+                N/ONE의 우주는 반지름 10,000 Unit의 유한한 공간입니다. 인구 밀도와 권력에 따라 4단계(성역, 코어, 링, 아우터)로 엄격히 구분됩니다.
+                <br><strong>인터랙션:</strong> 아래 우주 지도에 마우스를 올려 각 구역의 상세 정보를 확인하세요.
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
                 <!-- Interactive Canvas Map -->
                 <div class="lg:col-span-2">
                     <div id="universe-container">
                         <canvas id="universeCanvas"></canvas>
-                        <div id="zone-tooltip" class="absolute hidden bg-white/90 p-4 rounded-lg shadow-lg text-sm border border-gray-200 pointer-events-none z-10" style="backdrop-filter: blur(4px);">
-                            <h4 id="tooltip-title" class="font-bold text-lg mb-1"></h4>
-                            <p id="tooltip-desc" class="text-gray-600 mb-2"></p>
-                            <div class="flex justify-between text-xs font-mono bg-gray-100 p-2 rounded">
-                                <span>인원:</span>
-                                <span id="tooltip-cap" class="font-bold"></span>
+                        <!-- Tooltip -->
+                        <div id="zone-tooltip" class="absolute hidden bg-white/95 p-4 rounded-lg shadow-xl text-sm border border-gray-200 pointer-events-none z-10 w-64 backdrop-blur">
+                            <div class="flex justify-between items-center mb-2 border-b pb-1">
+                                <h4 id="tooltip-title" class="font-bold text-lg brand-font"></h4>
+                                <span id="tooltip-tag" class="text-[10px] uppercase font-bold px-2 py-0.5 rounded text-white bg-black"></span>
+                            </div>
+                            <p id="tooltip-desc" class="text-gray-600 mb-3 text-xs leading-relaxed"></p>
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <span class="block text-gray-500">인원 제한</span>
+                                    <span id="tooltip-cap" class="font-bold font-mono text-sm"></span>
+                                </div>
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <span class="block text-gray-500">진입 조건</span>
+                                    <span id="tooltip-req" class="font-bold text-gray-800"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <p class="text-xs text-gray-500 mt-2 text-center">* 시각화는 비율을 나타내며 실제 100만 개의 점을 모두 표시하지는 않습니다.</p>
+                    <div class="flex justify-between text-xs text-gray-400 mt-2 px-2">
+                        <span>Center (0,0)</span>
+                        <span>Radius 10,000</span>
+                    </div>
                 </div>
 
-                <!-- Population Distribution Chart -->
+                <!-- Population Stats -->
                 <div class="lg:col-span-1 flex flex-col gap-6">
-                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
-                        <h3 class="font-bold mb-4 text-center">인구 분포 (Population Hard Cap)</h3>
-                        <div class="chart-container" style="height: 300px;">
+                    <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+                        <h3 class="font-bold mb-4 text-center">인구 분포 비율</h3>
+                        <div class="chart-container" style="height: 250px;">
                             <canvas id="populationChart"></canvas>
                         </div>
+                        <p class="text-center text-xs text-gray-500 mt-4">94%의 유저는 외곽(Nomad)에 위치합니다.</p>
                     </div>
                     
-                    <div class="bg-black text-white p-6 rounded-xl shadow-lg">
+                    <div class="bg-gray-900 text-white p-6 rounded-2xl shadow-xl border border-gray-700">
                         <div class="flex justify-between items-center mb-4">
-                            <h3 class="font-bold text-lg text-white">서버 현황 (실시간 시뮬레이션)</h3>
-                            <span class="animate-pulse w-2 h-2 bg-green-500 rounded-full"></span>
+                            <h3 class="font-bold text-lg">LIVE SERVER STATUS</h3>
+                            <span class="flex h-3 w-3 relative">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                            </span>
                         </div>
-                        <div class="space-y-4 font-mono text-sm">
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">TOTAL CAP</span>
-                                <span>1,000,000</span>
+                        <div class="space-y-5 font-mono text-sm">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-400">TOTAL POPULATION</span>
+                                    <span class="text-white font-bold">984,210 / 1M</span>
+                                </div>
+                                <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-green-500 h-full" style="width: 98%;"></div>
+                                </div>
                             </div>
-                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
-                                <div class="bg-white h-full" style="width: 94%;"></div>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">ZONE 0 (SANCTUM)</span>
-                                <span class="text-[#E5E4E2]">25 / 25</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">ZONE 1 (ROYAL)</span>
-                                <span class="text-[#E5E4E2]">10,842 / 11,000</span>
+                            <div class="grid grid-cols-2 gap-4 pt-2">
+                                <div class="bg-gray-800 p-3 rounded">
+                                    <span class="block text-gray-400 text-xs">ZONE 0 (SANCTUM)</span>
+                                    <span class="text-[#FFD700] font-bold">12 / 25</span>
+                                </div>
+                                <div class="bg-gray-800 p-3 rounded">
+                                    <span class="block text-gray-400 text-xs">ZONE 1 (ROYAL)</span>
+                                    <span class="text-[#E5E4E2] font-bold">10,842 / 11k</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -216,82 +246,90 @@
     </section>
 
     <!-- Hierarchy Section -->
-    <section id="section-hierarchy" class="py-16 bg-[#F5F5F4]">
+    <section id="section-hierarchy" class="py-20 bg-[#F5F5F4]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold mb-6">계급 시스템 & 헤리티지 (Hierarchy & Heritage)</h2>
+            <h2 class="text-4xl font-bold mb-6">계급 & 헤리티지 (Hierarchy)</h2>
             <div class="section-intro">
                 자본이 곧 물리적 위치와 권력을 결정합니다. 구독료에 따라 3가지 기본 티어가 존재하며, 
-                상위 0.1%의 조건을 달성한 유저에게는 숨겨진 '헤리티지' 등급이 부여되어 압도적인 혜택을 제공합니다.
+                상위 0.1% 조건을 달성한 유저에게는 <strong>히든 티어 '헤리티지'</strong>가 부여됩니다.
             </div>
 
-            <!-- Tier Selection Tabs -->
+            <!-- Tab Navigation -->
             <div class="flex flex-wrap gap-2 mb-8 justify-center">
-                <button onclick="updateTierView('nomad')" class="px-6 py-2 rounded-full bg-gray-800 text-white hover:bg-black transition-all tier-btn" id="btn-nomad">Tier 1: Nomad</button>
-                <button onclick="updateTierView('settler')" class="px-6 py-2 rounded-full bg-white text-gray-600 border border-gray-300 hover:border-gray-800 transition-all tier-btn" id="btn-settler">Tier 2: Settler</button>
-                <button onclick="updateTierView('royal')" class="px-6 py-2 rounded-full bg-white text-gray-600 border border-gray-300 hover:border-gray-800 transition-all tier-btn" id="btn-royal">Tier 3: Royal</button>
-                <button onclick="updateTierView('heritage')" class="px-6 py-2 rounded-full bg-gradient-to-r from-gray-200 to-gray-400 text-gray-800 font-bold border border-gray-400 hover:shadow-lg transition-all tier-btn" id="btn-heritage">♔ Heritage</button>
+                <button onclick="updateTier('nomad')" id="btn-nomad" class="tier-btn px-6 py-3 rounded-full font-bold text-sm bg-gray-200 text-gray-600 hover:bg-white hover:shadow-md">Tier 1: Nomad</button>
+                <button onclick="updateTier('settler')" id="btn-settler" class="tier-btn px-6 py-3 rounded-full font-bold text-sm bg-gray-200 text-gray-600 hover:bg-white hover:shadow-md">Tier 2: Settler</button>
+                <button onclick="updateTier('royal')" id="btn-royal" class="tier-btn px-6 py-3 rounded-full font-bold text-sm bg-gray-200 text-gray-600 hover:bg-white hover:shadow-md">Tier 3: Royal</button>
+                <button onclick="updateTier('heritage')" id="btn-heritage" class="tier-btn px-6 py-3 rounded-full font-bold text-sm bg-gradient-to-r from-gray-700 to-black text-white hover:shadow-lg border border-gray-600">♔ Heritage</button>
             </div>
 
-            <!-- Dynamic Tier Content -->
-            <div id="tier-content" class="bg-white rounded-2xl p-8 shadow-sm border border-gray-200 transition-all duration-300">
-                <!-- Content injected via JS -->
+            <!-- Dynamic Content -->
+            <div id="tier-content" class="bg-white rounded-3xl p-10 shadow-lg border border-gray-100 min-h-[400px] flex items-center">
+                <!-- Content will be injected by JS -->
             </div>
         </div>
     </section>
 
     <!-- Economy Section -->
-    <section id="section-economy" class="py-16 bg-white">
+    <section id="section-economy" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold mb-6">경제 시스템: AI & 스타더스트</h2>
+            <h2 class="text-4xl font-bold mb-6">경제 시스템: AI & 스타더스트</h2>
             <div class="section-intro">
-                N/ONE의 경제는 '스타더스트(SD)'를 중심으로 순환합니다. AI '보이지 않는 손'이 12시간마다 금리를 조절하며, 
-                엔트로피 세금과 공허의 금고(예치)를 통해 인플레이션을 제어합니다. 아래 도구를 통해 세금과 예치 수익을 시뮬레이션 해보세요.
+                N/ONE의 경제는 '스타더스트(SD)'를 중심으로 순환합니다. <strong>AI '보이지 않는 손'</strong>이 12시간마다 금리를 조절하며, 
+                엔트로피 세금과 공허의 금고(예치)를 통해 인플레이션을 제어합니다.
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <!-- Economy Flow Visualization -->
+                <!-- Economy Flow Chart -->
                 <div>
-                    <h3 class="text-xl font-bold mb-4">경제 생태계 구조 (Ecosystem Flow)</h3>
+                    <h3 class="text-xl font-bold mb-4 pl-4 border-l-4 border-black">경제 생태계 구조 (Ecosystem Flow)</h3>
                     <div class="chart-container" style="height: 450px;">
                         <div id="economySunburst"></div>
                     </div>
+                    <p class="text-center text-xs text-gray-500 mt-2">안쪽 원에서 바깥쪽으로 자금의 흐름(획득/소비)을 보여줍니다.</p>
                 </div>
 
-                <!-- Interactive Tax & Staking Calculator -->
-                <div class="bg-gray-50 p-8 rounded-2xl border border-gray-200">
+                <!-- Interactive Calculator -->
+                <div class="bg-[#FAFAFA] p-8 rounded-3xl border border-gray-200 shadow-inner">
                     <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
-                        <span>🧮 자산 시뮬레이터</span>
+                        <span class="text-2xl">🧮</span> 자산 시뮬레이터
                     </h3>
 
-                    <div class="space-y-6">
+                    <div class="space-y-8">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">보유 스타더스트 (SD)</label>
-                            <input type="number" id="sd-input" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:border-transparent transition-all" placeholder="예: 10000" value="10000">
-                            <p class="text-xs text-gray-500 mt-1">* 1,000 SD 이하는 면세입니다.</p>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">보유 스타더스트 (SD)</label>
+                            <div class="relative">
+                                <input type="number" id="sd-input" class="w-full pl-4 pr-12 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-black focus:border-transparent transition-all font-mono text-lg" placeholder="0" value="50000">
+                                <span class="absolute right-4 top-3.5 text-gray-400 font-bold">SD</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2 ml-1">* 1,000 SD 이하는 세금이 면제됩니다.</p>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="p-4 bg-white rounded-lg border border-red-100">
-                                <h4 class="text-sm font-bold text-red-600 mb-2">엔트로피 세금 (Daily)</h4>
-                                <div class="text-2xl font-mono font-bold" id="tax-result">0 SD</div>
-                                <p class="text-xs text-gray-500">매일 자정 차감</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Tax Card -->
+                            <div class="p-5 bg-white rounded-xl border border-red-100 shadow-sm relative overflow-hidden group">
+                                <div class="absolute top-0 right-0 w-16 h-16 bg-red-50 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+                                <h4 class="text-sm font-bold text-red-600 mb-1 relative z-10">📉 엔트로피 세금 (Daily)</h4>
+                                <div class="text-3xl font-mono font-bold text-gray-800 relative z-10" id="tax-result">0</div>
+                                <p class="text-xs text-gray-400 mt-2 relative z-10">매일 자정 1% 자동 차감</p>
                             </div>
-                            <div class="p-4 bg-white rounded-lg border border-blue-100">
-                                <h4 class="text-sm font-bold text-blue-600 mb-2">예치 예상 수익 (7일)</h4>
-                                <div class="text-2xl font-mono font-bold" id="staking-result">0 SD</div>
-                                <p class="text-xs text-gray-500">AI 금리 3.5% 가정</p>
+                            <!-- Staking Card -->
+                            <div class="p-5 bg-white rounded-xl border border-blue-100 shadow-sm relative overflow-hidden group">
+                                <div class="absolute top-0 right-0 w-16 h-16 bg-blue-50 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+                                <h4 class="text-sm font-bold text-blue-600 mb-1 relative z-10">📈 예치 예상 수익 (7일)</h4>
+                                <div class="text-3xl font-mono font-bold text-gray-800 relative z-10" id="staking-result">0</div>
+                                <p class="text-xs text-gray-400 mt-2 relative z-10">AI 변동 금리 적용 (현재 3.5%)</p>
                             </div>
                         </div>
 
-                        <div class="bg-black text-white p-4 rounded-lg mt-4">
-                            <h4 class="text-sm font-bold mb-2 text-gray-300">AI 경제 관제 센터</h4>
-                            <div class="flex justify-between items-center text-sm mb-1">
-                                <span>현재 인플레이션율:</span>
-                                <span class="text-red-400 font-mono">▲ 2.1%</span>
+                        <!-- AI Status -->
+                        <div class="bg-black text-white p-5 rounded-xl flex items-center justify-between">
+                            <div>
+                                <h4 class="text-xs font-bold text-gray-400 uppercase mb-1">AI Economy Controller</h4>
+                                <div class="text-sm">현재 인플레이션: <span class="text-red-400">▲ 2.1%</span></div>
                             </div>
-                            <div class="flex justify-between items-center text-sm">
-                                <span>기준 금리 (Variable):</span>
-                                <span class="text-green-400 font-mono">3.5%</span>
+                            <div class="text-right">
+                                <div class="text-xs text-gray-400 mb-1">기준 금리</div>
+                                <div class="text-2xl font-mono font-bold text-green-400">3.5%</div>
                             </div>
                         </div>
                     </div>
@@ -300,119 +338,102 @@
         </div>
     </section>
 
-    <!-- Revenue Projection -->
-    <section id="section-revenue" class="py-16 bg-[#F5F5F4]">
+    <!-- Revenue & Roadmap Section -->
+    <section id="section-revenue" class="py-20 bg-[#F5F5F4]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold mb-6">수익화 시뮬레이션 (Revenue Projection)</h2>
-            <div class="section-intro">
-                구독(MRR), 아이템(Microtransaction), 실물 굿즈의 3가지 수익원을 통해 
-                100만 명 Cap 도달 시 월 약 25억 원($1.93M)의 매출이 예상됩니다.
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-                <div class="chart-container" style="height: 400px;">
-                    <canvas id="revenueChart"></canvas>
-                </div>
-                <div class="mt-6 grid grid-cols-3 gap-4 text-center text-sm">
-                    <div>
-                        <div class="font-bold text-gray-500">초기 (Month 1)</div>
-                        <div class="text-lg font-black">$1,500</div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <!-- Revenue Chart -->
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">수익화 시뮬레이션</h2>
+                    <div class="section-intro text-sm">
+                        100만 명 Cap 도달 시 월 약 25억 원($1.93M)의 매출이 예상됩니다. 
+                        구독(MRR) 외에도 아이템, 경매 수수료, 실물 굿즈가 수익을 뒷받침합니다.
                     </div>
-                    <div>
-                        <div class="font-bold text-gray-500">성장기 (Month 6)</div>
-                        <div class="text-lg font-black">$8,500</div>
-                    </div>
-                    <div>
-                        <div class="font-bold text-gray-500">확장기 (Month 12)</div>
-                        <div class="text-lg font-black">$35,000+</div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                        <div class="chart-container" style="height: 350px;">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Roadmap -->
-    <section id="section-roadmap" class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold mb-10">개발 로드맵 (Roadmap)</h2>
-            
-            <div class="relative border-l-2 border-gray-200 ml-4 md:ml-10 space-y-12">
-                <!-- Phase 1 -->
-                <div class="relative pl-8 md:pl-12 group">
-                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-black border-4 border-white shadow"></div>
-                    <div class="mb-2">
-                        <span class="inline-block px-3 py-1 bg-black text-white text-xs font-bold rounded-full mb-2">Phase 1: The Void (2주)</span>
-                        <h3 class="text-xl font-bold">기반 구축 및 핵심 로직</h3>
-                    </div>
-                    <ul class="list-disc pl-5 text-gray-600 space-y-1">
-                        <li>Unity 클라이언트 & SignalR 서버 구축</li>
-                        <li>100만 명 인원 제한 로직 및 대기열 시스템</li>
-                        <li>좌표 배정 확률 로직 (Zone 3 랜덤 배정)</li>
-                        <li>구독 결제 및 영구 소멸 로직 구현</li>
-                    </ul>
-                </div>
+                <!-- Roadmap -->
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">개발 로드맵</h2>
+                    <div class="relative border-l-2 border-gray-300 ml-4 space-y-10 py-2">
+                        
+                        <div class="relative pl-8">
+                            <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-black border-4 border-[#F5F5F4]"></span>
+                            <h3 class="text-lg font-bold text-gray-900">Phase 1: The Void (2주)</h3>
+                            <p class="text-sm text-gray-500 mb-2">기반 구축 및 핵심 로직</p>
+                            <ul class="text-sm text-gray-700 space-y-1 list-disc pl-4 marker:text-gray-400">
+                                <li>Unity 클라이언트 & SignalR 서버 구축</li>
+                                <li>100만 명 인원 제한 로직 및 대기열</li>
+                                <li>구독 결제 및 영구 소멸 로직</li>
+                            </ul>
+                        </div>
 
-                <!-- Phase 2 -->
-                <div class="relative pl-8 md:pl-12 group">
-                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-400 border-4 border-white shadow"></div>
-                    <div class="mb-2">
-                        <span class="inline-block px-3 py-1 bg-gray-200 text-gray-800 text-xs font-bold rounded-full mb-2">Phase 2: The Economy (+3주)</span>
-                        <h3 class="text-xl font-bold">경제 시스템 및 AI</h3>
-                    </div>
-                    <ul class="list-disc pl-5 text-gray-600 space-y-1">
-                        <li>SD 화폐, 엔트로피 세금 시스템</li>
-                        <li>AI 금리 조절 및 예치(금고) 시스템</li>
-                        <li>경매장(Auction House) 및 1% 좌석 할당</li>
-                        <li>가차(공허의 균열) 및 인벤토리</li>
-                    </ul>
-                </div>
+                        <div class="relative pl-8">
+                            <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-gray-400 border-4 border-[#F5F5F4]"></span>
+                            <h3 class="text-lg font-bold text-gray-900">Phase 2: The Economy (+3주)</h3>
+                            <p class="text-sm text-gray-500 mb-2">경제 시스템 및 AI</p>
+                            <ul class="text-sm text-gray-700 space-y-1 list-disc pl-4 marker:text-gray-400">
+                                <li>SD 화폐, 엔트로피 세금 시스템</li>
+                                <li>AI 금리 조절 및 예치(금고) 시스템</li>
+                                <li>경매장(Auction) 및 1% 성역 할당</li>
+                            </ul>
+                        </div>
 
-                <!-- Phase 3 -->
-                <div class="relative pl-8 md:pl-12 group">
-                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-400 border-4 border-white shadow"></div>
-                    <div class="mb-2">
-                        <span class="inline-block px-3 py-1 bg-gray-200 text-gray-800 text-xs font-bold rounded-full mb-2">Phase 3: The Connection (+4주)</span>
-                        <h3 class="text-xl font-bold">확장 및 글로벌</h3>
+                        <div class="relative pl-8">
+                            <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-gray-400 border-4 border-[#F5F5F4]"></span>
+                            <h3 class="text-lg font-bold text-gray-900">Phase 3: The Connection (+4주)</h3>
+                            <p class="text-sm text-gray-500 mb-2">확장 및 글로벌</p>
+                            <ul class="text-sm text-gray-700 space-y-1 list-disc pl-4 marker:text-gray-400">
+                                <li>소셜 링크, 걷기 데이터(성운) 연동</li>
+                                <li>애플 워치, 위젯, 다이나믹 아일랜드</li>
+                                <li>실물 굿즈(메탈 카드) 자격 체크</li>
+                            </ul>
+                        </div>
+
                     </div>
-                    <ul class="list-disc pl-5 text-gray-600 space-y-1">
-                        <li>소셜 링크(인스타/X), 걷기 데이터(성운) 연동</li>
-                        <li>애플 워치, 위젯, 다이나믹 아일랜드</li>
-                        <li>글로벌 런칭 및 다국어 지원</li>
-                        <li>실물 굿즈(메탈 카드) 자격 체크 시스템</li>
-                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-[#1C1917] text-white py-12">
+    <footer class="bg-[#1C1917] text-white py-12 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-4xl font-bold tracking-tighter mb-4 brand-font">N/ONE</h2>
-            <p class="text-gray-400 mb-8">"우리는 아무것도 만들지 않지만, 모든 것을 연결합니다."</p>
-            <div class="text-sm text-gray-600">
+            <p class="text-gray-400 mb-8 font-light text-sm tracking-wide">"우리는 아무것도 만들지 않지만, 모든 것을 연결합니다."</p>
+            <div class="flex justify-center gap-6 text-xs text-gray-600 font-mono">
+                <span>SERVER: ONLINE</span>
+                <span>LATENCY: 12ms</span>
+                <span>VERSION: 7.0.2</span>
+            </div>
+            <div class="text-xs text-gray-700 mt-8">
                 &copy; 2025 Project N/ONE. All rights reserved.
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
+    <!-- Logic Scripts -->
     <script>
-        // --- 1. Canvas Universe Map Logic ---
+        // --- 1. Universe Map Visualization (Canvas) ---
         const initUniverseMap = () => {
             const canvas = document.getElementById('universeCanvas');
             const container = document.getElementById('universe-container');
             const ctx = canvas.getContext('2d');
-            let width, height, centerX, centerY;
+            let width, height, centerX, centerY, scale;
             const particles = [];
-            const particleCount = 200; // Visual representation count
+            const particleCount = 200;
 
-            // Zone Data
+            // Zone Definitions (Radius normalized to 1.0)
             const zones = [
-                { name: "Zone 0: 성역", radius: 0.1, color: "rgba(255, 215, 0, 0.3)", cap: "25명 (경매 전용)" }, // Sanctum
-                { name: "Zone 1: 코어", radius: 0.25, color: "rgba(229, 228, 226, 0.15)", cap: "11,000명 (Royal)" }, // Core
-                { name: "Zone 2: 링", radius: 0.5, color: "rgba(255, 255, 255, 0.05)", cap: "50,000명 (Settler)" }, // Ring
-                { name: "Zone 3: 아우터", radius: 1.0, color: "rgba(255, 255, 255, 0.02)", cap: "938,975명 (Nomad)" } // Outer
+                { id: 0, name: "Zone 0: 성역 (Sanctum)", r: 0.05, color: "rgba(255, 215, 0, 0.4)", cap: "25명 (경매)", req: "경매 낙찰 필수" },
+                { id: 1, name: "Zone 1: 코어 (Core)", r: 0.2, color: "rgba(229, 228, 226, 0.2)", cap: "11,000명 (Royal)", req: "Tier 3 구독" },
+                { id: 2, name: "Zone 2: 링 (Ring)", r: 0.5, color: "rgba(255, 255, 255, 0.08)", cap: "50,000명 (Settler)", req: "Tier 2 구독" },
+                { id: 3, name: "Zone 3: 아우터 (Outer)", r: 1.0, color: "rgba(255, 255, 255, 0.03)", cap: "938,975명 (Nomad)", req: "Tier 1 구독" }
             ];
 
             function resize() {
@@ -422,28 +443,39 @@
                 canvas.height = height;
                 centerX = width / 2;
                 centerY = height / 2;
+                scale = Math.min(width, height) / 2 * 0.9;
                 initParticles();
             }
 
             function initParticles() {
                 particles.length = 0;
-                for (let i = 0; i < particleCount; i++) {
+                for(let i=0; i<particleCount; i++) {
+                    // Random distribution logic to simulate density
+                    let r;
+                    const rand = Math.random();
+                    if (rand < 0.05) r = Math.random() * 0.05; // Sanctum
+                    else if (rand < 0.2) r = Math.random() * 0.2; // Core
+                    else if (rand < 0.5) r = Math.random() * 0.5; // Ring
+                    else r = Math.random(); // Outer
+
                     const angle = Math.random() * Math.PI * 2;
-                    // Random distribution weighted towards outer zones
-                    const r = (Math.pow(Math.random(), 0.5)) * (Math.min(width, height) / 2); 
-                    particles.push({ x: Math.cos(angle) * r, y: Math.sin(angle) * r, size: Math.random() * 1.5 + 0.5, speed: Math.random() * 0.2 + 0.05 });
+                    particles.push({
+                        r: r,
+                        angle: angle,
+                        size: Math.random() * 1.5 + 0.5,
+                        speed: (Math.random() * 0.002 + 0.0005) * (Math.random() < 0.5 ? 1 : -1)
+                    });
                 }
             }
 
             function draw() {
                 ctx.fillStyle = "#000";
                 ctx.fillRect(0, 0, width, height);
-                const maxR = Math.min(width, height) / 2 * 0.9;
 
                 // Draw Zones
                 zones.slice().reverse().forEach(zone => {
                     ctx.beginPath();
-                    ctx.arc(centerX, centerY, zone.radius * maxR, 0, Math.PI * 2);
+                    ctx.arc(centerX, centerY, zone.r * scale, 0, Math.PI * 2);
                     ctx.fillStyle = zone.color;
                     ctx.fill();
                     ctx.strokeStyle = "rgba(255,255,255,0.1)";
@@ -453,49 +485,56 @@
                 // Draw Particles
                 ctx.fillStyle = "#FFF";
                 particles.forEach(p => {
-                    // Update angle for orbit effect
-                    const currentAngle = Math.atan2(p.y, p.x) + (0.002 / (Math.sqrt(p.x*p.x + p.y*p.y)/100));
-                    const dist = Math.sqrt(p.x*p.x + p.y*p.y);
-                    p.x = Math.cos(currentAngle) * dist;
-                    p.y = Math.sin(currentAngle) * dist;
-
+                    p.angle += p.speed;
+                    const x = centerX + Math.cos(p.angle) * p.r * scale;
+                    const y = centerY + Math.sin(p.angle) * p.r * scale;
+                    
                     ctx.beginPath();
-                    ctx.arc(centerX + p.x, centerY + p.y, p.size, 0, Math.PI * 2);
+                    ctx.arc(x, y, p.size, 0, Math.PI * 2);
                     ctx.fill();
                 });
 
                 requestAnimationFrame(draw);
             }
 
-            // Mouse Interaction for Tooltip
+            // Interaction
             canvas.addEventListener('mousemove', (e) => {
                 const rect = canvas.getBoundingClientRect();
-                const mouseX = e.clientX - rect.left - centerX;
-                const mouseY = e.clientY - rect.top - centerY;
-                const dist = Math.sqrt(mouseX * mouseX + mouseY * mouseY);
-                const maxR = Math.min(width, height) / 2 * 0.9;
-                const normalizedDist = dist / maxR;
+                const dx = e.clientX - rect.left - centerX;
+                const dy = e.clientY - rect.top - centerY;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                const normDist = dist / scale;
 
                 const tooltip = document.getElementById('zone-tooltip');
                 let activeZone = null;
 
-                if (normalizedDist <= 0.1) activeZone = zones[0];
-                else if (normalizedDist <= 0.25) activeZone = zones[1];
-                else if (normalizedDist <= 0.5) activeZone = zones[2];
-                else if (normalizedDist <= 1.0) activeZone = zones[3];
+                if (normDist <= 0.05) activeZone = zones[0];
+                else if (normDist <= 0.2) activeZone = zones[1];
+                else if (normDist <= 0.5) activeZone = zones[2];
+                else if (normDist <= 1.0) activeZone = zones[3];
 
                 if (activeZone) {
                     tooltip.style.display = 'block';
-                    tooltip.style.left = `${e.clientX - rect.left + 15}px`;
-                    tooltip.style.top = `${e.clientY - rect.top + 15}px`;
+                    tooltip.style.left = `${e.clientX - rect.left + 20}px`;
+                    tooltip.style.top = `${e.clientY - rect.top + 20}px`;
+                    
                     document.getElementById('tooltip-title').innerText = activeZone.name.split(':')[0];
-                    document.getElementById('tooltip-desc').innerText = activeZone.name.split(':')[1];
+                    document.getElementById('tooltip-tag').innerText = activeZone.name.split(':')[1].trim();
+                    
+                    let desc = "";
+                    if(activeZone.id === 0) desc = "절대 권력의 상징. 시스템 경매를 통해서만 진입 가능합니다.";
+                    else if(activeZone.id === 1) desc = "우주의 중심. 리셋 주기를 스스로 통제합니다.";
+                    else if(activeZone.id === 2) desc = "안정적인 궤도. 구역을 선택할 수 있습니다.";
+                    else desc = "끝없는 심연. 매일 무작위로 위치가 변경됩니다.";
+                    
+                    document.getElementById('tooltip-desc').innerText = desc;
                     document.getElementById('tooltip-cap').innerText = activeZone.cap;
+                    document.getElementById('tooltip-req').innerText = activeZone.req;
                 } else {
                     tooltip.style.display = 'none';
                 }
             });
-            
+
             canvas.addEventListener('mouseleave', () => {
                 document.getElementById('zone-tooltip').style.display = 'none';
             });
@@ -505,7 +544,80 @@
             draw();
         };
 
-        // --- 2. Chart.js Population Distribution ---
+        // --- 2. Hierarchy Tabs Logic ---
+        const tierData = {
+            'nomad': {
+                name: "Tier 1: Nomad",
+                price: "$0.99 / 월",
+                desc: "매일 자정, Zone 3의 심연 속으로 무작위 이동합니다. 통제권은 없습니다. 오직 생존만이 목표입니다.",
+                perks: ["Zone 3 자동 배정", "매일 강제 리셋", "무료 가차 1회", "SD 일일지급 10", "소셜 팔로우 가능"],
+                color: "bg-gray-100",
+                icon: "🌪️"
+            },
+            'settler': {
+                name: "Tier 2: Settler",
+                price: "$4.99 / 월",
+                desc: "안정적인 궤도에 정착합니다. 4분면 중 원하는 구역을 선택하여 최소한의 통제권을 가집니다.",
+                perks: ["Zone 2 구역 선택", "주간 리셋 (월요일)", "무료 가차 2회", "SD 일일지급 30", "본인인증 필수 (Blue Aura)"],
+                color: "bg-blue-50",
+                icon: "📍"
+            },
+            'royal': {
+                name: "Tier 3: Royal",
+                price: "$19.99 / 월",
+                desc: "우주의 중심, 코어에 위치합니다. 리셋 주기를 스스로 결정하며, 과시 아이템을 사용할 수 있습니다.",
+                perks: ["Zone 1 좌표 고정", "리셋 주기 선택 (1-30일)", "무료 가차 3회", "SD 일일지급 100", "소멸 보험 기본 포함"],
+                color: "bg-yellow-50",
+                icon: "👑"
+            },
+            'heritage': {
+                name: "♔ Hidden Tier: Heritage",
+                price: "$19.99 (조건 달성)",
+                desc: "상위 0.1%에게만 허락된 명예 등급. 다이아몬드 형상과 백금 후광을 가지며, 성역 경매에 우선 참여합니다.",
+                perks: ["Zone 1 우선권", "세금 50% 감면", "경매/상점 수수료 면제", "전용 라운지 입장", "성역(Zone 0) 경매권"],
+                color: "bg-gradient-to-br from-gray-100 to-gray-300",
+                icon: "💎"
+            }
+        };
+
+        function updateTier(tierKey) {
+            // Update Buttons
+            document.querySelectorAll('.tier-btn').forEach(btn => {
+                if(btn.id === `btn-${tierKey}`) {
+                    btn.className = "tier-btn px-6 py-3 rounded-full font-bold text-sm bg-black text-white shadow-lg transform scale-105";
+                } else {
+                    btn.className = "tier-btn px-6 py-3 rounded-full font-bold text-sm bg-gray-200 text-gray-600 hover:bg-white hover:shadow-md";
+                }
+            });
+
+            const data = tierData[tierKey];
+            const contentDiv = document.getElementById('tier-content');
+            
+            // Inject Content
+            contentDiv.innerHTML = `
+                <div class="w-full flex flex-col md:flex-row gap-8 items-center animate-fade-in">
+                    <div class="flex-1 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <span class="text-4xl">${data.icon}</span>
+                            <h3 class="text-3xl font-bold">${data.name}</h3>
+                        </div>
+                        <p class="text-4xl font-black text-gray-900 tracking-tight">${data.price}</p>
+                        <p class="text-gray-600 text-lg leading-relaxed border-l-4 border-black pl-4 py-1">${data.desc}</p>
+                        <div class="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            ${data.perks.map(perk => `<div class="flex items-center gap-2 text-sm font-medium text-gray-700"><span class="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center text-xs">✓</span> ${perk}</div>`).join('')}
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/3 aspect-square rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl bg-black">
+                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
+                        ${tierKey === 'heritage' 
+                            ? '<div class="w-24 h-24 bg-white rotate-45 shadow-[0_0_50px_rgba(255,255,255,0.9)] border-4 border-[#E5E4E2]"></div>'
+                            : '<div class="w-8 h-8 bg-white rounded-full shadow-[0_0_30px_rgba(255,255,255,0.8)]"></div>'}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- 3. Population Chart (Chart.js) ---
         const initPopulationChart = () => {
             const ctx = document.getElementById('populationChart').getContext('2d');
             new Chart(ctx, {
@@ -514,144 +626,86 @@
                     labels: ['Nomad (94%)', 'Settler (5%)', 'Royal (1%)', 'Sanctum (~0%)'],
                     datasets: [{
                         data: [938975, 50000, 11000, 25],
-                        backgroundColor: ['#1C1917', '#A8A29E', '#E5E4E2', '#FFD700'],
-                        borderWidth: 0
+                        backgroundColor: ['#1C1917', '#78716C', '#E5E4E2', '#FFD700'],
+                        borderWidth: 0,
+                        hoverOffset: 10
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { position: 'bottom' }
-                    }
+                        legend: { position: 'bottom', labels: { usePointStyle: true, font: { family: 'Urbanist' } } }
+                    },
+                    cutout: '70%'
                 }
             });
         };
 
-        // --- 3. Interactive Tier Hierarchy ---
-        const tierData = {
-            'nomad': {
-                title: "Tier 1: Nomad (유목민)",
-                price: "$0.99 / 월",
-                desc: "매일 자정, Zone 3의 심연 속으로 무작위 이동합니다. 통제권은 없습니다. 오직 생존만이 목표입니다.",
-                features: ["Zone 3 배정", "매일 강제 이동", "무료 가차 1회", "SD 일일지급 10"]
-            },
-            'settler': {
-                title: "Tier 2: Settler (정착민)",
-                price: "$4.99 / 월",
-                desc: "안정적인 궤도에 정착합니다. 4분면 중 원하는 구역을 선택하여 최소한의 통제권을 가집니다.",
-                features: ["Zone 2 배정", "구역 선택 가능", "무료 가차 2회", "SD 일일지급 30", "본인인증 필수"]
-            },
-            'royal': {
-                title: "Tier 3: Royal (귀족)",
-                price: "$19.99 / 월",
-                desc: "우주의 중심, 코어에 위치합니다. 리셋 주기를 스스로 결정하며, 과시 아이템을 사용할 수 있습니다.",
-                features: ["Zone 1 배정", "좌표 고정 (1~30일)", "무료 가차 3회", "SD 일일지급 100", "소멸 보험 기본 포함"]
-            },
-            'heritage': {
-                title: "♔ Hidden Tier: Heritage",
-                price: "$19.99 (초대/조건 달성)",
-                desc: "상위 0.1%에게만 허락된 명예 등급. 다이아몬드 형상과 백금 후광을 가지며, 성역 경매에 우선 참여합니다.",
-                features: ["Zone 1 우선권", "세금 50% 감면", "전용 라운지", "다이아몬드 비주얼", "성역 경매권"]
-            }
-        };
-
-        function updateTierView(tier) {
-            const data = tierData[tier];
-            const content = document.getElementById('tier-content');
-            
-            // Highlight Button
-            document.querySelectorAll('.tier-btn').forEach(btn => {
-                if(btn.id === `btn-${tier}`) {
-                    btn.classList.remove('bg-white', 'text-gray-600');
-                    btn.classList.add('bg-black', 'text-white', 'border-transparent');
-                } else {
-                    btn.classList.add('bg-white', 'text-gray-600');
-                    btn.classList.remove('bg-black', 'text-white', 'border-transparent');
-                }
-            });
-
-            // Update Content
-            content.innerHTML = `
-                <div class="flex flex-col md:flex-row gap-8 items-center">
-                    <div class="flex-1 text-center md:text-left">
-                        <h3 class="text-2xl font-bold mb-2">${data.title}</h3>
-                        <p class="text-3xl font-black mb-4">${data.price}</p>
-                        <p class="text-gray-600 mb-6 leading-relaxed">${data.desc}</p>
-                        <ul class="space-y-2">
-                            ${data.features.map(f => `<li class="flex items-center gap-2"><span class="text-green-500">✔</span> ${f}</li>`).join('')}
-                        </ul>
-                    </div>
-                    <div class="w-full md:w-1/3 bg-black aspect-square rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/10"></div>
-                        ${tier === 'heritage' 
-                            ? '<div class="w-16 h-16 bg-white rotate-45 shadow-[0_0_30px_rgba(255,255,255,0.8)] border-2 border-[#E5E4E2]"></div>' 
-                            : '<div class="w-4 h-4 bg-white rounded-full shadow-[0_0_15px_rgba(255,255,255,0.5)]"></div>'}
-                    </div>
-                </div>
-            `;
-        }
-
-        // --- 4. Plotly Economy Sunburst ---
+        // --- 4. Economy Sunburst (Plotly) ---
         const initEconomyChart = () => {
             const data = [{
                 type: "sunburst",
-                labels: ["Economy", "Sources (Income)", "Sinks (Burn)", "구독 보상", "IAP 결제", "세금(엔트로피)", "경매 수수료", "가차/아이템", "T1", "T2", "T3", "SD 구매", "1% 차감", "10% 소각", "소멸 방어", "과시"],
-                parents: ["", "Economy", "Economy", "Sources (Income)", "Sources (Income)", "Sinks (Burn)", "Sinks (Burn)", "Sinks (Burn)", "구독 보상", "구독 보상", "구독 보상", "IAP 결제", "세금(엔트로피)", "경매 수수료", "가차/아이템", "가차/아이템"],
+                labels: ["Economy", "Sources<br>(Income)", "Sinks<br>(Burn)", "구독 보상", "IAP 결제", "엔트로피 세금", "경매 수수료", "가차/아이템", "T1", "T2", "T3", "SD 구매", "1% 차감", "10% 소각", "소멸 방어", "과시"],
+                parents: ["", "Economy", "Economy", "Sources<br>(Income)", "Sources<br>(Income)", "Sinks<br>(Burn)", "Sinks<br>(Burn)", "Sinks<br>(Burn)", "구독 보상", "구독 보상", "구독 보상", "IAP 결제", "엔트로피 세금", "경매 수수료", "가차/아이템", "가차/아이템"],
                 values:  [100, 60, 40, 40, 20, 15, 10, 15, 10, 10, 20, 20, 15, 10, 8, 7],
                 leaf: {opacity: 0.4},
-                marker: {line: {width: 2}},
-                branchvalues: 'total'
+                marker: {line: {width: 2}, colors: ["#1C1917", "#44403C", "#A8A29E", "#E5E4E2", "#E5E4E2", "#FF4500", "#A8A29E", "#A8A29E"]},
+                branchvalues: 'total',
+                textinfo: 'label+value'
             }];
 
             const layout = {
                 margin: {l: 0, r: 0, b: 0, t: 0},
-                sunburstcolorway: ["#1C1917", "#E5E4E2"], // Black and Platinum
-                font: {family: "Urbanist"}
+                font: {family: "Noto Sans KR"},
+                paper_bgcolor: "rgba(0,0,0,0)",
+                plot_bgcolor: "rgba(0,0,0,0)"
             };
 
-            Plotly.newPlot('economySunburst', data, layout, {displayModeBar: false});
+            Plotly.newPlot('economySunburst', data, layout, {displayModeBar: false, responsive: true});
         };
 
-        // --- 5. Tax Calculator Logic ---
+        // --- 5. Calculator Logic ---
         const initCalculator = () => {
             const input = document.getElementById('sd-input');
-            const taxDisplay = document.getElementById('tax-result');
-            const stakingDisplay = document.getElementById('staking-result');
+            const taxEl = document.getElementById('tax-result');
+            const stakeEl = document.getElementById('staking-result');
 
-            input.addEventListener('input', (e) => {
-                const amount = parseInt(e.target.value) || 0;
+            function calculate() {
+                const val = parseInt(input.value) || 0;
                 
-                // Tax Logic: (Amount - 1000) * 1%
+                // Tax: (Value - 1000) * 1%
                 let tax = 0;
-                if (amount > 1000) {
-                    tax = Math.floor((amount - 1000) * 0.01);
-                }
+                if(val > 1000) tax = Math.floor((val - 1000) * 0.01);
                 
-                // Staking Logic: Amount * 3.5% (annual) / 52 weeks (approx for 7 days) -> simplified logic
-                // Let's assume 3.5% is the 7-day yield for simulation fun
-                const interest = Math.floor(amount * 0.035);
+                // Staking: Val * 3.5% * (7/365)
+                const interest = Math.floor(val * 0.035 * (7/365));
 
-                taxDisplay.innerText = `-${tax.toLocaleString()} SD`;
-                stakingDisplay.innerText = `+${interest.toLocaleString()} SD`;
-            });
-            
-            // Trigger initial calculation
-            input.dispatchEvent(new Event('input'));
+                taxEl.innerText = `-${tax.toLocaleString()} SD`;
+                stakeEl.innerText = `+${interest.toLocaleString()} SD`;
+            }
+
+            input.addEventListener('input', calculate);
+            calculate(); // Init
         };
 
-        // --- 6. Revenue Chart ---
+        // --- 6. Revenue Chart (Chart.js) ---
         const initRevenueChart = () => {
             const ctx = document.getElementById('revenueChart').getContext('2d');
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6 (성장)', 'M7', 'M8', 'M9', 'M10', 'M11', 'M12 (확장)'],
+                    labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9', 'M10', 'M11', 'M12'],
                     datasets: [{
-                        label: '예상 월 매출 (USD)',
+                        label: 'Projected Monthly Revenue ($)',
                         data: [1500, 1800, 2200, 3000, 5000, 8500, 12000, 15000, 20000, 25000, 30000, 35000],
-                        borderColor: 'black',
-                        backgroundColor: 'rgba(0,0,0,0.05)',
+                        borderColor: '#1C1917',
+                        backgroundColor: 'rgba(28, 25, 23, 0.05)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#1C1917',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
                         fill: true,
                         tension: 0.4
                     }]
@@ -662,6 +716,8 @@
                     plugins: {
                         legend: { display: false },
                         tooltip: {
+                            backgroundColor: '#1C1917',
+                            padding: 12,
                             callbacks: {
                                 label: function(context) {
                                     return `$${context.parsed.y.toLocaleString()}`;
@@ -672,26 +728,34 @@
                     scales: {
                         y: {
                             beginAtZero: true,
+                            grid: { borderDash: [2, 4] },
                             ticks: { callback: (value) => '$' + value }
+                        },
+                        x: {
+                            grid: { display: false }
                         }
                     }
                 }
             });
         };
 
-        // --- 7. Navigation Scroll ---
+        // --- 7. Nav Scroll ---
         document.querySelectorAll('.nav-link').forEach(btn => {
             btn.addEventListener('click', () => {
                 const targetId = btn.getAttribute('data-target');
                 document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+                
+                // Active State
+                document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
             });
         });
 
-        // Initialize All
+        // --- Initialization ---
         window.addEventListener('load', () => {
             initUniverseMap();
+            updateTier('nomad');
             initPopulationChart();
-            updateTierView('nomad'); // Initial view
             initEconomyChart();
             initCalculator();
             initRevenueChart();
