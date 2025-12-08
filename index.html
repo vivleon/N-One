@@ -147,8 +147,22 @@
                 <!-- Interactive Map Canvas -->
                 <div class="lg:col-span-2 h-[600px] bg-black rounded-2xl border border-stone-800 relative overflow-hidden shadow-2xl">
                     <canvas id="galaxyCanvas" class="w-full h-full"></canvas>
-                    <div class="absolute bottom-4 left-4 text-xs font-mono text-stone-500 bg-black/50 p-2 rounded">
-                        * Drag to Panning / Wheel to Zoom
+                    
+                    <!-- HUD: Current Location -->
+                    <div class="absolute top-4 left-4 pointer-events-none">
+                         <div class="bg-black/80 backdrop-blur border border-white/20 p-3 rounded-lg text-white font-mono text-xs">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                <span class="text-stone-400">CURRENT SYSTEM</span>
+                            </div>
+                            <!-- 1. 구역 표시 업데이트 -->
+                            <div id="hud-system-name" class="text-lg font-bold text-yellow-400 mb-1">Deep Space</div>
+                            <div id="hud-coords" class="text-stone-500">X: 0, Y: 0</div>
+                         </div>
+                    </div>
+
+                    <div class="absolute bottom-4 left-4 text-xs font-mono text-stone-500 bg-black/50 p-2 rounded pointer-events-none">
+                        * Drag to Panning / Wheel to Zoom / Click System to Inspect
                     </div>
                 </div>
 
@@ -156,24 +170,42 @@
                 <div class="space-y-6">
                     <div class="bg-stone-900 p-6 rounded-2xl border border-stone-800">
                         <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                            <i class="fas fa-solar-system text-blue-400"></i> The 25 Systems
+                            <i class="fas fa-solar-system text-blue-400"></i> System Info
                         </h3>
-                        <p class="text-stone-400 text-sm mb-4">
-                            전체 우주는 25개의 태양계로 분할됩니다. 각 시스템은 고유한 ID와 주인을 가지며, 하위 유저들은 배정된 시스템의 궤도를 공전합니다.
-                        </p>
-                        <ul class="text-sm space-y-2 text-stone-300 font-mono">
-                            <li class="flex justify-between"><span>System Count</span> <span class="text-white">25</span></li>
-                            <li class="flex justify-between"><span>Orbit Type</span> <span class="text-white">Radial</span></li>
-                            <li class="flex justify-between"><span>Center Star</span> <span class="text-yellow-500">Tier 4 (Heritage)</span></li>
-                        </ul>
+                        <!-- System Detail Info -->
+                        <div id="system-detail-panel" class="hidden">
+                            <div class="mb-4 pb-4 border-b border-stone-800">
+                                <span class="text-xs text-stone-500 block mb-1">SYSTEM NAME</span>
+                                <h4 id="detail-sys-name" class="text-2xl font-bold text-white">System #01</h4>
+                                <span id="detail-sys-owner" class="text-sm text-yellow-500 font-mono">Owner: Heritage_King</span>
+                            </div>
+                             <ul class="text-sm space-y-2 text-stone-300 font-mono mb-4">
+                                <li class="flex justify-between"><span>Population</span> <span class="text-white">42,105</span></li>
+                                <li class="flex justify-between"><span>Tax Rate</span> <span class="text-red-400">1.2%</span></li>
+                                <li class="flex justify-between"><span>Status</span> <span class="text-green-500">Stable</span></li>
+                            </ul>
+                            <!-- Auction Button Logic: Active only on Heritage Systems -->
+                            <!-- 2. 경매 버튼 활성화 조건 -->
+                            <button id="btn-enter-auction" class="w-full bg-yellow-600 hover:bg-yellow-500 text-black py-3 rounded-lg font-bold transition-colors mb-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i class="fas fa-gavel mr-2"></i> Enter Auction
+                            </button>
+                             <p class="text-[10px] text-stone-500 text-center">* 경매는 헤리티지 구역 내에서만 가능합니다.</p>
+                        </div>
+
+                        <!-- Default View -->
+                        <div id="system-default-panel" class="text-center py-10">
+                            <i class="fas fa-search text-4xl text-stone-700 mb-4"></i>
+                            <p class="text-stone-500 text-sm">지도를 탐색하거나 시스템을 클릭하여<br>상세 정보를 확인하세요.</p>
+                        </div>
                     </div>
 
                     <div class="bg-stone-900 p-6 rounded-2xl border border-stone-800">
                         <h3 class="text-xl font-bold text-white mb-4">Navigation</h3>
                         <div class="grid grid-cols-2 gap-3">
-                            <button class="bg-stone-800 hover:bg-stone-700 text-white py-3 rounded-lg font-bold transition-colors">Prev System</button>
-                            <button class="bg-stone-800 hover:bg-stone-700 text-white py-3 rounded-lg font-bold transition-colors">Next System</button>
-                            <button class="col-span-2 bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg font-bold transition-colors">
+                            <button id="btn-prev-sys" class="bg-stone-800 hover:bg-stone-700 text-white py-3 rounded-lg font-bold transition-colors">Prev System</button>
+                            <button id="btn-next-sys" class="bg-stone-800 hover:bg-stone-700 text-white py-3 rounded-lg font-bold transition-colors">Next System</button>
+                            <!-- 1. Home 버튼: 내 구역으로 이동 -->
+                            <button id="btn-my-home" class="col-span-2 bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg font-bold transition-colors">
                                 <i class="fas fa-home mr-2"></i> My System (Home)
                             </button>
                         </div>
@@ -367,14 +399,33 @@
     <script>
         const canvas = document.getElementById('galaxyCanvas');
         const ctx = canvas.getContext('2d');
+        const systemDetailPanel = document.getElementById('system-detail-panel');
+        const systemDefaultPanel = document.getElementById('system-default-panel');
+        const hudSystemName = document.getElementById('hud-system-name');
+        const hudCoords = document.getElementById('hud-coords');
+
         let width, height;
         const systems = [];
-        const galaxyRadius = 300;
+        const galaxyRadius = 2500; // Visual Scale for canvas
+        
+        // Camera State
+        let cameraX = 0;
+        let cameraY = 0;
+        let cameraZoom = 0.8;
+        let isDragging = false;
+        let lastMouseX, lastMouseY;
+        
+        // Mock User Data
+        const myHomeSystemIndex = 4; // Assigned to System 5
+        let currentSystemIndex = -1;
 
         function init() {
             resize();
             createSystems();
             animate();
+            
+            // Initial View
+            updateHUD();
         }
 
         function resize() {
@@ -384,16 +435,23 @@
             canvas.height = height;
         }
 
+        // 3. 더미 및 정보 업데이트
         function createSystems() {
             for(let i=0; i<25; i++) {
                 const angle = (i / 25) * Math.PI * 2;
                 const x = Math.cos(angle) * galaxyRadius;
                 const y = Math.sin(angle) * galaxyRadius;
+                // Unique Data per System
+                const isHeritage = true; // For demo, all are Heritage sites
                 systems.push({
                     x: x, y: y,
                     id: i+1,
-                    color: i === 0 ? "#FFD700" : "#E5E5E5", // System 1 is capital (Gold)
-                    size: i === 0 ? 8 : 4
+                    name: `System #${i+1}`,
+                    owner: i===0 ? "Admin" : `Heritage_${i}`,
+                    color: `hsl(${i * 14}, 70%, 60%)`, // Unique color for each system
+                    size: 80, // Visual size on map
+                    planets: Math.floor(Math.random() * 50000) + 5000,
+                    isHeritage: isHeritage
                 });
             }
         }
@@ -404,37 +462,178 @@
 
             const cx = width / 2;
             const cy = height / 2;
-            const zoom = 0.6; // Scale down to fit
 
-            // Draw Orbits
-            ctx.strokeStyle = "#222";
-            ctx.beginPath();
-            ctx.arc(cx, cy, galaxyRadius * zoom, 0, Math.PI * 2);
-            ctx.stroke();
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.scale(cameraZoom, cameraZoom);
+            ctx.translate(-cameraX, -cameraY);
 
             // Draw Systems
             systems.forEach(sys => {
-                const sx = cx + sys.x * zoom;
-                const sy = cy + sys.y * zoom;
+                // Orbit Ring
+                ctx.beginPath();
+                ctx.arc(sys.x, sys.y, 400, 0, Math.PI * 2);
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+                ctx.lineWidth = 2;
+                ctx.stroke();
 
                 // Sun
                 ctx.beginPath();
-                ctx.arc(sx, sy, sys.size, 0, Math.PI * 2);
+                ctx.arc(sys.x, sys.y, sys.size, 0, Math.PI * 2);
                 ctx.fillStyle = sys.color;
-                ctx.shadowBlur = 10;
+                ctx.shadowBlur = 30;
                 ctx.shadowColor = sys.color;
                 ctx.fill();
                 ctx.shadowBlur = 0;
-
-                // Orbit Rings (Visual Only)
-                ctx.strokeStyle = "#333";
-                ctx.beginPath();
-                ctx.arc(sx, sy, 20, 0, Math.PI * 2);
-                ctx.stroke();
+                
+                // System Label
+                ctx.fillStyle = "white";
+                ctx.font = "40px Urbanist";
+                ctx.textAlign = "center";
+                ctx.fillText(sys.id, sys.x, sys.y + 15);
+                
+                // Planets (Dummy Visuals)
+                // 3. 더미 행성 시각화 (Simple Orbiting Dots)
+                for(let j=0; j<5; j++) {
+                    const angle = Date.now() * 0.001 * (j+1) + sys.id;
+                    const orbitR = 150 + j * 50;
+                    ctx.beginPath();
+                    ctx.arc(sys.x + Math.cos(angle)*orbitR, sys.y + Math.sin(angle)*orbitR, 10, 0, Math.PI*2);
+                    ctx.fillStyle = "rgba(255,255,255,0.5)";
+                    ctx.fill();
+                }
             });
 
+            ctx.restore();
             requestAnimationFrame(animate);
         }
+        
+        // --- Interaction Logic ---
+        
+        function selectSystem(index) {
+            currentSystemIndex = index;
+            const sys = systems[index];
+            
+            // Move Camera
+            cameraX = sys.x;
+            cameraY = sys.y;
+            cameraZoom = 1.5; // Zoom in
+            
+            // Update UI
+            updateHUD(sys);
+            updateSidePanel(sys);
+        }
+        
+        function updateHUD(sys) {
+            // 1. 좌측 상단 구역 표시 업데이트
+            if(sys) {
+                hudSystemName.innerText = sys.name;
+                hudSystemName.style.color = sys.color;
+                hudCoords.innerText = `X: ${Math.floor(sys.x)}, Y: ${Math.floor(sys.y)}`;
+            } else {
+                hudSystemName.innerText = "Deep Space";
+                hudSystemName.style.color = "#A8A29E";
+                hudCoords.innerText = `X: ${Math.floor(cameraX)}, Y: ${Math.floor(cameraY)}`;
+            }
+        }
+        
+        function updateSidePanel(sys) {
+            systemDefaultPanel.classList.add('hidden');
+            systemDetailPanel.classList.remove('hidden');
+            
+            document.getElementById('detail-sys-name').innerText = sys.name;
+            document.getElementById('detail-sys-name').style.color = sys.color;
+            document.getElementById('detail-sys-owner').innerText = `Owner: ${sys.owner}`;
+            
+            // 2. 경매 버튼 활성화 로직
+            const btnAuction = document.getElementById('btn-enter-auction');
+            if(sys.isHeritage) {
+                btnAuction.disabled = false;
+                btnAuction.classList.remove('opacity-50', 'cursor-not-allowed');
+                btnAuction.innerHTML = `<i class="fas fa-gavel mr-2"></i> Enter Auction (${sys.name})`;
+            } else {
+                btnAuction.disabled = true;
+                btnAuction.classList.add('opacity-50', 'cursor-not-allowed');
+                btnAuction.innerHTML = `<i class="fas fa-lock mr-2"></i> Auction Locked`;
+            }
+        }
+        
+        function goHome() {
+            // 1. Home 버튼 클릭 시 내 구역으로 이동
+            selectSystem(myHomeSystemIndex);
+        }
+
+        // --- Event Listeners ---
+        
+        canvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        });
+        
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+        
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                const dx = e.clientX - lastMouseX;
+                const dy = e.clientY - lastMouseY;
+                cameraX -= dx / cameraZoom;
+                cameraY -= dy / cameraZoom;
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+                updateHUD(); // Update coords while dragging
+            }
+        });
+        
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const zoomSpeed = 0.1;
+            if (e.deltaY < 0) cameraZoom *= (1 + zoomSpeed);
+            else cameraZoom /= (1 + zoomSpeed);
+            cameraZoom = Math.min(Math.max(0.1, cameraZoom), 5); // Limit zoom
+        });
+        
+        canvas.addEventListener('click', (e) => {
+            if (Math.abs(e.movementX) > 5 || Math.abs(e.movementY) > 5) return; // Ignore drag clicks
+            
+            const rect = canvas.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+            
+            // Transform screen to world
+            const cx = width / 2;
+            const cy = height / 2;
+            
+            // World coordinate of click
+            const wx = (clickX - cx) / cameraZoom + cameraX;
+            const wy = (clickY - cy) / cameraZoom + cameraY;
+            
+            // Check collision with systems
+            for(let i=0; i<systems.length; i++) {
+                const sys = systems[i];
+                const dist = Math.sqrt((wx - sys.x)**2 + (wy - sys.y)**2);
+                if (dist < 500) { // Hit radius
+                    selectSystem(i);
+                    return;
+                }
+            }
+        });
+        
+        // Navigation Buttons
+        document.getElementById('btn-prev-sys').addEventListener('click', () => {
+            let nextIdx = currentSystemIndex - 1;
+            if (nextIdx < 0) nextIdx = systems.length - 1;
+            selectSystem(nextIdx);
+        });
+        
+        document.getElementById('btn-next-sys').addEventListener('click', () => {
+            let nextIdx = (currentSystemIndex + 1) % systems.length;
+            selectSystem(nextIdx);
+        });
+        
+        document.getElementById('btn-my-home').addEventListener('click', goHome);
 
         window.addEventListener('resize', resize);
         window.addEventListener('load', init);
