@@ -3,750 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>N/ONE: Master Plan v8.0 (The Galaxy)</title>
-    
-    <!-- Tailwind CSS -->
+    <title>N/ONE: Master Plan v8.2 (The Galaxy)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Plotly.js -->
-    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Urbanist:wght@400;700&display=swap" rel="stylesheet">
-
-    <!-- FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Urbanist:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
-        :root {
-            --color-bg: #050505;
-            --color-text: #E5E5E5;
-            --color-accent: #FFD700;
-        }
-
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: var(--color-bg);
-            color: var(--color-text);
-            overflow-x: hidden;
-        }
-        
-        h1, h2, h3, h4, h5, h6, .brand-font {
-            font-family: 'Urbanist', sans-serif;
-        }
-
-        .glass-panel {
-            background: rgba(20, 20, 20, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .nav-link {
-            position: relative;
-            color: #A3A3A3;
-            transition: color 0.3s;
-        }
-        .nav-link:hover { color: white; }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 0;
-            background-color: var(--color-accent);
-            transition: width 0.3s ease;
-        }
-        .nav-link:hover::after { width: 100%; }
-
-        /* Galaxy Glow */
-        .galaxy-glow {
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        :root { --bg: #050505; --text: #E5E5E5; --accent: #FFD700; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bg); color: var(--text); }
+        .brand { font-family: 'Urbanist', sans-serif; }
+        .glass { background: rgba(20,20,20,0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
     </style>
 </head>
-<body class="antialiased selection:bg-yellow-500 selection:text-black">
+<body class="selection:bg-yellow-500 selection:text-black">
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 glass-panel border-b border-white/10 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-                    <span class="brand-font text-2xl font-black tracking-tighter text-white">N/ONE</span>
-                    <span class="text-[10px] font-mono bg-yellow-500 text-black px-2 py-0.5 rounded font-bold">v8.0 Galaxy</span>
-                </div>
-                <div class="hidden md:flex space-x-8 items-center">
-                    <button data-target="section-intro" class="nav-link text-sm font-bold">VISION</button>
-                    <button data-target="section-galaxy" class="nav-link text-sm font-bold">GALAXY</button>
-                    <button data-target="section-hierarchy" class="nav-link text-sm font-bold">HIERARCHY</button>
-                    <button data-target="section-economy" class="nav-link text-sm font-bold">ECONOMY</button>
-                    <button data-target="section-roadmap" class="nav-link text-sm font-bold">ROADMAP</button>
-                </div>
+    <nav class="fixed top-0 w-full z-50 glass border-b border-white/10 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="brand text-2xl font-black text-white">N/ONE</span>
+                <span class="text-[10px] bg-yellow-500 text-black px-2 py-0.5 rounded font-bold">v8.2 Live</span>
+            </div>
+            <div class="hidden md:flex gap-6 text-sm font-bold text-stone-400">
+                <a href="#vision" class="hover:text-white transition">VISION</a>
+                <a href="#galaxy" class="hover:text-white transition">GALAXY</a>
+                <a href="#economy" class="hover:text-white transition">ECONOMY</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <header id="section-intro" class="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-screen flex flex-col justify-center text-center relative overflow-hidden">
-        <!-- Background Stars (CSS) -->
-        <div class="absolute inset-0 z-[-1]" style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 50px 50px; opacity: 0.1;"></div>
-        
-        <div class="animate-[fadeIn_1s_ease-out]">
-            <h1 class="text-6xl md:text-9xl font-black mb-6 tracking-tighter text-white leading-none">
-                THE<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-600">GALAXY</span>
-            </h1>
-            <p class="text-xl md:text-3xl text-stone-400 font-light mb-12 brand-font italic tracking-wide">"From Void to Federation. Be the Center of Your System."</p>
-            
-            <div class="max-w-4xl mx-auto bg-stone-900/50 backdrop-blur-sm p-8 rounded-3xl border border-white/10 text-left">
-                <h3 class="text-xl font-bold mb-4 text-white flex items-center gap-2">
-                    <i class="fas fa-rocket text-yellow-500"></i> Master Plan v8.0: The Galaxy Federation
-                </h3>
-                <p class="text-stone-400 mb-6 leading-relaxed">
-                    우리는 단순한 우주가 아닌, <strong>25개의 거대한 태양계(Solar Systems)</strong>가 유기적으로 연결된 은하 연방을 구축합니다.<br>
-                    각 태양계는 하나의 <strong>'군주(Heritage)'</strong>를 중심으로 돌아가며, 모든 유저는 이 거대한 질서의 일부가 됩니다.
-                </p>
-                <div class="flex gap-4">
-                    <div class="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-sm text-stone-300">
-                        <span class="block font-bold text-white mb-1">25 Systems</span>
-                        독립적인 자치구
-                    </div>
-                    <div class="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-sm text-stone-300">
-                        <span class="block font-bold text-white mb-1">1M Population</span>
-                        최대 수용 인원
-                    </div>
-                    <div class="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-sm text-stone-300">
-                        <span class="block font-bold text-white mb-1">Heritage Sun</span>
-                        항성(Sun) 소유권
-                    </div>
-                </div>
-            </div>
-        </div>
+    <header id="vision" class="pt-32 pb-20 px-6 text-center">
+        <h1 class="text-6xl md:text-8xl font-black mb-6 brand leading-tight">
+            THE<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-600">GALAXY</span>
+        </h1>
+        <p class="text-xl text-stone-400 font-light mb-12">"25 Systems. 1 Million Souls. The Federation."</p>
     </header>
 
-    <!-- Galaxy Architecture -->
-    <section id="section-galaxy" class="py-24 bg-stone-950 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row items-end gap-6 mb-10">
-                <h2 class="text-5xl font-bold text-white tracking-tight">은하계 아키텍처</h2>
-                <span class="text-stone-500 font-mono mb-2">System Radius: 50,000 Unit</span>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Interactive Map Canvas -->
-                <div class="lg:col-span-2 h-[600px] bg-black rounded-2xl border border-stone-800 relative overflow-hidden shadow-2xl">
-                    <canvas id="galaxyCanvas" class="w-full h-full"></canvas>
-                    
-                    <!-- HUD: Current Location -->
-                    <div class="absolute top-4 left-4 pointer-events-none">
-                         <div class="bg-black/80 backdrop-blur border border-white/20 p-3 rounded-lg text-white font-mono text-xs">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                                <span class="text-stone-400">CURRENT LOCATION</span>
-                            </div>
-                            <!-- 1. 구역 표시 업데이트 -->
-                            <div id="hud-system-name" class="text-lg font-bold text-yellow-400 mb-1">Deep Space</div>
-                            <div id="hud-coords" class="text-stone-500">X: 0, Y: 0</div>
-                            <div id="hud-zone-detail" class="mt-2 pt-2 border-t border-white/10 text-stone-300 hidden">
-                                <span class="text-[10px] text-stone-500 block">LOCAL ZONE</span>
-                                <span id="hud-zone-text" class="font-bold text-blue-400">OUTER ORBIT</span>
-                            </div>
-                         </div>
-                    </div>
-
-                    <!-- Tooltip -->
-                    <div id="map-tooltip" class="absolute hidden bg-black/90 p-3 rounded border border-white/20 text-xs text-white pointer-events-none z-20 backdrop-blur">
-                        <span id="tooltip-text">System Info</span>
-                    </div>
-
-                    <div class="absolute bottom-4 left-4 text-xs font-mono text-stone-500 bg-black/50 p-2 rounded pointer-events-none">
-                        * Drag to Panning / Wheel to Zoom (In: System View, Out: Galaxy View) / Click System
-                    </div>
-                </div>
-
-                <!-- Info Panel -->
+    <section id="galaxy" class="py-20 bg-stone-900">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-4xl font-bold mb-12 text-center">Galaxy Architecture</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div class="space-y-6">
-                    <div class="bg-stone-900 p-6 rounded-2xl border border-stone-800">
-                        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                            <i class="fas fa-solar-system text-blue-400"></i> System Info
-                        </h3>
-                        <!-- System Detail Info -->
-                        <div id="system-detail-panel" class="hidden">
-                            <div class="mb-4 pb-4 border-b border-stone-800">
-                                <span class="text-xs text-stone-500 block mb-1">SYSTEM NAME</span>
-                                <h4 id="detail-sys-name" class="text-2xl font-bold text-white">System #01</h4>
-                                <span id="detail-sys-owner" class="text-sm text-yellow-500 font-mono">Owner: Heritage_King</span>
-                            </div>
-                             <ul class="text-sm space-y-2 text-stone-300 font-mono mb-4">
-                                <li class="flex justify-between"><span>Population</span> <span class="text-white">42,105</span></li>
-                                <li class="flex justify-between"><span>Tax Rate</span> <span class="text-red-400">1.2%</span></li>
-                                <li class="flex justify-between"><span>Status</span> <span class="text-green-500">Stable</span></li>
-                            </ul>
-                            <!-- Auction Button Logic: Active only on Heritage Systems -->
-                            <button id="btn-enter-auction" class="w-full bg-yellow-600 hover:bg-yellow-500 text-black py-3 rounded-lg font-bold transition-colors mb-2 disabled:opacity-50 disabled:cursor-not-allowed">
-                                <i class="fas fa-gavel mr-2"></i> Enter Auction
-                            </button>
-                             <p class="text-[10px] text-stone-500 text-center">* 경매는 헤리티지 구역 내에서만 가능합니다.</p>
-                        </div>
-
-                        <!-- Default View -->
-                        <div id="system-default-panel" class="text-center py-10">
-                            <i class="fas fa-search text-4xl text-stone-700 mb-4"></i>
-                            <p class="text-stone-500 text-sm">지도를 탐색하거나 시스템을 클릭하여<br>상세 정보를 확인하세요.</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-stone-900 p-6 rounded-2xl border border-stone-800">
-                        <h3 class="text-xl font-bold text-white mb-4">Navigation</h3>
-                        <div class="grid grid-cols-2 gap-3">
-                            <button id="btn-prev-sys" class="bg-stone-800 hover:bg-stone-700 text-white py-3 rounded-lg font-bold transition-colors">Prev System</button>
-                            <button id="btn-next-sys" class="bg-stone-800 hover:bg-stone-700 text-white py-3 rounded-lg font-bold transition-colors">Next System</button>
-                            <!-- 1. Home 버튼: 내 구역으로 이동 -->
-                            <button id="btn-my-home" class="col-span-2 bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg font-bold transition-colors">
-                                <i class="fas fa-home mr-2"></i> My System (Home)
-                            </button>
-                            <button class="col-span-2 bg-stone-700 hover:bg-stone-600 text-white py-2 rounded-lg text-xs font-mono" onclick="resetView()">
-                                <i class="fas fa-expand mr-1"></i> Reset View (Galaxy)
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Hierarchy Section -->
-    <section id="section-hierarchy" class="py-24 bg-stone-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-5xl font-bold text-white mb-12 text-center">계급과 궤도 (Orbit)</h2>
-            
-            <!-- Tier Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Tier 1 -->
-                <div class="bg-stone-800/50 p-6 rounded-2xl border border-stone-700 hover:border-stone-500 transition-colors">
-                    <div class="text-4xl mb-4">🌪️</div>
-                    <h3 class="text-2xl font-bold text-stone-300 mb-2">Nomad</h3>
-                    <p class="text-xs text-stone-500 font-mono mb-4">TIER 1 • OUTER ORBIT</p>
-                    <ul class="text-sm text-stone-400 space-y-2 mb-6">
-                        <li>• 가장 먼 궤도 (5500+)</li>
-                        <li>• 작은 크기 (Scale 0.6)</li>
-                        <li>• 매일 위치 리셋</li>
-                    </ul>
-                    <div class="text-xl font-bold text-white">$0.99 <span class="text-xs font-normal text-stone-500">/ mo</span></div>
-                </div>
-
-                <!-- Tier 2 -->
-                <div class="bg-stone-800/50 p-6 rounded-2xl border border-stone-600 hover:border-blue-500 transition-colors">
-                    <div class="text-4xl mb-4">📍</div>
-                    <h3 class="text-2xl font-bold text-blue-200 mb-2">Settler</h3>
-                    <p class="text-xs text-blue-500 font-mono mb-4">TIER 2 • MIDDLE ORBIT</p>
-                    <ul class="text-sm text-stone-400 space-y-2 mb-6">
-                        <li>• 중간 궤도 (3000~5000)</li>
-                        <li>• 중간 크기 (Scale 1.5)</li>
-                        <li>• 주간 리셋 / 구역 선택</li>
-                    </ul>
-                    <div class="text-xl font-bold text-white">$4.99 <span class="text-xs font-normal text-stone-500">/ mo</span></div>
-                </div>
-
-                <!-- Tier 3 -->
-                <div class="bg-stone-800/50 p-6 rounded-2xl border border-purple-900 hover:border-purple-500 transition-colors">
-                    <div class="text-4xl mb-4">👑</div>
-                    <h3 class="text-2xl font-bold text-purple-200 mb-2">Royal</h3>
-                    <p class="text-xs text-purple-500 font-mono mb-4">TIER 3 • INNER ORBIT</p>
-                    <ul class="text-sm text-stone-400 space-y-2 mb-6">
-                        <li>• 태양 근접 (500~2500)</li>
-                        <li>• 큰 크기 (Scale 4.0)</li>
-                        <li>• 좌표 고정 (알박기)</li>
-                    </ul>
-                    <div class="text-xl font-bold text-white">$19.99 <span class="text-xs font-normal text-stone-500">/ mo</span></div>
-                </div>
-
-                <!-- Tier 4 (Heritage) -->
-                <div class="bg-gradient-to-br from-stone-800 to-black p-6 rounded-2xl border border-yellow-600 shadow-[0_0_30px_rgba(255,215,0,0.15)] transform scale-105">
-                    <div class="text-4xl mb-4 flex justify-between">
-                        <span>💎</span>
-                        <i class="fas fa-crown text-yellow-500 animate-pulse"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-500 mb-2">Heritage</h3>
-                    <p class="text-xs text-yellow-600 font-mono mb-4">TIER 4 • THE SUN</p>
-                    <ul class="text-sm text-stone-300 space-y-2 mb-6">
-                        <li>• <strong>시스템의 중심 (0, 0)</strong></li>
-                        <li>• <strong>압도적 크기 (Scale 100.0)</strong></li>
-                        <li>• 태양계 명명권 / 세금 수령</li>
-                    </ul>
-                    <div class="text-xl font-bold text-white">Auction <span class="text-xs font-normal text-stone-500">Only</span></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Economy & Shop -->
-    <section id="section-economy" class="py-24 bg-white text-black">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-5xl font-bold mb-12 text-center text-black">경제 & 상점</h2>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <!-- Auction System -->
-                <div class="bg-stone-50 p-8 rounded-3xl border border-stone-200">
-                    <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
-                        <i class="fas fa-gavel text-stone-700"></i> Heritage Auction
-                    </h3>
-                    <p class="text-stone-600 mb-6">
-                        25개의 태양(Heritage)은 오직 경매를 통해서만 소유할 수 있습니다. 
-                        낙찰자는 해당 태양계의 이름을 변경하고(예: "Elon's System"), 소속 유저들의 세금 중 일부를 배당받습니다.
+                    <h3 class="text-2xl font-bold text-white">25 Solar Systems</h3>
+                    <p class="text-stone-400 leading-relaxed">
+                        우주는 단일 공간이 아닌 25개의 거대한 태양계(System)로 이루어집니다. 
+                        각 시스템은 <strong>Heritage(항성)</strong>를 중심으로 수많은 행성들이 궤도를 돌며 공존합니다.
                     </p>
-                    <div class="bg-white p-4 rounded-xl border border-stone-100 shadow-inner mb-4">
-                        <div class="flex justify-between mb-2">
-                            <span class="text-xs font-bold text-stone-400">CURRENT BID</span>
-                            <span class="text-xs font-bold text-red-500 animate-pulse">LIVE</span>
-                        </div>
-                        <div class="text-3xl font-black font-mono">1,250,000 SD</div>
-                        <div class="text-sm text-stone-500 mt-1">Bidder: @crypto_king</div>
-                    </div>
-                    <button class="w-full bg-black text-white py-4 rounded-xl font-bold hover:bg-stone-800 transition-colors">
-                        Enter Auction House
-                    </button>
+                    <ul class="space-y-3 text-sm font-mono text-stone-300">
+                        <li class="flex items-center gap-3"><i class="fas fa-sun text-yellow-500"></i> Center: Heritage (Scale 100.0)</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-circle text-purple-400"></i> Inner Orbit: Royal</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-circle text-blue-400"></i> Middle Orbit: Settler</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-circle text-stone-500"></i> Outer Orbit: Nomad</li>
+                    </ul>
                 </div>
-
-                <!-- Shop & Items -->
-                <div class="bg-stone-50 p-8 rounded-3xl border border-stone-200">
-                    <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
-                        <i class="fas fa-shopping-bag text-stone-700"></i> Star Dust Shop
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between p-4 bg-white rounded-xl border border-stone-100 hover:shadow-md transition-shadow cursor-pointer">
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600">SD</div>
-                                <div>
-                                    <div class="font-bold">Starter Pack</div>
-                                    <div class="text-xs text-stone-500">1,000 SD</div>
-                                </div>
-                            </div>
-                            <span class="font-bold">$0.99</span>
-                        </div>
-                        <div class="flex items-center justify-between p-4 bg-white rounded-xl border border-stone-100 hover:shadow-md transition-shadow cursor-pointer">
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">🛡️</div>
-                                <div>
-                                    <div class="font-bold">Entropy Shield (7d)</div>
-                                    <div class="text-xs text-stone-500">소멸 방지권</div>
-                                </div>
-                            </div>
-                            <span class="font-bold">5,000 SD</span>
-                        </div>
-                        <div class="flex items-center justify-between p-4 bg-white rounded-xl border border-stone-100 hover:shadow-md transition-shadow cursor-pointer">
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">🚀</div>
-                                <div>
-                                    <div class="font-bold">Warp Ticket</div>
-                                    <div class="text-xs text-stone-500">타 태양계 이주권</div>
-                                </div>
-                            </div>
-                            <span class="font-bold">10,000 SD</span>
-                        </div>
-                    </div>
+                <div class="bg-black aspect-square rounded-full border border-stone-800 relative flex items-center justify-center">
+                    <div class="w-16 h-16 bg-yellow-500 rounded-full shadow-[0_0_50px_rgba(255,215,0,0.5)] z-10 animate-pulse"></div>
+                    <div class="absolute w-3/4 h-3/4 border border-white/10 rounded-full animate-[spin_20s_linear_infinite]"></div>
+                    <div class="absolute w-1/2 h-1/2 border border-white/20 rounded-full animate-[spin_10s_linear_infinite_reverse]"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Roadmap -->
-    <section id="section-roadmap" class="py-24 bg-black text-white">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold mb-12 text-center">Development Roadmap</h2>
-            <div class="relative border-l border-stone-800 ml-4 space-y-12">
+    <section id="economy" class="py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-4xl font-bold mb-12 text-center">Economy & Shop</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 
-                <div class="relative pl-8">
-                    <span class="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]"></span>
-                    <h3 class="text-xl font-bold text-green-400 mb-2">Phase 1: Galaxy Architecture (Completed)</h3>
-                    <p class="text-stone-400 text-sm">
-                        • 25 Solar Systems Logic<br>
-                        • Heritage Sun Placement (Scale 100.0)<br>
-                        • Orbit Distribution (Inner/Middle/Outer)
-                    </p>
+                <div class="glass p-8 rounded-2xl border-t-4 border-stone-500">
+                    <div class="text-stone-500 font-bold mb-2 text-xs tracking-widest">BASIC</div>
+                    <div class="text-3xl font-black text-white mb-4">STARTER</div>
+                    <div class="text-4xl font-bold text-white mb-6">$0.99</div>
+                    <ul class="text-sm text-stone-400 space-y-2 mb-8">
+                        <li>• 1,000 Star Dust</li>
+                        <li>• Basic Badge</li>
+                    </ul>
                 </div>
 
-                <div class="relative pl-8">
-                    <span class="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
-                    <h3 class="text-xl font-bold text-blue-400 mb-2">Phase 2: Visual Polish (In Progress)</h3>
-                    <p class="text-stone-400 text-sm">
-                        • Orbit Lines Rendering<br>
-                        • System-specific Fog/Nebula<br>
-                        • Dynamic Island UI Implementation
-                    </p>
+                <div class="glass p-8 rounded-2xl border-t-4 border-blue-500 relative transform scale-105 shadow-2xl">
+                    <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-[10px] px-3 py-1 rounded-full font-bold">BEST VALUE</span>
+                    <div class="text-blue-400 font-bold mb-2 text-xs tracking-widest">PREMIUM</div>
+                    <div class="text-3xl font-black text-white mb-4">NOBLE</div>
+                    <div class="text-4xl font-bold text-white mb-6">$9.99</div>
+                    <ul class="text-sm text-stone-400 space-y-2 mb-8">
+                        <li>• 10,000 Star Dust</li>
+                        <li>• Entropy Shield (7d)</li>
+                        <li>• Warp Ticket x5</li>
+                    </ul>
                 </div>
 
-                <div class="relative pl-8 opacity-50">
-                    <span class="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-stone-700"></span>
-                    <h3 class="text-xl font-bold text-stone-500 mb-2">Phase 3: The Federation</h3>
-                    <p class="text-stone-500 text-sm">
-                        • System Ownership & Tax Logic<br>
-                        • Inter-System Wars (Competition)<br>
-                        • Mobile App Launch
-                    </p>
+                <div class="glass p-8 rounded-2xl border-t-4 border-yellow-500">
+                    <div class="text-yellow-500 font-bold mb-2 text-xs tracking-widest">ELITE</div>
+                    <div class="text-3xl font-black text-white mb-4">HERITAGE</div>
+                    <div class="text-4xl font-bold text-white mb-6">$99.99</div>
+                    <ul class="text-sm text-stone-400 space-y-2 mb-8">
+                        <li>• 100,000 Star Dust</li>
+                        <li>• <strong>Auction Access</strong></li>
+                        <li>• Permanent Shield (30d)</li>
+                    </ul>
                 </div>
 
             </div>
         </div>
     </section>
 
-    <footer class="bg-black text-stone-600 py-8 text-center text-xs border-t border-stone-900">
-        &copy; 2025 Project N/ONE. All rights reserved. <br>
-        Powered by Unity & SignalR.
+    <footer class="py-8 text-center text-stone-600 text-xs border-t border-white/5">
+        &copy; 2025 Project N/ONE.
     </footer>
 
-    <!-- Logic Script for Canvas Map -->
-    <script>
-        const canvas = document.getElementById('galaxyCanvas');
-        const ctx = canvas.getContext('2d');
-        const systemDetailPanel = document.getElementById('system-detail-panel');
-        const systemDefaultPanel = document.getElementById('system-default-panel');
-        const hudSystemName = document.getElementById('hud-system-name');
-        const hudCoords = document.getElementById('hud-coords');
-        const hudZoneDetail = document.getElementById('hud-zone-detail');
-        const hudZoneText = document.getElementById('hud-zone-text');
-        const mapTooltip = document.getElementById('map-tooltip');
-
-        let width, height;
-        const systems = [];
-        const galaxyRadius = 2500; // Visual Scale for galaxy
-        const systemRadius = 400; // Visual Scale for individual system (when zoomed out)
-        
-        // System Names
-        const systemNames = [
-            "Genesis", "Nexus", "Eden", "Zion", "Arcadia", "Babylon", "Corinth", "Delphi", "Elysium", "Fate",
-            "Gaia", "Helios", "Icarus", "Jericho", "Kronos", "Liberty", "Matrix", "Neo", "Omega", "Pandora",
-            "Quantum", "Rapture", "Sinai", "Terra", "Utopia"
-        ];
-
-        // Camera State
-        let cameraX = 0;
-        let cameraY = 0;
-        let cameraZoom = 0.6; // Start zoomed out
-        let isDragging = false;
-        let lastMouseX, lastMouseY;
-        
-        // Mock User Data
-        const myHomeSystemIndex = 4; 
-        let currentSystemIndex = -1;
-
-        function init() {
-            resize();
-            createSystems();
-            animate();
-            updateHUD(null);
-        }
-
-        function resize() {
-            width = canvas.parentElement.clientWidth;
-            height = canvas.parentElement.clientHeight;
-            canvas.width = width;
-            canvas.height = height;
-        }
-
-        function createSystems() {
-            for(let i=0; i<25; i++) {
-                const angle = (i / 25) * Math.PI * 2;
-                const x = Math.cos(angle) * galaxyRadius;
-                const y = Math.sin(angle) * galaxyRadius;
-                
-                systems.push({
-                    x: x, y: y,
-                    id: i,
-                    name: systemNames[i],
-                    owner: i===0 ? "Admin" : `Heritage_${i}`,
-                    color: i===0 ? "#FFD700" : `hsl(${i * 14}, 70%, 60%)`,
-                    size: 80, 
-                    isHeritage: true
-                });
-            }
-        }
-
-        function drawZones(sys) {
-            // Draw internal zones (orbits) when zoomed in
-            // Inner Orbit (Royal)
-            ctx.beginPath();
-            ctx.arc(sys.x, sys.y, 400, 0, Math.PI * 2); // 400 unit visual radius
-            ctx.strokeStyle = "rgba(168, 85, 247, 0.2)"; // Purple
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            // Middle Orbit (Settler)
-            ctx.beginPath();
-            ctx.arc(sys.x, sys.y, 700, 0, Math.PI * 2); // 700 unit visual radius
-            ctx.strokeStyle = "rgba(59, 130, 246, 0.2)"; // Blue
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            // Outer Orbit (Nomad)
-            ctx.beginPath();
-            ctx.arc(sys.x, sys.y, 1100, 0, Math.PI * 2); // 1100 unit visual radius
-            ctx.strokeStyle = "rgba(120, 113, 108, 0.2)"; // Stone
-            ctx.lineWidth = 1;
-            ctx.setLineDash([5, 5]);
-            ctx.stroke();
-            ctx.setLineDash([]);
-        }
-
-        function animate() {
-            ctx.fillStyle = "#000000";
-            ctx.fillRect(0, 0, width, height);
-
-            const cx = width / 2;
-            const cy = height / 2;
-
-            ctx.save();
-            ctx.translate(cx, cy);
-            ctx.scale(cameraZoom, cameraZoom);
-            ctx.translate(-cameraX, -cameraY);
-
-            // Draw Galaxy Orbit (Background) only when zoomed out
-            if (cameraZoom < 0.8) {
-                ctx.strokeStyle = "#111";
-                ctx.beginPath();
-                ctx.arc(0, 0, galaxyRadius, 0, Math.PI * 2);
-                ctx.stroke();
-            }
-
-            systems.forEach(sys => {
-                // Determine visibility based on zoom
-                const distToCamera = Math.sqrt((sys.x - cameraX)**2 + (sys.y - cameraY)**2);
-                const isSelected = currentSystemIndex === sys.id;
-                
-                // Draw Zone Rings if zoomed in enough or selected
-                if (cameraZoom > 1.2 || isSelected) {
-                    drawZones(sys);
-                }
-
-                // Sun (Heritage)
-                ctx.beginPath();
-                ctx.arc(sys.x, sys.y, sys.size, 0, Math.PI * 2);
-                ctx.fillStyle = sys.color;
-                ctx.shadowBlur = isSelected ? 50 : 20;
-                ctx.shadowColor = sys.color;
-                ctx.fill();
-                ctx.shadowBlur = 0;
-                
-                // Label
-                if (cameraZoom > 0.4) {
-                    ctx.fillStyle = "white";
-                    ctx.font = isSelected ? "bold 60px Urbanist" : "40px Urbanist";
-                    ctx.textAlign = "center";
-                    ctx.fillText(sys.name, sys.x, sys.y - sys.size - 20);
-                }
-                
-                // Draw Dummy Planets (Visuals)
-                // Only draw if relatively close to conserve performance
-                if (cameraZoom > 0.8 && distToCamera < 3000) {
-                     for(let j=0; j<8; j++) { // Increased density visually
-                        const speed = 0.0002 * (j % 2 === 0 ? 1 : -1);
-                        const angle = Date.now() * speed * (j+1) + sys.id;
-                        const orbitBase = 400 + (j * 100); // Spread out
-                        const px = sys.x + Math.cos(angle) * orbitBase;
-                        const py = sys.y + Math.sin(angle) * orbitBase;
-                        
-                        ctx.beginPath();
-                        ctx.arc(px, py, 8, 0, Math.PI*2);
-                        ctx.fillStyle = j < 2 ? "#D8B4FE" : (j < 5 ? "#93C5FD" : "#78716C"); // Color by pseudo-tier
-                        ctx.fill();
-                    }
-                }
-            });
-
-            ctx.restore();
-            requestAnimationFrame(animate);
-        }
-        
-        // --- Interaction Logic ---
-        
-        function selectSystem(index) {
-            if (index < 0 || index >= systems.length) return;
-            currentSystemIndex = index;
-            const sys = systems[index];
-            
-            // Camera Logic: Smooth transition simulation
-            cameraX = sys.x;
-            cameraY = sys.y;
-            cameraZoom = 2.0; // Zoom in enough to see internal zones
-            
-            updateHUD(sys);
-            updateSidePanel(sys);
-        }
-
-        function resetView() {
-            currentSystemIndex = -1;
-            cameraX = 0;
-            cameraY = 0;
-            cameraZoom = 0.6; // Overview mode
-            updateHUD(null);
-            
-            systemDetailPanel.classList.add('hidden');
-            systemDefaultPanel.classList.remove('hidden');
-        }
-        
-        function updateHUD(sys) {
-            if(sys) {
-                hudSystemName.innerText = `SYSTEM: ${sys.name.toUpperCase()}`;
-                hudSystemName.style.color = sys.color;
-                hudCoords.innerText = `X: ${Math.floor(sys.x)}, Y: ${Math.floor(sys.y)}`;
-                
-                // Determine Local Zone based on "fake" mouse position relative to system center
-                // For demo, just showing we are in the system
-                hudZoneDetail.classList.remove('hidden');
-                hudZoneText.innerText = "HERITAGE SANCTUM"; // Default when clicking center
-            } else {
-                hudSystemName.innerText = "DEEP SPACE";
-                hudSystemName.style.color = "#A8A29E";
-                hudCoords.innerText = `X: ${Math.floor(cameraX)}, Y: ${Math.floor(cameraY)}`;
-                hudZoneDetail.classList.add('hidden');
-            }
-        }
-        
-        function updateSidePanel(sys) {
-            systemDefaultPanel.classList.add('hidden');
-            systemDetailPanel.classList.remove('hidden');
-            
-            document.getElementById('detail-sys-name').innerText = sys.name;
-            document.getElementById('detail-sys-name').style.color = sys.color;
-            document.getElementById('detail-sys-owner').innerText = `Owner: ${sys.owner}`;
-            
-            const btnAuction = document.getElementById('btn-enter-auction');
-            btnAuction.disabled = false;
-            btnAuction.classList.remove('opacity-50', 'cursor-not-allowed');
-            btnAuction.innerHTML = `<i class="fas fa-gavel mr-2"></i> Enter Auction`;
-        }
-        
-        // --- Event Listeners ---
-        
-        canvas.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            lastMouseX = e.clientX;
-            lastMouseY = e.clientY;
-        });
-        
-        window.addEventListener('mouseup', () => isDragging = false);
-        
-        canvas.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-
-            // Panning
-            if (isDragging) {
-                const dx = e.clientX - lastMouseX;
-                const dy = e.clientY - lastMouseY;
-                cameraX -= dx / cameraZoom;
-                cameraY -= dy / cameraZoom;
-                lastMouseX = e.clientX;
-                lastMouseY = e.clientY;
-                if(currentSystemIndex === -1) updateHUD(null);
-            }
-
-            // Hover Tooltip Logic
-            const cx = width / 2;
-            const cy = height / 2;
-            const wx = (mouseX - cx) / cameraZoom + cameraX;
-            const wy = (mouseY - cy) / cameraZoom + cameraY;
-
-            let hoveredSys = null;
-            for(let sys of systems) {
-                const dist = Math.sqrt((wx - sys.x)**2 + (wy - sys.y)**2);
-                if (dist < 300) { // Hover radius
-                    hoveredSys = sys;
-                    break;
-                }
-            }
-
-            if (hoveredSys) {
-                mapTooltip.style.display = 'block';
-                mapTooltip.style.left = `${e.clientX + 15}px`;
-                mapTooltip.style.top = `${e.clientY + 15}px`;
-                document.getElementById('tooltip-text').innerText = `${hoveredSys.name} (Tier 4)`;
-                canvas.style.cursor = 'pointer';
-            } else {
-                mapTooltip.style.display = 'none';
-                canvas.style.cursor = isDragging ? 'grabbing' : 'default';
-            }
-
-            // Calculate Local Zone if in a system
-            if (currentSystemIndex !== -1) {
-                const sys = systems[currentSystemIndex];
-                const dist = Math.sqrt((wx - sys.x)**2 + (wy - sys.y)**2);
-                let zoneName = "OUTER ORBIT";
-                if (dist < 400) zoneName = "SANCTUM (HERITAGE)";
-                else if (dist < 700) zoneName = "INNER ORBIT (ROYAL)";
-                else if (dist < 1100) zoneName = "MIDDLE ORBIT (SETTLER)";
-                
-                if (dist < 1200) {
-                    hudZoneText.innerText = zoneName;
-                    hudZoneDetail.classList.remove('hidden');
-                }
-            }
-        });
-        
-        canvas.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            const zoomSpeed = 0.1;
-            if (e.deltaY < 0) cameraZoom *= (1 + zoomSpeed);
-            else cameraZoom /= (1 + zoomSpeed);
-            cameraZoom = Math.min(Math.max(0.1, cameraZoom), 5);
-        });
-        
-        canvas.addEventListener('click', (e) => {
-            if (Math.abs(e.movementX) > 5 || Math.abs(e.movementY) > 5) return;
-            
-            const rect = canvas.getBoundingClientRect();
-            const clickX = e.clientX - rect.left;
-            const clickY = e.clientY - rect.top;
-            const cx = width / 2;
-            const cy = height / 2;
-            const wx = (clickX - cx) / cameraZoom + cameraX;
-            const wy = (clickY - cy) / cameraZoom + cameraY;
-            
-            for(let i=0; i<systems.length; i++) {
-                const sys = systems[i];
-                const dist = Math.sqrt((wx - sys.x)**2 + (wy - sys.y)**2);
-                if (dist < 300) {
-                    selectSystem(i);
-                    return;
-                }
-            }
-        });
-        
-        // Navigation Buttons
-        document.getElementById('btn-prev-sys').addEventListener('click', () => {
-            let nextIdx = currentSystemIndex - 1;
-            if (nextIdx < 0) nextIdx = systems.length - 1;
-            selectSystem(nextIdx);
-        });
-        
-        document.getElementById('btn-next-sys').addEventListener('click', () => {
-            let nextIdx = (currentSystemIndex + 1) % systems.length;
-            selectSystem(nextIdx);
-        });
-        
-        document.getElementById('btn-my-home').addEventListener('click', () => selectSystem(myHomeSystemIndex));
-
-        window.addEventListener('resize', resize);
-        window.addEventListener('load', init);
-        
-        document.querySelectorAll('.nav-link').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const target = document.getElementById(e.target.dataset.target);
-                if(target) target.scrollIntoView({ behavior: 'smooth' });
-            });
-        });
-    </script>
 </body>
 </html>
