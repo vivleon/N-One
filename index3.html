@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N/ONE: Project Master Plan v7.1</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Urbanist:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --color-bg: #F5F5F4;
+            --color-text: #1C1917;
+            --color-accent: #000000;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6, .brand-font {
+            font-family: 'Urbanist', sans-serif;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+        }
+
+        /* Canvas container */
+        #universe-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            background-color: #050505;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid #262626;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--color-text);
+            transition: width 0.3s ease;
+        }
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .tier-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .section-intro {
+            border-left: 3px solid var(--color-text);
+            padding-left: 1.5rem;
+            margin-bottom: 2.5rem;
+            color: #44403C;
+            font-size: 1.125rem;
+            line-height: 1.8;
+        }
+
+        /* Heritage Glow Effect */
+        .heritage-glow {
+            animation: glow 3s infinite alternate;
+        }
+        @keyframes glow {
+            from { box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 215, 0, 0.3); }
+            to { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 215, 0, 0.6); }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #F5F5F4; }
+        ::-webkit-scrollbar-thumb { background: #A8A29E; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #78716C; }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-black selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-panel border-b border-stone-200 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+                    <span class="brand-font text-3xl font-black tracking-tighter">N/ONE</span>
+                    <span class="text-[10px] font-mono bg-black text-white px-2 py-0.5 rounded-sm">v7.1</span>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center" id="nav-menu">
+                    <button data-target="section-intro" class="nav-link text-sm font-bold text-stone-600 hover:text-black transition-colors">VISION</button>
+                    <button data-target="section-universe" class="nav-link text-sm font-bold text-stone-600 hover:text-black transition-colors">UNIVERSE</button>
+                    <button data-target="section-hierarchy" class="nav-link text-sm font-bold text-stone-600 hover:text-black transition-colors">HIERARCHY</button>
+                    <button data-target="section-economy" class="nav-link text-sm font-bold text-stone-600 hover:text-black transition-colors">ECONOMY</button>
+                    <button data-target="section-status" class="nav-link text-sm font-bold text-stone-600 hover:text-black transition-colors">DEV STATUS</button>
+                </div>
+                <div class="md:hidden flex items-center">
+                     <button class="text-stone-800 focus:outline-none"><i class="fas fa-bars text-xl"></i></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="section-intro" class="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-screen flex flex-col justify-center">
+        <div class="text-center max-w-5xl mx-auto animate-[fadeIn_1s_ease-out]">
+            <h1 class="text-7xl md:text-9xl font-black mb-8 tracking-tighter text-stone-900 leading-none">
+                THE<br><span class="text-transparent bg-clip-text bg-gradient-to-b from-stone-800 to-stone-500">ORBIT</span>
+            </h1>
+            <p class="text-2xl md:text-4xl text-stone-600 font-light mb-12 brand-font italic tracking-wide">"Less is More. Be the One in None."</p>
+            
+            <div class="bg-white p-10 rounded-3xl shadow-2xl border border-stone-100 text-left relative overflow-hidden group hover:shadow-2xl transition-shadow duration-500">
+                <div class="absolute top-0 left-0 w-2 h-full bg-black group-hover:w-4 transition-all duration-300"></div>
+                <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                    <i class="fas fa-flask text-stone-400"></i> 기획 의도: 디지털 사회 실험
+                </h3>
+                <p class="text-stone-600 mb-8 leading-relaxed text-lg">
+                    우리는 현대인의 <strong>존재 불안</strong>, <strong>계급 사회</strong>, 그리고 <strong>매몰 비용(Sunk Cost)</strong> 심리를 시각화합니다. 
+                    기능적 공허함(Void) 속에서 사용자는 자신의 '별'을 지키기 위해 비용을 지불하며, 역설적으로 그 안에서 강렬한 소속감과 존재감을 느낍니다.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex items-start gap-4 p-5 bg-stone-50 rounded-2xl hover:bg-stone-100 transition-colors cursor-default">
+                        <span class="text-3xl">🧘</span>
+                        <div>
+                            <span class="font-bold block text-lg mb-1 brand-font">Passive Track</span>
+                            <span class="text-sm text-stone-500 leading-snug">복잡한 조작 없이, 구독만 유지하면 별은 자동으로 성장합니다. 침묵의 관조와 힐링.</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 p-5 bg-stone-50 rounded-2xl hover:bg-stone-100 transition-colors cursor-default">
+                        <span class="text-3xl">🏛️</span>
+                        <div>
+                            <span class="font-bold block text-lg mb-1 brand-font">Active Track</span>
+                            <span class="text-sm text-stone-500 leading-snug">예치, 경매, 과시를 통한 치열한 자산 증식과 권력 행사. 당신의 별을 성역으로 이끄세요.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-stone-400 text-2xl"></i>
+        </div>
+    </header>
+
+    <!-- Universe Section -->
+    <section id="section-universe" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-end gap-4 mb-8">
+                <h2 class="text-5xl font-bold tracking-tight">공간과 인원</h2>
+                <div class="flex gap-2 mb-2">
+                    <span class="bg-black text-white text-xs font-mono px-3 py-1 rounded-full flex items-center gap-2">
+                        <i class="fas fa-users"></i> Hard Cap: 1,000,000
+                    </span>
+                    <span class="bg-stone-200 text-stone-600 text-xs font-mono px-3 py-1 rounded-full flex items-center gap-2">
+                        <i class="fas fa-ruler-combined"></i> Radius: 10,000 Unit
+                    </span>
+                </div>
+            </div>
+            
+            <div class="section-intro">
+                N/ONE의 우주는 반지름 10,000 Unit의 유한한 공간입니다. <br>
+                인구 밀도와 보유한 부(Wealth)에 따라 4단계(성역, 코어, 링, 아우터)로 엄격히 구분됩니다.
+                <br><span class="text-sm text-stone-400 mt-2 block"><i class="fas fa-mouse-pointer"></i> 지도를 탐색하여 각 구역의 정보를 확인하세요.</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+                <!-- Interactive Canvas Map -->
+                <div class="lg:col-span-2">
+                    <div id="universe-container">
+                        <canvas id="universeCanvas"></canvas>
+                        
+                        <!-- Canvas Controls -->
+                        <div class="absolute bottom-4 right-4 flex flex-col gap-2">
+                            <button class="bg-white/10 hover:bg-white/20 text-white p-2 rounded backdrop-blur transition-colors" onclick="resetView()"><i class="fas fa-expand"></i></button>
+                        </div>
+
+                        <!-- Tooltip -->
+                        <div id="zone-tooltip" class="absolute hidden bg-black/90 p-5 rounded-xl shadow-2xl text-white pointer-events-none z-10 w-72 backdrop-blur-md border border-stone-700">
+                            <div class="flex justify-between items-start mb-3 border-b border-stone-600 pb-2">
+                                <div>
+                                    <h4 id="tooltip-title" class="font-bold text-xl brand-font text-white"></h4>
+                                    <span id="tooltip-tag" class="text-[10px] uppercase font-bold tracking-wider text-stone-400"></span>
+                                </div>
+                                <i id="tooltip-icon" class="fas fa-star text-yellow-400 text-xl"></i>
+                            </div>
+                            <p id="tooltip-desc" class="text-stone-300 mb-4 text-xs leading-relaxed font-light"></p>
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <div class="bg-stone-800 p-2 rounded border border-stone-700">
+                                    <span class="block text-stone-500 mb-1">CAPACITY</span>
+                                    <span id="tooltip-cap" class="font-bold font-mono text-white"></span>
+                                </div>
+                                <div class="bg-stone-800 p-2 rounded border border-stone-700">
+                                    <span class="block text-stone-500 mb-1">ENTRY REQ</span>
+                                    <span id="tooltip-req" class="font-bold text-stone-200"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Population Stats & Server Status -->
+                <div class="lg:col-span-1 flex flex-col gap-6 h-full">
+                    <!-- Real-time Stats -->
+                    <div class="bg-stone-900 text-white p-8 rounded-3xl shadow-xl border border-stone-700 flex-1 flex flex-col justify-between relative overflow-hidden">
+                        <!-- Background Pattern -->
+                        <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                            <i class="fas fa-server text-9xl"></i>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="font-bold text-lg tracking-widest brand-font flex items-center gap-2">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> LIVE SERVER
+                                </h3>
+                                <span class="text-xs font-mono text-stone-500">SignalR Hub Active</span>
+                            </div>
+                            
+                            <div class="space-y-6 font-mono">
+                                <div>
+                                    <div class="flex justify-between mb-2 text-xs">
+                                        <span class="text-stone-400">TOTAL POPULATION</span>
+                                        <span class="text-white font-bold">984,210 <span class="text-stone-600">/ 1M</span></span>
+                                    </div>
+                                    <div class="w-full bg-stone-800 h-2 rounded-full overflow-hidden">
+                                        <div class="bg-gradient-to-r from-green-500 to-emerald-400 h-full" style="width: 98.4%;"></div>
+                                    </div>
+                                    <p class="text-[10px] text-right text-stone-500 mt-1">98.4% Full (Hard Cap Approaching)</p>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="bg-stone-800 p-4 rounded-xl border border-stone-700">
+                                        <span class="block text-stone-400 text-[10px] mb-1">ZONE 0 (SANCTUM)</span>
+                                        <span class="text-[#FFD700] font-bold text-lg">12 / 25</span>
+                                    </div>
+                                    <div class="bg-stone-800 p-4 rounded-xl border border-stone-700">
+                                        <span class="block text-stone-400 text-[10px] mb-1">ZONE 1 (ROYAL)</span>
+                                        <span class="text-[#E5E4E2] font-bold text-lg">10,842</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-stone-800">
+                            <h4 class="text-xs font-bold text-stone-500 mb-3">SYSTEM MESSAGES</h4>
+                            <ul class="text-xs space-y-2 text-stone-300 font-mono h-24 overflow-y-auto custom-scrollbar" id="server-logs">
+                                <!-- Logs injected by JS -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Pop Chart -->
+                    <div class="bg-stone-50 p-6 rounded-3xl border border-stone-200 h-64">
+                        <div class="chart-container h-full">
+                            <canvas id="populationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hierarchy Section -->
+    <section id="section-hierarchy" class="py-24 bg-stone-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-5xl font-bold mb-8">계급 & 헤리티지</h2>
+            <div class="section-intro">
+                자본이 곧 물리적 위치와 권력을 결정합니다. 구독료에 따라 3가지 기본 티어가 존재하며, 
+                <span class="bg-stone-800 text-white px-1">상위 0.1%</span> 조건을 달성한 유저에게는 히든 티어 <strong>'Heritage'</strong>가 부여됩니다.
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="flex flex-wrap gap-3 mb-10 justify-center">
+                <button onclick="updateTier('nomad')" id="btn-nomad" class="tier-btn px-8 py-3 rounded-full font-bold text-sm bg-white text-stone-600 border border-stone-200 shadow-sm">Tier 1: Nomad</button>
+                <button onclick="updateTier('settler')" id="btn-settler" class="tier-btn px-8 py-3 rounded-full font-bold text-sm bg-white text-stone-600 border border-stone-200 shadow-sm">Tier 2: Settler</button>
+                <button onclick="updateTier('royal')" id="btn-royal" class="tier-btn px-8 py-3 rounded-full font-bold text-sm bg-white text-stone-600 border border-stone-200 shadow-sm">Tier 3: Royal</button>
+                <button onclick="updateTier('heritage')" id="btn-heritage" class="tier-btn px-8 py-3 rounded-full font-bold text-sm bg-gradient-to-r from-stone-800 to-black text-white shadow-lg border border-stone-700 ring-2 ring-stone-200 ring-offset-2 flex items-center gap-2"><i class="fas fa-crown text-yellow-400"></i> Heritage</button>
+            </div>
+
+            <!-- Dynamic Content -->
+            <div id="tier-content" class="bg-white rounded-[2.5rem] p-12 shadow-2xl border border-stone-100 min-h-[450px] flex items-center transition-all duration-500">
+                <!-- Content injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Economy Section -->
+    <section id="section-economy" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-5xl font-bold mb-8">경제 시스템</h2>
+            <div class="section-intro">
+                N/ONE의 경제는 '스타더스트(SD)'를 중심으로 순환합니다. <strong>AI '보이지 않는 손'</strong>이 12시간마다 금리를 조절하며, 
+                엔트로피 세금과 공허의 금고(예치)를 통해 인플레이션을 정교하게 제어합니다.
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <!-- Economy Flow Chart -->
+                <div class="relative">
+                    <h3 class="text-2xl font-bold mb-6 border-b-4 border-black pb-2 inline-block">Ecosystem Flow</h3>
+                    <div class="chart-container h-[500px]">
+                        <div id="economySunburst"></div>
+                    </div>
+                    <div class="absolute top-0 right-0 bg-stone-100 p-2 rounded text-xs text-stone-500">
+                        * Click chart to expand details
+                    </div>
+                </div>
+
+                <!-- Calculator & AI Status -->
+                <div class="space-y-8">
+                    <!-- AI Status -->
+                    <div class="bg-black text-white p-8 rounded-3xl shadow-lg relative overflow-hidden">
+                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-stone-800 rounded-full blur-3xl opacity-50"></div>
+                        <div class="flex justify-between items-start mb-6 relative z-10">
+                            <div>
+                                <h4 class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">AI Economy Controller</h4>
+                                <div class="text-3xl font-brand font-bold">The Invisible Hand</div>
+                            </div>
+                            <div class="w-2 h-2 bg-green-500 rounded-full animate-ping"></div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-8 relative z-10">
+                            <div>
+                                <div class="text-xs text-stone-400 mb-1">CURRENT INFLATION</div>
+                                <div class="text-2xl font-mono text-red-400">▲ 2.14%</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-stone-400 mb-1">BASE RATE (APY)</div>
+                                <div class="text-2xl font-mono text-green-400">3.50%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calculator -->
+                    <div class="bg-stone-50 p-8 rounded-3xl border border-stone-200">
+                        <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                            <i class="fas fa-calculator"></i> 자산 시뮬레이터
+                        </h3>
+
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-bold text-stone-700 mb-2">보유 스타더스트 (SD)</label>
+                                <div class="relative">
+                                    <input type="number" id="sd-input" class="w-full pl-4 pr-12 py-4 rounded-2xl border border-stone-300 focus:ring-2 focus:ring-black focus:border-transparent transition-all font-mono text-xl bg-white" placeholder="0" value="50000">
+                                    <span class="absolute right-6 top-4.5 text-stone-400 font-bold">SD</span>
+                                </div>
+                                <p class="text-xs text-stone-500 mt-2 ml-1 flex items-center gap-1"><i class="fas fa-info-circle"></i> 1,000 SD 이하는 면세점입니다.</p>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="p-5 bg-white rounded-2xl border border-stone-100 shadow-sm">
+                                    <h4 class="text-xs font-bold text-red-500 mb-1 uppercase">Entropy Tax (Daily)</h4>
+                                    <div class="text-2xl font-mono font-bold text-stone-800" id="tax-result">0</div>
+                                    <p class="text-[10px] text-stone-400 mt-1">매일 자정 1% 자동 소각</p>
+                                </div>
+                                <div class="p-5 bg-white rounded-2xl border border-stone-100 shadow-sm">
+                                    <h4 class="text-xs font-bold text-blue-500 mb-1 uppercase">Staking Reward (7d)</h4>
+                                    <div class="text-2xl font-mono font-bold text-stone-800" id="staking-result">0</div>
+                                    <p class="text-[10px] text-stone-400 mt-1">현재 금리 기준 예상치</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dev Status & Roadmap -->
+    <section id="section-status" class="py-24 bg-stone-900 text-stone-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-5xl font-bold mb-8 text-white">개발 현황 (Dev Status)</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <!-- Roadmap -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-white border-l-4 border-green-500 pl-4">Roadmap Phase</h3>
+                    <div class="relative border-l border-stone-700 ml-4 space-y-12 py-4">
+                        
+                        <div class="relative pl-10">
+                            <span class="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]"></span>
+                            <h4 class="text-xl font-bold text-white mb-2">Phase 1: The Void (완료)</h4>
+                            <ul class="list-disc pl-5 text-sm text-stone-400 space-y-1 marker:text-green-500">
+                                <li>Unity Client & SignalR Server 연동</li>
+                                <li>100만 명 좌표 하드캡 로직</li>
+                                <li>Redis Backplane 구축</li>
+                            </ul>
+                        </div>
+
+                        <div class="relative pl-10">
+                            <span class="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+                            <h4 class="text-xl font-bold text-blue-400 mb-2">Phase 2: The Economy (진행 중)</h4>
+                            <ul class="list-disc pl-5 text-sm text-stone-400 space-y-1 marker:text-blue-500">
+                                <li>SD 화폐 및 엔트로피 세금 로직</li>
+                                <li>AI 금리 조절 알고리즘</li>
+                                <li><strong class="text-white">TMPro 폰트 및 인풋 시스템 충돌 해결</strong></li>
+                            </ul>
+                        </div>
+
+                        <div class="relative pl-10 opacity-50">
+                            <span class="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-stone-600"></span>
+                            <h4 class="text-xl font-bold text-stone-500 mb-2">Phase 3: The Heritage</h4>
+                            <ul class="list-disc pl-5 text-sm text-stone-500 space-y-1">
+                                <li>소셜 링크 및 성운(Nebula) 데이터 연동</li>
+                                <li>실물 메탈 카드 발급 시스템</li>
+                                <li>성역(Zone 0) 경매 오픈</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Issues -->
+                <div class="bg-stone-800 p-8 rounded-3xl border border-stone-700">
+                    <h3 class="text-xl font-bold mb-6 text-white flex items-center gap-2">
+                        <i class="fas fa-bug text-yellow-500"></i> Current Technical Issues
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-stone-900 p-4 rounded-xl border-l-4 border-yellow-500">
+                            <span class="text-xs font-bold text-yellow-500 block mb-1">CLIENT / UI</span>
+                            <p class="text-sm font-bold text-white">TMPro Korean/Numeric Font Issue</p>
+                            <p class="text-xs text-stone-400 mt-1">폰트 에셋 생성 시 범위 누락으로 인한 '□□□' 깨짐 현상. <br>-> Custom Range (Decimal) 재생성 필요.</p>
+                        </div>
+                        <div class="bg-stone-900 p-4 rounded-xl border-l-4 border-red-500">
+                            <span class="text-xs font-bold text-red-500 block mb-1">CLIENT / INPUT</span>
+                            <p class="text-sm font-bold text-white">New Input System Conflict</p>
+                            <p class="text-xs text-stone-400 mt-1">NetworkManager 내 구형 Input API 혼용으로 인한 예외 발생. <br>-> `UnityEngine.InputSystem` 네임스페이스로 전면 교체 중.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-16 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-5xl font-bold tracking-tighter mb-4 brand-font">N/ONE</h2>
+            <p class="text-stone-500 mb-10 font-light text-sm tracking-widest">"우리는 아무것도 만들지 않지만, 모든 것을 연결합니다."</p>
+            <div class="flex justify-center gap-8 text-xs text-stone-600 font-mono">
+                <span><i class="fas fa-circle text-green-500 text-[8px] mr-2"></i>SERVER: ONLINE</span>
+                <span>LATENCY: 12ms</span>
+                <span>BUILD: 2025.12.07.v71</span>
+            </div>
+            <div class="text-xs text-stone-700 mt-8">
+                &copy; 2025 Project N/ONE. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Logic Scripts -->
+    <script>
+        // --- 1. Universe Map Visualization (Canvas) ---
+        const initUniverseMap = () => {
+            const canvas = document.getElementById('universeCanvas');
+            const container = document.getElementById('universe-container');
+            const ctx = canvas.getContext('2d');
+            let width, height, centerX, centerY, scale;
+            let particles = [];
+            const particleCount = 300; // Increased for visual density
+
+            // Zone Definitions (Radius normalized to 1.0)
+            const zones = [
+                { id: 0, name: "Zone 0: Sanctum", r: 0.05, color: "rgba(255, 215, 0, 0.15)", border: "rgba(255, 215, 0, 0.8)", cap: "25 (Auction)", req: "Heritage Only" },
+                { id: 1, name: "Zone 1: Core", r: 0.25, color: "rgba(255, 255, 255, 0.05)", border: "rgba(255, 255, 255, 0.3)", cap: "11,000 (Royal)", req: "Tier 3" },
+                { id: 2, name: "Zone 2: Ring", r: 0.55, color: "rgba(255, 255, 255, 0.02)", border: "rgba(255, 255, 255, 0.1)", cap: "50,000 (Settler)", req: "Tier 2" },
+                { id: 3, name: "Zone 3: Outer", r: 1.0, color: "transparent", border: "rgba(255, 255, 255, 0.05)", cap: "938,975 (Nomad)", req: "Tier 1" }
+            ];
+
+            function resize() {
+                width = container.clientWidth;
+                height = container.clientHeight;
+                canvas.width = width;
+                canvas.height = height;
+                centerX = width / 2;
+                centerY = height / 2;
+                scale = Math.min(width, height) / 2 * 0.9;
+                initParticles();
+            }
+
+            function initParticles() {
+                particles = [];
+                for(let i=0; i<particleCount; i++) {
+                    let r, color, size;
+                    const rand = Math.random();
+                    
+                    // Distribution logic roughly matching population
+                    if (rand < 0.02) { r = Math.random() * 0.05; color="#FFD700"; size = 3; } // Sanctum
+                    else if (rand < 0.15) { r = Math.random() * 0.25; color="#E5E4E2"; size = 2; } // Core
+                    else if (rand < 0.40) { r = Math.random() * 0.55; color="#A8A29E"; size = 1.5; } // Ring
+                    else { r = Math.random(); color="#57534E"; size = 1; } // Outer
+
+                    const angle = Math.random() * Math.PI * 2;
+                    particles.push({
+                        r: r,
+                        angle: angle,
+                        size: size,
+                        baseColor: color,
+                        speed: (Math.random() * 0.001 + 0.0002) * (i % 2 === 0 ? 1 : -1)
+                    });
+                }
+            }
+
+            function draw() {
+                ctx.fillStyle = "#050505";
+                ctx.fillRect(0, 0, width, height);
+
+                // Draw Zones
+                zones.slice().reverse().forEach(zone => {
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, zone.r * scale, 0, Math.PI * 2);
+                    ctx.fillStyle = zone.color;
+                    ctx.fill();
+                    ctx.strokeStyle = zone.border;
+                    ctx.lineWidth = 1;
+                    if(zone.id === 3) ctx.setLineDash([5, 5]);
+                    else ctx.setLineDash([]);
+                    ctx.stroke();
+                });
+
+                // Draw Particles
+                particles.forEach(p => {
+                    p.angle += p.speed;
+                    const x = centerX + Math.cos(p.angle) * p.r * scale;
+                    const y = centerY + Math.sin(p.angle) * p.r * scale;
+                    
+                    ctx.beginPath();
+                    ctx.arc(x, y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = p.baseColor;
+                    ctx.fill();
+                });
+
+                requestAnimationFrame(draw);
+            }
+
+            // Simple Interaction for Tooltip
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const dx = e.clientX - rect.left - centerX;
+                const dy = e.clientY - rect.top - centerY;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                const normDist = dist / scale;
+
+                const tooltip = document.getElementById('zone-tooltip');
+                let activeZone = null;
+
+                if (normDist <= 0.05) activeZone = zones[0];
+                else if (normDist <= 0.25) activeZone = zones[1];
+                else if (normDist <= 0.55) activeZone = zones[2];
+                else if (normDist <= 1.0) activeZone = zones[3];
+
+                if (activeZone) {
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = `${e.clientX - rect.left + 20}px`;
+                    tooltip.style.top = `${e.clientY - rect.top + 20}px`;
+                    
+                    document.getElementById('tooltip-title').innerText = activeZone.name.split(':')[1].trim();
+                    document.getElementById('tooltip-tag').innerText = activeZone.name.split(':')[0];
+                    document.getElementById('tooltip-cap').innerText = activeZone.cap;
+                    document.getElementById('tooltip-req').innerText = activeZone.req;
+                    
+                    let desc = "";
+                    let iconClass = "fas fa-star";
+                    if(activeZone.id === 0) { desc = "절대 권력의 상징. 오직 시스템 경매를 통해 점유할 수 있는 신성한 영토입니다."; iconClass = "fas fa-crown text-yellow-400"; }
+                    else if(activeZone.id === 1) { desc = "우주의 중심부. 리셋 주기를 스스로 통제하며, 높은 시각적 노출도를 가집니다."; iconClass = "fas fa-gem text-stone-200"; }
+                    else if(activeZone.id === 2) { desc = "안정적인 정착지. 4분면 중 원하는 구역을 선택할 수 있습니다."; iconClass = "fas fa-circle text-stone-400"; }
+                    else { desc = "혼돈의 가장자리. 매일 위치가 무작위로 변경되는 유목민들의 공간입니다."; iconClass = "fas fa-wind text-stone-600"; }
+                    
+                    document.getElementById('tooltip-desc').innerText = desc;
+                    document.getElementById('tooltip-icon').className = iconClass;
+                } else {
+                    tooltip.style.display = 'none';
+                }
+            });
+
+            canvas.addEventListener('mouseleave', () => {
+                document.getElementById('zone-tooltip').style.display = 'none';
+            });
+
+            window.addEventListener('resize', resize);
+            resize();
+            draw();
+        };
+
+        // --- 2. Tier System Logic (Including Heritage) ---
+        const tierData = {
+            'nomad': {
+                name: "Nomad",
+                price: "$0.99 / mo",
+                desc: "매일 자정, 심연 속으로 무작위 이동합니다. 통제권은 없습니다. 오직 생존만이 목표입니다.",
+                perks: ["Zone 3 Random Allocation", "Daily Reset", "1x Growth Speed", "Basic Social Link"],
+                bg: "bg-stone-50",
+                icon: "🌪️",
+                border: "border-stone-200"
+            },
+            'settler': {
+                name: "Settler",
+                price: "$4.99 / mo",
+                desc: "안정적인 궤도에 정착합니다. 4분면 중 원하는 구역을 선택하여 최소한의 통제권을 가집니다.",
+                perks: ["Zone 2 Sector Select", "Weekly Reset", "1.5x Growth Speed", "Blue Aura (Verified)"],
+                bg: "bg-stone-100",
+                icon: "📍",
+                border: "border-stone-300"
+            },
+            'royal': {
+                name: "Royal",
+                price: "$19.99 / mo",
+                desc: "우주의 중심, 코어에 위치합니다. 리셋 주기를 스스로 결정하며, 과시 아이템을 사용할 수 있습니다.",
+                perks: ["Zone 1 Fixed Coord", "Manual Reset Cycle", "2.0x Growth Speed", "Gold Ring Effect"],
+                bg: "bg-stone-200",
+                icon: "👑",
+                border: "border-stone-400"
+            },
+            'heritage': {
+                name: "Heritage",
+                price: "$19.99 (Cond.)",
+                desc: "상위 0.1%에게만 허락된 명예 등급. 다이아몬드 형상과 백금 후광을 가지며, 성역 경매 우선권을 가집니다.",
+                perks: ["Zone 1 Priority / Zone 0 Access", "50% Tax Reduction", "3.0x Growth Speed", "Physical Metal Card", "Diamond + Platinum Glow"],
+                bg: "bg-gradient-to-br from-stone-800 to-black text-white",
+                icon: "💎",
+                border: "border-black heritage-glow"
+            }
+        };
+
+        function updateTier(key) {
+            // Button Styles
+            document.querySelectorAll('.tier-btn').forEach(btn => {
+                if(btn.id === `btn-${key}`) {
+                    if(key === 'heritage') {
+                         btn.className = "tier-btn px-8 py-3 rounded-full font-bold text-sm bg-black text-white shadow-xl transform scale-105 ring-2 ring-offset-2 ring-black";
+                    } else {
+                         btn.className = "tier-btn px-8 py-3 rounded-full font-bold text-sm bg-stone-800 text-white shadow-lg transform scale-105";
+                    }
+                } else {
+                    btn.className = "tier-btn px-8 py-3 rounded-full font-bold text-sm bg-white text-stone-600 border border-stone-200 hover:bg-stone-50";
+                }
+            });
+
+            const data = tierData[key];
+            const content = document.getElementById('tier-content');
+            const isHeritage = key === 'heritage';
+            
+            content.className = `rounded-[2.5rem] p-12 shadow-2xl border min-h-[450px] flex items-center transition-all duration-500 ${isHeritage ? 'bg-stone-900 text-white border-stone-700' : 'bg-white text-stone-900 border-stone-100'}`;
+            
+            content.innerHTML = `
+                <div class="w-full flex flex-col md:flex-row gap-12 items-center animate-[fadeIn_0.5s_ease-out]">
+                    <div class="flex-1 space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 rounded-2xl ${isHeritage ? 'bg-stone-800' : 'bg-stone-100'} flex items-center justify-center text-3xl shadow-inner">
+                                ${data.icon}
+                            </div>
+                            <div>
+                                <h3 class="text-4xl font-black brand-font tracking-tight">${data.name}</h3>
+                                <p class="text-sm ${isHeritage ? 'text-stone-400' : 'text-stone-500'} font-mono uppercase tracking-widest mt-1">Tier Class</p>
+                            </div>
+                        </div>
+                        
+                        <div class="py-4 border-l-4 ${isHeritage ? 'border-yellow-500' : 'border-black'} pl-6">
+                            <p class="text-4xl font-bold mb-2 font-mono">${data.price}</p>
+                            <p class="text-lg ${isHeritage ? 'text-stone-300' : 'text-stone-600'} leading-relaxed">${data.desc}</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
+                            ${data.perks.map(perk => `
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-check-circle ${isHeritage ? 'text-yellow-500' : 'text-black'}"></i>
+                                    <span class="text-sm font-medium ${isHeritage ? 'text-stone-200' : 'text-stone-700'}">${perk}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        ${isHeritage ? '<div class="mt-4 p-3 bg-stone-800 rounded border border-stone-700 text-xs text-yellow-500 flex items-center gap-2"><i class="fas fa-exclamation-triangle"></i> 유지 조건 미달 시 즉시 Royal 등급으로 강등됩니다.</div>' : ''}
+                    </div>
+                    
+                    <!-- Visual Representation -->
+                    <div class="w-full md:w-[350px] aspect-square rounded-[2rem] bg-black relative overflow-hidden shadow-2xl flex items-center justify-center group">
+                        <!-- Grid Background -->
+                        <div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px); background-size: 20px 20px;"></div>
+                        
+                        <!-- The Star -->
+                        ${isHeritage 
+                            ? `<div class="w-24 h-24 bg-white rotate-45 relative z-10 shadow-[0_0_60px_20px_rgba(255,255,255,0.4)] animate-pulse">
+                                 <div class="absolute inset-0 border-4 border-yellow-400 opacity-50 blur-sm"></div>
+                               </div>
+                               <div class="absolute inset-0 bg-gradient-to-t from-yellow-900/20 to-transparent"></div>`
+                            : `<div class="w-12 h-12 bg-white rounded-full relative z-10 shadow-[0_0_30px_10px_rgba(255,255,255,0.3)]"></div>`
+                        }
+                        
+                        <!-- Zone Indicator -->
+                        <div class="absolute bottom-6 left-6 text-xs font-mono text-stone-500">
+                            COORD: [124, -891]<br>
+                            ZONE: ${key === 'nomad' ? 'OUTER' : (key === 'settler' ? 'RING' : (key === 'royal' ? 'CORE' : 'SANCTUM/CORE'))}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- 3. Economy Sunburst (Plotly) ---
+        const initEconomyChart = () => {
+            const data = [{
+                type: "sunburst",
+                labels: ["Economy", "Sources (Income)", "Sinks (Burn)", "구독 보상", "IAP 결제", "Entropy Tax", "Auctions", "Sink Cost", "T1", "T2", "T3", "SD Pack", "1% Burn", "Bidding", "Fee", "Gacha"],
+                parents: ["", "Economy", "Economy", "Sources (Income)", "Sources (Income)", "Sinks (Burn)", "Sinks (Burn)", "Sinks (Burn)", "구독 보상", "구독 보상", "구독 보상", "IAP 결제", "Entropy Tax", "Auctions", "Auctions", "Sink Cost"],
+                values:  [100, 50, 50, 30, 20, 15, 20, 15, 10, 10, 10, 20, 15, 15, 5, 15],
+                leaf: {opacity: 0.4},
+                marker: {line: {width: 2}, colors: ["#1C1917", "#57534E", "#78716C", "#E5E4E2", "#A8A29E"]},
+                branchvalues: 'total',
+                hoverinfo: 'label+value+percent entry'
+            }];
+
+            const layout = {
+                margin: {l: 0, r: 0, b: 0, t: 0},
+                font: {family: "Noto Sans KR"},
+                paper_bgcolor: "rgba(0,0,0,0)",
+            };
+
+            Plotly.newPlot('economySunburst', data, layout, {displayModeBar: false, responsive: true});
+        };
+
+        // --- 4. Chart.js & Calculator & System Logs ---
+        window.addEventListener('load', () => {
+            initUniverseMap();
+            updateTier('nomad'); // Default
+            initEconomyChart();
+
+            // Population Chart
+            const ctx = document.getElementById('populationChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Nomad', 'Settler', 'Royal', 'Heritage'],
+                    datasets: [{
+                        data: [94, 5, 0.9, 0.1],
+                        backgroundColor: ['#292524', '#78716C', '#D6D3D1', '#FFD700'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 8 } } },
+                    cutout: '75%'
+                }
+            });
+
+            // Calculator
+            const sdInput = document.getElementById('sd-input');
+            const taxResult = document.getElementById('tax-result');
+            const stakeResult = document.getElementById('staking-result');
+
+            sdInput.addEventListener('input', (e) => {
+                const val = parseInt(e.target.value) || 0;
+                let tax = 0;
+                if(val > 1000) tax = Math.floor((val - 1000) * 0.01);
+                const stake = Math.floor(val * 0.035 * (7/365));
+                
+                taxResult.innerText = `-${tax.toLocaleString()} SD`;
+                stakeResult.innerText = `+${stake.toLocaleString()} SD`;
+            });
+
+            // Simulated Server Logs
+            const logs = [
+                "[System] Entropy Tax collected: 4,102,931 SD",
+                "[Auction] User 'K' placed bid 50,000 SD on Zone 0-A1",
+                "[Economy] Inflation detected. Adjusting Base Rate: 3.25% -> 3.50%",
+                "[Connection] Redis Backplane sync complete.",
+                "[System] Heritage tier calculation processing..."
+            ];
+            const logContainer = document.getElementById('server-logs');
+            logs.forEach(log => {
+                const li = document.createElement('li');
+                li.innerText = log;
+                logContainer.appendChild(li);
+            });
+        });
+        
+        // Navigation Smooth Scroll
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const target = document.getElementById(e.target.getAttribute('data-target'));
+                if(target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
