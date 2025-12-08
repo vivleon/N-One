@@ -153,16 +153,25 @@
                          <div class="bg-black/80 backdrop-blur border border-white/20 p-3 rounded-lg text-white font-mono text-xs">
                             <div class="flex items-center gap-2 mb-1">
                                 <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                                <span class="text-stone-400">CURRENT SYSTEM</span>
+                                <span class="text-stone-400">CURRENT LOCATION</span>
                             </div>
                             <!-- 1. 구역 표시 업데이트 -->
                             <div id="hud-system-name" class="text-lg font-bold text-yellow-400 mb-1">Deep Space</div>
                             <div id="hud-coords" class="text-stone-500">X: 0, Y: 0</div>
+                            <div id="hud-zone-detail" class="mt-2 pt-2 border-t border-white/10 text-stone-300 hidden">
+                                <span class="text-[10px] text-stone-500 block">LOCAL ZONE</span>
+                                <span id="hud-zone-text" class="font-bold text-blue-400">OUTER ORBIT</span>
+                            </div>
                          </div>
                     </div>
 
+                    <!-- Tooltip -->
+                    <div id="map-tooltip" class="absolute hidden bg-black/90 p-3 rounded border border-white/20 text-xs text-white pointer-events-none z-20 backdrop-blur">
+                        <span id="tooltip-text">System Info</span>
+                    </div>
+
                     <div class="absolute bottom-4 left-4 text-xs font-mono text-stone-500 bg-black/50 p-2 rounded pointer-events-none">
-                        * Drag to Panning / Wheel to Zoom / Click System to Inspect
+                        * Drag to Panning / Wheel to Zoom (In: System View, Out: Galaxy View) / Click System
                     </div>
                 </div>
 
@@ -185,7 +194,6 @@
                                 <li class="flex justify-between"><span>Status</span> <span class="text-green-500">Stable</span></li>
                             </ul>
                             <!-- Auction Button Logic: Active only on Heritage Systems -->
-                            <!-- 2. 경매 버튼 활성화 조건 -->
                             <button id="btn-enter-auction" class="w-full bg-yellow-600 hover:bg-yellow-500 text-black py-3 rounded-lg font-bold transition-colors mb-2 disabled:opacity-50 disabled:cursor-not-allowed">
                                 <i class="fas fa-gavel mr-2"></i> Enter Auction
                             </button>
@@ -207,6 +215,9 @@
                             <!-- 1. Home 버튼: 내 구역으로 이동 -->
                             <button id="btn-my-home" class="col-span-2 bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg font-bold transition-colors">
                                 <i class="fas fa-home mr-2"></i> My System (Home)
+                            </button>
+                            <button class="col-span-2 bg-stone-700 hover:bg-stone-600 text-white py-2 rounded-lg text-xs font-mono" onclick="resetView()">
+                                <i class="fas fa-expand mr-1"></i> Reset View (Galaxy)
                             </button>
                         </div>
                     </div>
@@ -403,29 +414,38 @@
         const systemDefaultPanel = document.getElementById('system-default-panel');
         const hudSystemName = document.getElementById('hud-system-name');
         const hudCoords = document.getElementById('hud-coords');
+        const hudZoneDetail = document.getElementById('hud-zone-detail');
+        const hudZoneText = document.getElementById('hud-zone-text');
+        const mapTooltip = document.getElementById('map-tooltip');
 
         let width, height;
         const systems = [];
-        const galaxyRadius = 2500; // Visual Scale for canvas
+        const galaxyRadius = 2500; // Visual Scale for galaxy
+        const systemRadius = 400; // Visual Scale for individual system (when zoomed out)
         
+        // System Names
+        const systemNames = [
+            "Genesis", "Nexus", "Eden", "Zion", "Arcadia", "Babylon", "Corinth", "Delphi", "Elysium", "Fate",
+            "Gaia", "Helios", "Icarus", "Jericho", "Kronos", "Liberty", "Matrix", "Neo", "Omega", "Pandora",
+            "Quantum", "Rapture", "Sinai", "Terra", "Utopia"
+        ];
+
         // Camera State
         let cameraX = 0;
         let cameraY = 0;
-        let cameraZoom = 0.8;
+        let cameraZoom = 0.6; // Start zoomed out
         let isDragging = false;
         let lastMouseX, lastMouseY;
         
         // Mock User Data
-        const myHomeSystemIndex = 4; // Assigned to System 5
+        const myHomeSystemIndex = 4; 
         let currentSystemIndex = -1;
 
         function init() {
             resize();
             createSystems();
             animate();
-            
-            // Initial View
-            updateHUD();
+            updateHUD(null);
         }
 
         function resize() {
@@ -435,25 +455,48 @@
             canvas.height = height;
         }
 
-        // 3. 더미 및 정보 업데이트
         function createSystems() {
             for(let i=0; i<25; i++) {
                 const angle = (i / 25) * Math.PI * 2;
                 const x = Math.cos(angle) * galaxyRadius;
                 const y = Math.sin(angle) * galaxyRadius;
-                // Unique Data per System
-                const isHeritage = true; // For demo, all are Heritage sites
+                
                 systems.push({
                     x: x, y: y,
-                    id: i+1,
-                    name: `System #${i+1}`,
+                    id: i,
+                    name: systemNames[i],
                     owner: i===0 ? "Admin" : `Heritage_${i}`,
-                    color: `hsl(${i * 14}, 70%, 60%)`, // Unique color for each system
-                    size: 80, // Visual size on map
-                    planets: Math.floor(Math.random() * 50000) + 5000,
-                    isHeritage: isHeritage
+                    color: i===0 ? "#FFD700" : `hsl(${i * 14}, 70%, 60%)`,
+                    size: 80, 
+                    isHeritage: true
                 });
             }
+        }
+
+        function drawZones(sys) {
+            // Draw internal zones (orbits) when zoomed in
+            // Inner Orbit (Royal)
+            ctx.beginPath();
+            ctx.arc(sys.x, sys.y, 400, 0, Math.PI * 2); // 400 unit visual radius
+            ctx.strokeStyle = "rgba(168, 85, 247, 0.2)"; // Purple
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Middle Orbit (Settler)
+            ctx.beginPath();
+            ctx.arc(sys.x, sys.y, 700, 0, Math.PI * 2); // 700 unit visual radius
+            ctx.strokeStyle = "rgba(59, 130, 246, 0.2)"; // Blue
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Outer Orbit (Nomad)
+            ctx.beginPath();
+            ctx.arc(sys.x, sys.y, 1100, 0, Math.PI * 2); // 1100 unit visual radius
+            ctx.strokeStyle = "rgba(120, 113, 108, 0.2)"; // Stone
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+            ctx.stroke();
+            ctx.setLineDash([]);
         }
 
         function animate() {
@@ -468,39 +511,56 @@
             ctx.scale(cameraZoom, cameraZoom);
             ctx.translate(-cameraX, -cameraY);
 
-            // Draw Systems
-            systems.forEach(sys => {
-                // Orbit Ring
+            // Draw Galaxy Orbit (Background) only when zoomed out
+            if (cameraZoom < 0.8) {
+                ctx.strokeStyle = "#111";
                 ctx.beginPath();
-                ctx.arc(sys.x, sys.y, 400, 0, Math.PI * 2);
-                ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
-                ctx.lineWidth = 2;
+                ctx.arc(0, 0, galaxyRadius, 0, Math.PI * 2);
                 ctx.stroke();
+            }
 
-                // Sun
+            systems.forEach(sys => {
+                // Determine visibility based on zoom
+                const distToCamera = Math.sqrt((sys.x - cameraX)**2 + (sys.y - cameraY)**2);
+                const isSelected = currentSystemIndex === sys.id;
+                
+                // Draw Zone Rings if zoomed in enough or selected
+                if (cameraZoom > 1.2 || isSelected) {
+                    drawZones(sys);
+                }
+
+                // Sun (Heritage)
                 ctx.beginPath();
                 ctx.arc(sys.x, sys.y, sys.size, 0, Math.PI * 2);
                 ctx.fillStyle = sys.color;
-                ctx.shadowBlur = 30;
+                ctx.shadowBlur = isSelected ? 50 : 20;
                 ctx.shadowColor = sys.color;
                 ctx.fill();
                 ctx.shadowBlur = 0;
                 
-                // System Label
-                ctx.fillStyle = "white";
-                ctx.font = "40px Urbanist";
-                ctx.textAlign = "center";
-                ctx.fillText(sys.id, sys.x, sys.y + 15);
+                // Label
+                if (cameraZoom > 0.4) {
+                    ctx.fillStyle = "white";
+                    ctx.font = isSelected ? "bold 60px Urbanist" : "40px Urbanist";
+                    ctx.textAlign = "center";
+                    ctx.fillText(sys.name, sys.x, sys.y - sys.size - 20);
+                }
                 
-                // Planets (Dummy Visuals)
-                // 3. 더미 행성 시각화 (Simple Orbiting Dots)
-                for(let j=0; j<5; j++) {
-                    const angle = Date.now() * 0.001 * (j+1) + sys.id;
-                    const orbitR = 150 + j * 50;
-                    ctx.beginPath();
-                    ctx.arc(sys.x + Math.cos(angle)*orbitR, sys.y + Math.sin(angle)*orbitR, 10, 0, Math.PI*2);
-                    ctx.fillStyle = "rgba(255,255,255,0.5)";
-                    ctx.fill();
+                // Draw Dummy Planets (Visuals)
+                // Only draw if relatively close to conserve performance
+                if (cameraZoom > 0.8 && distToCamera < 3000) {
+                     for(let j=0; j<8; j++) { // Increased density visually
+                        const speed = 0.0002 * (j % 2 === 0 ? 1 : -1);
+                        const angle = Date.now() * speed * (j+1) + sys.id;
+                        const orbitBase = 400 + (j * 100); // Spread out
+                        const px = sys.x + Math.cos(angle) * orbitBase;
+                        const py = sys.y + Math.sin(angle) * orbitBase;
+                        
+                        ctx.beginPath();
+                        ctx.arc(px, py, 8, 0, Math.PI*2);
+                        ctx.fillStyle = j < 2 ? "#D8B4FE" : (j < 5 ? "#93C5FD" : "#78716C"); // Color by pseudo-tier
+                        ctx.fill();
+                    }
                 }
             });
 
@@ -511,29 +571,45 @@
         // --- Interaction Logic ---
         
         function selectSystem(index) {
+            if (index < 0 || index >= systems.length) return;
             currentSystemIndex = index;
             const sys = systems[index];
             
-            // Move Camera
+            // Camera Logic: Smooth transition simulation
             cameraX = sys.x;
             cameraY = sys.y;
-            cameraZoom = 1.5; // Zoom in
+            cameraZoom = 2.0; // Zoom in enough to see internal zones
             
-            // Update UI
             updateHUD(sys);
             updateSidePanel(sys);
         }
+
+        function resetView() {
+            currentSystemIndex = -1;
+            cameraX = 0;
+            cameraY = 0;
+            cameraZoom = 0.6; // Overview mode
+            updateHUD(null);
+            
+            systemDetailPanel.classList.add('hidden');
+            systemDefaultPanel.classList.remove('hidden');
+        }
         
         function updateHUD(sys) {
-            // 1. 좌측 상단 구역 표시 업데이트
             if(sys) {
-                hudSystemName.innerText = sys.name;
+                hudSystemName.innerText = `SYSTEM: ${sys.name.toUpperCase()}`;
                 hudSystemName.style.color = sys.color;
                 hudCoords.innerText = `X: ${Math.floor(sys.x)}, Y: ${Math.floor(sys.y)}`;
+                
+                // Determine Local Zone based on "fake" mouse position relative to system center
+                // For demo, just showing we are in the system
+                hudZoneDetail.classList.remove('hidden');
+                hudZoneText.innerText = "HERITAGE SANCTUM"; // Default when clicking center
             } else {
-                hudSystemName.innerText = "Deep Space";
+                hudSystemName.innerText = "DEEP SPACE";
                 hudSystemName.style.color = "#A8A29E";
                 hudCoords.innerText = `X: ${Math.floor(cameraX)}, Y: ${Math.floor(cameraY)}`;
+                hudZoneDetail.classList.add('hidden');
             }
         }
         
@@ -545,24 +621,12 @@
             document.getElementById('detail-sys-name').style.color = sys.color;
             document.getElementById('detail-sys-owner').innerText = `Owner: ${sys.owner}`;
             
-            // 2. 경매 버튼 활성화 로직
             const btnAuction = document.getElementById('btn-enter-auction');
-            if(sys.isHeritage) {
-                btnAuction.disabled = false;
-                btnAuction.classList.remove('opacity-50', 'cursor-not-allowed');
-                btnAuction.innerHTML = `<i class="fas fa-gavel mr-2"></i> Enter Auction (${sys.name})`;
-            } else {
-                btnAuction.disabled = true;
-                btnAuction.classList.add('opacity-50', 'cursor-not-allowed');
-                btnAuction.innerHTML = `<i class="fas fa-lock mr-2"></i> Auction Locked`;
-            }
+            btnAuction.disabled = false;
+            btnAuction.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnAuction.innerHTML = `<i class="fas fa-gavel mr-2"></i> Enter Auction`;
         }
         
-        function goHome() {
-            // 1. Home 버튼 클릭 시 내 구역으로 이동
-            selectSystem(myHomeSystemIndex);
-        }
-
         // --- Event Listeners ---
         
         canvas.addEventListener('mousedown', (e) => {
@@ -571,11 +635,14 @@
             lastMouseY = e.clientY;
         });
         
-        window.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
+        window.addEventListener('mouseup', () => isDragging = false);
         
         canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            // Panning
             if (isDragging) {
                 const dx = e.clientX - lastMouseX;
                 const dy = e.clientY - lastMouseY;
@@ -583,7 +650,48 @@
                 cameraY -= dy / cameraZoom;
                 lastMouseX = e.clientX;
                 lastMouseY = e.clientY;
-                updateHUD(); // Update coords while dragging
+                if(currentSystemIndex === -1) updateHUD(null);
+            }
+
+            // Hover Tooltip Logic
+            const cx = width / 2;
+            const cy = height / 2;
+            const wx = (mouseX - cx) / cameraZoom + cameraX;
+            const wy = (mouseY - cy) / cameraZoom + cameraY;
+
+            let hoveredSys = null;
+            for(let sys of systems) {
+                const dist = Math.sqrt((wx - sys.x)**2 + (wy - sys.y)**2);
+                if (dist < 300) { // Hover radius
+                    hoveredSys = sys;
+                    break;
+                }
+            }
+
+            if (hoveredSys) {
+                mapTooltip.style.display = 'block';
+                mapTooltip.style.left = `${e.clientX + 15}px`;
+                mapTooltip.style.top = `${e.clientY + 15}px`;
+                document.getElementById('tooltip-text').innerText = `${hoveredSys.name} (Tier 4)`;
+                canvas.style.cursor = 'pointer';
+            } else {
+                mapTooltip.style.display = 'none';
+                canvas.style.cursor = isDragging ? 'grabbing' : 'default';
+            }
+
+            // Calculate Local Zone if in a system
+            if (currentSystemIndex !== -1) {
+                const sys = systems[currentSystemIndex];
+                const dist = Math.sqrt((wx - sys.x)**2 + (wy - sys.y)**2);
+                let zoneName = "OUTER ORBIT";
+                if (dist < 400) zoneName = "SANCTUM (HERITAGE)";
+                else if (dist < 700) zoneName = "INNER ORBIT (ROYAL)";
+                else if (dist < 1100) zoneName = "MIDDLE ORBIT (SETTLER)";
+                
+                if (dist < 1200) {
+                    hudZoneText.innerText = zoneName;
+                    hudZoneDetail.classList.remove('hidden');
+                }
             }
         });
         
@@ -592,29 +700,24 @@
             const zoomSpeed = 0.1;
             if (e.deltaY < 0) cameraZoom *= (1 + zoomSpeed);
             else cameraZoom /= (1 + zoomSpeed);
-            cameraZoom = Math.min(Math.max(0.1, cameraZoom), 5); // Limit zoom
+            cameraZoom = Math.min(Math.max(0.1, cameraZoom), 5);
         });
         
         canvas.addEventListener('click', (e) => {
-            if (Math.abs(e.movementX) > 5 || Math.abs(e.movementY) > 5) return; // Ignore drag clicks
+            if (Math.abs(e.movementX) > 5 || Math.abs(e.movementY) > 5) return;
             
             const rect = canvas.getBoundingClientRect();
             const clickX = e.clientX - rect.left;
             const clickY = e.clientY - rect.top;
-            
-            // Transform screen to world
             const cx = width / 2;
             const cy = height / 2;
-            
-            // World coordinate of click
             const wx = (clickX - cx) / cameraZoom + cameraX;
             const wy = (clickY - cy) / cameraZoom + cameraY;
             
-            // Check collision with systems
             for(let i=0; i<systems.length; i++) {
                 const sys = systems[i];
                 const dist = Math.sqrt((wx - sys.x)**2 + (wy - sys.y)**2);
-                if (dist < 500) { // Hit radius
+                if (dist < 300) {
                     selectSystem(i);
                     return;
                 }
@@ -633,12 +736,11 @@
             selectSystem(nextIdx);
         });
         
-        document.getElementById('btn-my-home').addEventListener('click', goHome);
+        document.getElementById('btn-my-home').addEventListener('click', () => selectSystem(myHomeSystemIndex));
 
         window.addEventListener('resize', resize);
         window.addEventListener('load', init);
         
-        // Nav Smooth Scroll
         document.querySelectorAll('.nav-link').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const target = document.getElementById(e.target.dataset.target);
