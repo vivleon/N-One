@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project N/ONE : The Orbit</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Urbanist:wght@200;400;600;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#030303',
+                        gold: '#FFD700',
+                        glass: 'rgba(255, 255, 255, 0.05)',
+                        'glass-border': 'rgba(255, 255, 255, 0.1)',
+                        'gold-dim': 'rgba(255, 215, 0, 0.1)',
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans KR"', 'sans-serif'],
+                        brand: ['"Urbanist"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body { background-color: #030303; color: #e5e5e5; overflow-x: hidden; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #FFD700; }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+
+        @keyframes pulse-gold {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+        }
+        .gold-glow { animation: pulse-gold 3s infinite; }
+
+        /* Canvas Background */
+        #starfield {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+        
+        .section-title {
+            @apply font-brand text-4xl md:text-5xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500;
+        }
+        .gold-text { @apply text-gold; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <canvas id="starfield"></canvas>
+
+    <nav class="fixed w-full z-50 glass-card border-t-0 border-x-0 rounded-none px-6 py-4 flex justify-between items-center">
+        <div class="text-2xl font-brand font-bold tracking-widest text-white">N/ONE <span class="text-gold text-xs align-top">V3.0</span></div>
+        <div class="hidden md:flex gap-8 text-sm font-light text-gray-300">
+            <a href="#philosophy" class="hover:text-gold transition">Philosophy</a>
+            <a href="#galaxy" class="hover:text-gold transition">Galaxy & Zones</a>
+            <a href="#class" class="hover:text-gold transition">Class & Heritage</a>
+            <a href="#economy" class="hover:text-gold transition">Economy</a>
+            <a href="#tech" class="hover:text-gold transition">Tech & Status</a>
+        </div>
+        <a href="#status" class="px-4 py-2 border border-gold text-gold text-xs font-bold rounded hover:bg-gold hover:text-black transition uppercase tracking-wider">
+            Dev Status: Active
+        </a>
+    </nav>
+
+    <header class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-gold opacity-5 blur-[150px] rounded-full pointer-events-none"></div>
+        
+        <h2 class="text-gold text-sm md:text-base font-brand tracking-[0.5em] uppercase mb-4 animate-float">Project N/ONE</h2>
+        <h1 class="text-6xl md:text-9xl font-brand font-extrabold text-white mb-6 leading-tight">
+            THE <span class="text-transparent bg-clip-text bg-gradient-to-b from-gold to-yellow-900">VOID</span><br>
+            AWAITS
+        </h1>
+        <p class="max-w-2xl text-gray-400 text-lg md:text-xl font-light mb-10 leading-relaxed">
+            "Less is More. Be the One in None."<br>
+            100만 개의 별, 단 하나의 존재. <br>
+            현대인의 실존적 불안과 계급 사회를 투영한 디지털 사회 실험.
+        </p>
+        
+        <div class="grid grid-cols-3 gap-8 md:gap-16 text-center border-t border-glass-border pt-8 mt-8">
+            <div>
+                <div class="text-2xl md:text-4xl font-brand font-bold text-white counter" data-target="1000000">0</div>
+                <div class="text-xs text-gray-500 uppercase tracking-wider mt-2">Max Population</div>
+            </div>
+            <div>
+                <div class="text-2xl md:text-4xl font-brand font-bold text-white counter" data-target="4">0</div>
+                <div class="text-xs text-gray-500 uppercase tracking-wider mt-2">Galaxy Zones</div>
+            </div>
+            <div>
+                <div class="text-2xl md:text-4xl font-brand font-bold text-gold">∞</div>
+                <div class="text-xs text-gray-500 uppercase tracking-wider mt-2">Sunk Cost</div>
+            </div>
+        </div>
+    </header>
+
+    <section id="philosophy" class="py-20 px-6 max-w-7xl mx-auto">
+        <h2 class="section-title">Core Philosophy</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="glass-card p-8 rounded-xl hover:border-gold/30 transition duration-300">
+                <i class="fa-solid fa-skull text-3xl text-gray-500 mb-6"></i>
+                <h3 class="text-xl font-bold mb-4">Permadeath (영구적 죽음)</h3>
+                <p class="text-gray-400 font-light leading-relaxed">
+                    구독을 해지하거나 '엔트로피 세금'을 내지 못하면 별은 즉시 소멸합니다. 
+                    좌표는 영구적으로 사라지거나 타인에게 넘어갑니다. 
+                    <span class="text-gold">상실의 공포</span>가 강력한 유지 동기가 됩니다.
+                </p>
+            </div>
+            <div class="glass-card p-8 rounded-xl hover:border-gold/30 transition duration-300">
+                <i class="fa-solid fa-coins text-3xl text-gray-500 mb-6"></i>
+                <h3 class="text-xl font-bold mb-4">Sunk Cost (매몰 비용)</h3>
+                <p class="text-gray-400 font-light leading-relaxed">
+                    유저는 별을 유지하기 위해 비용을 지불하며, 
+                    역설적으로 그 과정에서 강렬한 소속감을 느낍니다.
+                    기능적 공허함 속에서 피어나는 <span class="text-gold">존재의 증명</span>입니다.
+                </p>
+            </div>
+            <div class="glass-card p-8 rounded-xl hover:border-gold/30 transition duration-300">
+                <i class="fa-solid fa-person-walking text-3xl text-gray-500 mb-6"></i>
+                <h3 class="text-xl font-bold mb-4">Cosmic Drift (라이프스타일)</h3>
+                <p class="text-gray-400 font-light leading-relaxed">
+                    현실의 <span class="text-white">걷기 데이터(GPS)</span>와 연동됩니다. 
+                    많이 걸을수록 별 주변에 '성운(Nebula)'이 피어오릅니다. 
+                    돈을 쓰지 않고 별을 돋보이게 하는 유일한 수단(Play to Flex)입니다.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="galaxy" class="py-20 bg-void relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <h2 class="section-title text-right">Galaxy Architecture</h2>
+            <div class="flex flex-col md:flex-row gap-12 items-center">
+                <div class="w-full md:w-1/2 aspect-square relative flex justify-center items-center">
+                    <div class="absolute w-[90%] h-[90%] border border-gray-800 rounded-full flex justify-center items-center text-gray-600 text-xs tracking-widest hover:border-gray-600 transition duration-500">
+                        <span class="absolute bottom-4">ZONE 3: OUTER RIM (NOMAD)</span>
+                    </div>
+                    <div class="absolute w-[65%] h-[65%] border border-gray-700 bg-white/5 rounded-full flex justify-center items-center text-gray-500 text-xs tracking-widest backdrop-blur-sm hover:border-gray-500 transition duration-500">
+                        <span class="absolute bottom-4">ZONE 2: INNER RIM (SETTLER)</span>
+                    </div>
+                    <div class="absolute w-[40%] h-[40%] border border-gold/30 bg-gold/5 rounded-full flex justify-center items-center text-gold/70 text-xs tracking-widest hover:border-gold transition duration-500 shadow-[0_0_30px_rgba(255,215,0,0.1)]">
+                        <span class="absolute bottom-4 font-bold">ZONE 1: CORE (ROYAL)</span>
+                    </div>
+                    <div class="absolute w-[15%] h-[15%] bg-gold rounded-full gold-glow flex justify-center items-center z-20 cursor-pointer group">
+                        <i class="fa-solid fa-crown text-black text-xl group-hover:scale-110 transition"></i>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-1/2 space-y-6">
+                    <h3 class="text-3xl font-brand font-bold text-white">Absolute Scarcity</h3>
+                    <p class="text-gray-400">
+                        우주는 <span class="text-white font-bold">1,000,000명</span>의 하드 캡(Hard Cap)이 존재합니다.
+                        물리적 공간과 유저는 1:1로 매칭되며, 중심부로 갈수록 권력과 부의 상징이 됩니다.
+                    </p>
+                    
+                    <ul class="space-y-4 mt-6">
+                        <li class="flex items-center gap-4 glass-card p-4 rounded-lg border-l-4 border-gold">
+                            <div class="flex-1">
+                                <h4 class="text-gold font-bold">Zone 0 : The Sanctum</h4>
+                                <p class="text-sm text-gray-400">신의 영역. 오직 경매(Auction)를 통해서만 진입 가능. Hidden Tier.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-center gap-4 glass-card p-4 rounded-lg border-l-4 border-yellow-600">
+                            <div class="flex-1">
+                                <h4 class="text-yellow-200 font-bold">Zone 1 : Core</h4>
+                                <p class="text-sm text-gray-400">상류층 거주지. 성장 속도 2.0x. 실물 카드 발급.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-center gap-4 glass-card p-4 rounded-lg border-l-4 border-gray-600">
+                            <div class="flex-1">
+                                <h4 class="text-gray-300 font-bold">Zone 2~3 : Inner/Outer Rim</h4>
+                                <p class="text-sm text-gray-400">일반 및 중산층 거주지. 가장 넓지만 성장이 더딤.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="class" class="py-20 px-6 max-w-7xl mx-auto">
+        <h2 class="section-title text-center">Class Hierarchy</h2>
+        <p class="text-center text-gray-400 mb-12">자본(구독)과 시간(유지)에 따라 나뉘는 철저한 계급</p>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="text-gray-500 border-b border-gray-800 font-brand text-sm uppercase tracking-wider">
+                        <th class="p-4">Tier / Name</th>
+                        <th class="p-4">Monthly Sub</th>
+                        <th class="p-4">Zone Access</th>
+                        <th class="p-4">Growth</th>
+                        <th class="p-4">Benefits</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-300">
+                    <tr class="glass-card bg-gold/5 border border-gold/30">
+                        <td class="p-6 font-bold text-gold">
+                            <i class="fa-solid fa-gem mr-2"></i> THE HIDDEN
+                            <span class="block text-xs font-light text-gold/60">Heritage Class</span>
+                        </td>
+                        <td class="p-6">$19.99 <span class="text-xs block text-gray-500">+ Auction Bid</span></td>
+                        <td class="p-6">Zone 0 (Sanctum)</td>
+                        <td class="p-6 text-gold font-bold">3.0x</td>
+                        <td class="p-6 text-sm">
+                            다이아몬드+후광 효과<br>
+                            세금 50% 감면<br>
+                            경매 독점 참여권
+                        </td>
+                    </tr>
+                    <tr class="border-b border-gray-800 hover:bg-white/5 transition">
+                        <td class="p-6 font-bold text-yellow-100">Tier 3: ROYAL</td>
+                        <td class="p-6">$19.99</td>
+                        <td class="p-6">Zone 1</td>
+                        <td class="p-6">2.0x</td>
+                        <td class="p-6 text-sm">골드 링 형태, 실물 카드 즉시 발급</td>
+                    </tr>
+                    <tr class="border-b border-gray-800 hover:bg-white/5 transition">
+                        <td class="p-6 font-bold text-gray-300">Tier 2: SETTLER</td>
+                        <td class="p-6">$4.99</td>
+                        <td class="p-6">Zone 2</td>
+                        <td class="p-6">1.5x</td>
+                        <td class="p-6 text-sm">본인 인증 필수, 기본 성장</td>
+                    </tr>
+                    <tr class="border-b border-gray-800 hover:bg-white/5 transition">
+                        <td class="p-6 font-bold text-gray-500">Tier 1: NOMAD</td>
+                        <td class="p-6">$0.99</td>
+                        <td class="p-6">Zone 3</td>
+                        <td class="p-6">1.0x</td>
+                        <td class="p-6 text-sm">가장 기초적인 단계</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="economy" class="py-20 bg-gradient-to-b from-void to-[#080808]">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="section-title">AI Economy Ecosystem</h2>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="glass-card p-6 rounded-xl">
+                    <canvas id="economyChart"></canvas>
+                </div>
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Currency: <span class="text-gold">SD (Stardust)</span></h3>
+                        <p class="text-gray-400">
+                            AI가 실시간으로 금리와 인플레이션을 조절하는 '숨 쉬는 경제'입니다.
+                            생태계 붕괴를 막기 위해 유입(Income)과 소각(Burn) 밸런스를 자동으로 맞춥니다.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 border border-green-900/50 bg-green-900/10 rounded">
+                            <h4 class="text-green-400 font-bold mb-2"><i class="fa-solid fa-arrow-down mr-2"></i>Inflow (Income)</h4>
+                            <ul class="text-sm text-gray-400 list-disc ml-4">
+                                <li>구독 보상 (Tier별 차등)</li>
+                                <li>SD Pack 구매</li>
+                                <li>Staking 이자</li>
+                            </ul>
+                        </div>
+                        <div class="p-4 border border-red-900/50 bg-red-900/10 rounded">
+                            <h4 class="text-red-400 font-bold mb-2"><i class="fa-solid fa-fire mr-2"></i>Sinks (Burn)</h4>
+                            <ul class="text-sm text-gray-400 list-disc ml-4">
+                                <li>Entropy Tax (유지비)</li>
+                                <li>Zone 0 경매 (Auction)</li>
+                                <li>Item (Warp, Shield)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tech" class="py-20 px-6 max-w-7xl mx-auto mb-20">
+        <div class="grid md:grid-cols-2 gap-12">
+            <div>
+                <h2 class="section-title">Technology Stack</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass-card p-4 rounded text-center hover:bg-white/5">
+                        <i class="fa-brands fa-microsoft text-4xl text-blue-500 mb-3"></i>
+                        <h3 class="font-bold">ASP.NET Core 8</h3>
+                        <p class="text-xs text-gray-500">Robust Backend</p>
+                    </div>
+                    <div class="glass-card p-4 rounded text-center hover:bg-white/5">
+                        <i class="fa-brands fa-unity text-4xl text-gray-200 mb-3"></i>
+                        <h3 class="font-bold">Unity 6</h3>
+                        <p class="text-xs text-gray-500">Visual Client (Mobile/PC)</p>
+                    </div>
+                    <div class="glass-card p-4 rounded text-center hover:bg-white/5">
+                        <i class="fa-solid fa-tower-broadcast text-4xl text-green-500 mb-3"></i>
+                        <h3 class="font-bold">SignalR</h3>
+                        <p class="text-xs text-gray-500">Real-time Coordinates</p>
+                    </div>
+                    <div class="glass-card p-4 rounded text-center hover:bg-white/5">
+                        <i class="fa-solid fa-database text-4xl text-red-500 mb-3"></i>
+                        <h3 class="font-bold">Redis</h3>
+                        <p class="text-xs text-gray-500">High Speed Caching</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="status">
+                <h2 class="section-title">Development Status</h2>
+                <div class="glass-card p-6 rounded-xl space-y-4 max-h-[400px] overflow-y-auto">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-circle-check text-green-500"></i>
+                        <span class="text-gray-300">Server: SignalR UniverseHub Setup</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-circle-check text-green-500"></i>
+                        <span class="text-gray-300">Core: AuctionWorker (경매 로직) 구현</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-circle-check text-green-500"></i>
+                        <span class="text-gray-300">Client: 좌표 동기화 & 채팅 시스템</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-circle-check text-green-500"></i>
+                        <span class="text-gray-300">UI: TextMeshPro 폰트 이슈 해결</span>
+                    </div>
+                    
+                    <div class="border-t border-gray-800 my-2"></div>
+                    
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-person-digging text-gold animate-pulse"></i>
+                        <span class="text-white font-bold">Mobile: Pinch Zoom (New Input System)</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-wrench text-gray-500"></i>
+                        <span class="text-gray-500">AI: 더미 유저 시뮬레이션</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-wrench text-gray-500"></i>
+                        <span class="text-gray-500">Payment: 실제 결제 모듈 연동</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-glass-border py-12 text-center relative z-10 bg-black">
+        <h3 class="text-2xl font-brand font-bold text-white mb-4">Are you ready to be the One?</h3>
+        <p class="text-gray-500 text-sm mb-8">© 2025 Project N/ONE Team. All Rights Reserved.</p>
+        <button class="px-8 py-3 bg-white text-black font-bold rounded-full hover:bg-gold transition duration-300">
+            ENTER THE UNIVERSE
+        </button>
+    </footer>
+
+    <script>
+        // --- 1. Starfield Background Animation ---
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        let width, height, stars = [];
+
+        function initStars() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            stars = [];
+            for (let i = 0; i < 200; i++) {
+                stars.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    radius: Math.random() * 1.5,
+                    vx: (Math.random() - 0.5) * 0.2, // Slow movement
+                    vy: (Math.random() - 0.5) * 0.2
+                });
+            }
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            stars.forEach(star => {
+                ctx.moveTo(star.x, star.y);
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                star.x += star.vx;
+                star.y += star.vy;
+                
+                // Wrap around screen
+                if (star.x < 0) star.x = width;
+                if (star.x > width) star.x = 0;
+                if (star.y < 0) star.y = height;
+                if (star.y > height) star.y = 0;
+            });
+            ctx.fill();
+            requestAnimationFrame(animateStars);
+        }
+
+        window.addEventListener('resize', initStars);
+        initStars();
+        animateStars();
+
+        // --- 2. Number Counter Animation ---
+        const counters = document.querySelectorAll('.counter');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = +entry.target.getAttribute('data-target');
+                    const duration = 2000; 
+                    const increment = target / (duration / 16);
+                    let current = 0;
+                    
+                    const updateCounter = () => {
+                        current += increment;
+                        if (current < target) {
+                            entry.target.innerText = Math.ceil(current).toLocaleString();
+                            requestAnimationFrame(updateCounter);
+                        } else {
+                            entry.target.innerText = target.toLocaleString();
+                        }
+                    };
+                    updateCounter();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        counters.forEach(counter => observer.observe(counter));
+
+        // --- 3. Economy Chart (Chart.js) ---
+        const ctxChart = document.getElementById('economyChart').getContext('2d');
+        const economyChart = new Chart(ctxChart, {
+            type: 'doughnut',
+            data: {
+                labels: ['Subs & Packs (Income)', 'Items & Flex (Income)', 'Tax & Fees (Burn)', 'Auction (Burn)'],
+                datasets: [{
+                    data: [55, 10, 20, 15],
+                    backgroundColor: [
+                        'rgba(16, 185, 129, 0.8)', // Green (Income)
+                        'rgba(52, 211, 153, 0.8)', // Light Green
+                        'rgba(239, 68, 68, 0.8)',  // Red (Burn)
+                        'rgba(255, 215, 0, 0.8)'   // Gold (Auction)
+                    ],
+                    borderColor: '#030303',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#9ca3af' } },
+                    title: { display: true, text: 'Economy Flow (Simulation)', color: '#e5e5e5', font: { size: 16 } }
+                },
+                cutout: '60%'
+            }
+        });
+    </script>
+</body>
+</html>
