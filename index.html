@@ -1,275 +1,565 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>N/ONE: Master Plan v9.3 (Integrated Galaxy)</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROJECT N/ONE : The Absolute Void</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700;900&family=Rajdhani:wght@300;400;600;700&family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Charts -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-
-  <!-- Fonts / Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Urbanist:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-  <style>
-    :root { --bg:#050505; --text:#E5E5E5; --accent:#FFD700; }
-    body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); }
-    .brand { font-family: 'Urbanist', sans-serif; }
-    .glass { background: rgba(20,20,20,0.82); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); }
-    .glass:hover { background: rgba(255, 255, 255, 0.08); }
-    .dynamic-island { animation: pulse-border 3s infinite; }
-    @keyframes pulse-border {
-      0% { border-color: rgba(255,255,255,0.08); }
-      50% { border-color: rgba(255,215,0,0.45); }
-      100% { border-color: rgba(255,255,255,0.08); }
-    }
-    #universe-container {
-        position: relative; width: 100%; height: 600px;
-        background-color: #000; border-radius: 16px;
-        overflow: hidden; border: 1px solid #333;
-        box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
-    }
-  </style>
-</head>
-
-<body class="selection:bg-yellow-500 selection:text-black">
-
-  <!-- NAV -->
-  <nav class="fixed top-0 w-full z-50 glass border-b border-white/10 p-4">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
-      <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-        <span class="brand text-2xl font-black text-white">N/ONE</span>
-        <span class="text-[10px] bg-yellow-500 text-black px-2 py-0.5 rounded font-bold">v9.3 Integrated</span>
-      </div>
-      <div class="hidden md:flex gap-6 text-sm font-bold text-stone-400">
-        <a href="#vision" class="hover:text-white transition">VISION</a>
-        <a href="#galaxy" class="hover:text-white transition">GALAXY</a>
-        <a href="#shop" class="hover:text-white transition">SHOP</a>
-        <a href="#items" class="hover:text-white transition">ITEMS</a>
-        <a href="#economy" class="hover:text-white transition">ECONOMY</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- HERO / VISION -->
-  <header id="vision" class="pt-32 pb-20 px-6 text-center">
-    <h1 class="text-6xl md:text-8xl font-black mb-6 brand leading-tight">
-      THE<br /><span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-600">ORBIT</span>
-    </h1>
-    <p class="text-xl text-stone-400 font-light mb-3">"25 Systems. 1 Million Souls. A Quiet War of Light."</p>
-    <p class="text-sm text-stone-500 mb-12">Simple on the Outside, Complex on the Inside.</p>
-
-    <!-- Dynamic Island Demo -->
-    <div class="max-w-md mx-auto mb-12">
-      <div class="glass rounded-full h-12 flex items-center px-2 relative dynamic-island border border-white/10 group cursor-default">
-        <div class="w-8 h-8 bg-stone-800 rounded-full flex items-center justify-center border border-white/20 ml-1">
-          <i class="fas fa-crown text-yellow-500 text-xs"></i>
-        </div>
-        <div class="ml-4 flex-1 text-left">
-          <p class="text-xs font-bold text-white">System Alert</p>
-          <p class="text-[10px] text-stone-400">Auction tick • Genesis System seat #00 updated</p>
-        </div>
-      </div>
-      <p class="mt-3 text-[10px] text-stone-500">Prototype UI: Unity Dynamic Island 연출과 동일한 메시지 허브 컨셉</p>
-    </div>
-  </header>
-
-  <!-- GALAXY -->
-  <section id="galaxy" class="py-20 bg-stone-900">
-    <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-4xl font-bold mb-12 text-center">Galaxy & Hierarchy</h2>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <div class="space-y-6">
-          <h3 class="text-2xl font-bold text-white">25 Solar Systems • Local Orbit Hierarchy</h3>
-          <p class="text-stone-400 leading-relaxed">
-            최신 구현은 <strong>단일 거대 존(Zone 0~3)</strong> 중심 구조에서,
-            <strong>25개 시스템</strong>이 은하를 이루는 구조로 전환됩니다.
-            각 시스템은 <strong>Heritage(항성)</strong>를 중심으로
-            <strong>Royal / Settler / Nomad</strong>가 서로 다른 거리의 궤도에 분포하는 형태로 설계됩니다.
-          </p>
-          <ul class="space-y-3 text-sm font-mono text-stone-300">
-            <li class="flex items-center gap-3"><i class="fas fa-sun text-yellow-500"></i> <strong>Heritage (Tier 4):</strong> System Sun • 최고 시각 우선권</li>
-            <li class="flex items-center gap-3"><i class="fas fa-circle text-purple-400"></i> <strong>Royal (Tier 3):</strong> Inner Orbit • 위치/시야 중심</li>
-            <li class="flex items-center gap-3"><i class="fas fa-circle text-blue-400"></i> <strong>Settler (Tier 2):</strong> Middle Orbit • 안정적 정착</li>
-            <li class="flex items-center gap-3"><i class="fas fa-circle text-stone-500"></i> <strong>Nomad (Tier 1):</strong> Outer Orbit • 유동성/생존 압박</li>
-          </ul>
-        </div>
-        <div id="universe-container" class="lg:col-span-1">
-          <canvas id="galaxyCanvas" class="w-full h-full"></canvas>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SHOP -->
-  <section id="shop" class="py-20">
-    <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-4xl font-bold mb-12 text-center text-white">Shop Packs</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="glass p-6 rounded-xl border-t-4 border-yellow-500 hover:-translate-y-1 transition-transform">
-          <div class="text-4xl mb-4">✨</div>
-          <h3 class="text-xl font-bold text-white mb-1">Starter SD Pack</h3>
-          <p class="text-xs text-stone-500 mb-4">입문 유저용 최소 단위</p>
-          <div class="flex justify-between items-center border-t border-white/10 pt-4">
-            <span class="text-xs font-mono text-yellow-500">+1,000 SD</span>
-            <span class="font-bold text-white">$0.99</span>
-          </div>
-        </div>
-        <div class="glass p-6 rounded-xl border-t-4 border-blue-500 hover:-translate-y-1 transition-transform">
-          <div class="text-4xl mb-4">🌌</div>
-          <h3 class="text-xl font-bold text-white mb-1">Noble SD Pack</h3>
-          <p class="text-xs text-stone-500 mb-4">중간 레벨 경제 참여</p>
-          <div class="flex justify-between items-center border-t border-white/10 pt-4">
-            <span class="text-xs font-mono text-blue-400">+10,000 SD</span>
-            <span class="font-bold text-white">$9.99</span>
-          </div>
-        </div>
-        <div class="glass p-6 rounded-xl border-t-4 border-purple-500 hover:-translate-y-1 transition-transform">
-          <div class="text-4xl mb-4">👑</div>
-          <h3 class="text-xl font-bold text-white mb-1">Heritage SD Pack</h3>
-          <p class="text-xs text-stone-500 mb-4">상위 티어 전환용</p>
-          <div class="flex justify-between items-center border-t border-white/10 pt-4">
-            <span class="text-xs font-mono text-purple-400">+100,000 SD</span>
-            <span class="font-bold text-white">$99.99</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ECONOMY -->
-  <section id="economy" class="py-20 bg-stone-900">
-    <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-4xl font-bold mb-12 text-center text-white">Economy Ecosystem</h2>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <div class="glass p-8 rounded-2xl">
-          <h3 class="text-xl font-bold text-white mb-4 pl-4 border-l-4 border-green-500">자금 흐름 (Tokenomics)</h3>
-          <div class="chart-container" style="height: 350px;">
-            <div id="economySunburst"></div>
-          </div>
-        </div>
-        <div class="space-y-6">
-          <div class="glass p-6 rounded-xl">
-            <h4 class="font-bold text-white mb-2">Entropy Tax</h4>
-            <p class="text-sm text-stone-400">매일 자정 보유 자산의 1%가 소각되어 인플레이션을 방지합니다.</p>
-          </div>
-          <div class="glass p-6 rounded-xl">
-            <h4 class="font-bold text-white mb-2">System Auction</h4>
-            <p class="text-sm text-stone-400">Heritage 좌석 경매가 순환하며, 낙찰자는 시스템의 주인이 됩니다.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer class="py-8 text-center text-stone-600 text-xs border-t border-white/5">
-    &copy; 2025 Project N/ONE.
-  </footer>
-
-  <script>
-    // Galaxy Canvas
-    const initGalaxyMap = () => {
-      const canvas = document.getElementById('galaxyCanvas');
-      const container = document.getElementById('universe-container');
-      const ctx = canvas.getContext('2d');
-      let width, height, centerX, centerY, scale;
-      const systems = [];
-      const galaxyRadius = 250;
-
-      function init() {
-        resize();
-        createSystems();
-        animate();
-      }
-
-      function resize() {
-        width = container.clientWidth;
-        height = container.clientHeight;
-        canvas.width = width;
-        canvas.height = height;
-        centerX = width / 2;
-        centerY = height / 2;
-        scale = Math.min(width, height) / 800;
-      }
-
-      function createSystems() {
-        systems.length = 0;
-        for (let i = 0; i < 25; i++) {
-          const angle = (i / 25) * Math.PI * 2;
-          systems.push({
-            x: Math.cos(angle) * galaxyRadius,
-            y: Math.sin(angle) * galaxyRadius,
-            size: i === 0 ? 8 : 4,
-            color: i === 0 ? '#FFD700' : `hsl(${i * 15}, 70%, 60%)`,
-            orbitSpeed: 0.0002 + (Math.random() * 0.0005)
-          });
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#020202',
+                        gold: '#C8A165',
+                        'gold-dim': '#6B5B3E',
+                        accent: '#00F0FF',
+                        danger: '#FF3B30',
+                        panel: 'rgba(255, 255, 255, 0.03)'
+                    },
+                    fontFamily: {
+                        serif: ['"Cinzel"', 'serif'],
+                        tech: ['"Rajdhani"', 'sans-serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                        kor: ['"Gulim"', '"굴림"', 'sans-serif'], // Retro-Cyberpunk feel for KR
+                    }
+                }
+            }
         }
-      }
+    </script>
 
-      function animate() {
-        ctx.fillStyle = '#0c0a09';
-        ctx.fillRect(0, 0, width, height);
+    <style>
+        body { background-color: #020202; color: #E0E0E0; overflow-x: hidden; }
+        
+        /* Font Utilities */
+        .lang-ko { font-family: "Gulim", "굴림", sans-serif !important; letter-spacing: -0.5px; }
+        
+        /* Effects */
+        .text-glow { text-shadow: 0 0 30px rgba(200, 161, 101, 0.4); }
+        .border-glow { box-shadow: 0 0 15px rgba(200, 161, 101, 0.1); }
+        
+        /* Glass Panel - Ultra Thin */
+        .glass {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s ease;
+        }
+        .glass:hover {
+            border-color: rgba(200, 161, 101, 0.4);
+            background: rgba(20, 20, 20, 0.8);
+            transform: translateY(-4px);
+        }
 
-        ctx.save();
-        ctx.translate(centerX, centerY);
-        ctx.scale(scale, scale);
+        /* Animations */
+        @keyframes drift { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
+        .animate-drift { animation: drift 8s ease-in-out infinite; }
 
-        ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-        ctx.beginPath();
-        ctx.arc(0, 0, galaxyRadius, 0, Math.PI * 2);
-        ctx.stroke();
+        #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.6; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #C8A165; }
+    </style>
+</head>
+<body class="antialiased">
 
-        systems.forEach((sys, idx) => {
-          ctx.beginPath();
-          ctx.arc(sys.x, sys.y, sys.size, 0, Math.PI * 2);
-          ctx.fillStyle = sys.color;
-          ctx.fill();
+    <canvas id="starfield"></canvas>
 
-          const time = Date.now();
-          for (let j = 0; j < 3; j++) {
-            const orbitR = 15 + j * 10;
-            const pAngle = time * sys.orbitSpeed * (j + 1) + idx;
-            const px = sys.x + Math.cos(pAngle) * orbitR;
-            const py = sys.y + Math.sin(pAngle) * orbitR;
+    <nav class="fixed w-full z-50 px-8 py-5 flex justify-between items-center bg-black/80 backdrop-blur-md border-b border-white/5">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-[1px] bg-gold"></div>
+            <div class="text-2xl font-serif font-bold tracking-[0.2em] text-white">N/ONE</div>
+        </div>
+        
+        <div class="flex items-center gap-12">
+            <div class="hidden md:flex gap-8 font-tech text-xs tracking-[0.2em] text-gray-500 uppercase transition-colors">
+                <a href="#vision" class="hover:text-gold transition" data-i18n="nav_vision">Vision</a>
+                <a href="#galaxy" class="hover:text-gold transition" data-i18n="nav_galaxy">Universe</a>
+                <a href="#class" class="hover:text-gold transition" data-i18n="nav_class">Hierarchy</a>
+                <a href="#economy" class="hover:text-gold transition font-bold text-white" data-i18n="nav_economy">Business</a>
+                <a href="#tech" class="hover:text-accent transition" data-i18n="nav_tech">Tech</a>
+            </div>
+            
+            <div class="flex gap-4 text-[10px] font-tech font-bold tracking-widest border-l border-white/10 pl-6">
+                <button onclick="setLang('en')" class="hover:text-gold transition opacity-50 hover:opacity-100 lang-btn active" id="btn-en">EN</button>
+                <button onclick="setLang('ko')" class="hover:text-gold transition opacity-50 hover:opacity-100 lang-btn" id="btn-ko">KR</button>
+                <button onclick="setLang('th')" class="hover:text-gold transition opacity-50 hover:opacity-100 lang-btn" id="btn-th">TH</button>
+            </div>
+        </div>
+    </nav>
 
-            ctx.beginPath();
-            ctx.arc(px, py, 1.5, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(255,255,255,0.55)';
-            ctx.fill();
-          }
+    <header class="relative min-h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold opacity-[0.03] blur-[150px] rounded-full pointer-events-none"></div>
+        
+        <div class="mb-8 border-b border-gold/30 pb-2">
+            <span class="font-tech text-gold text-xs tracking-[0.4em] uppercase" data-i18n="hero_status">Digital Social Experiment V3.0</span>
+        </div>
+
+        <h1 class="text-7xl md:text-[10rem] font-serif font-black text-white leading-none tracking-tighter text-glow mb-6">
+            THE VOID
+        </h1>
+        
+        <p class="max-w-2xl text-gray-400 font-light text-lg md:text-xl leading-relaxed animate-drift">
+            <span class="italic text-white" data-i18n="hero_slogan">"Less is More. Be the One in None."</span><br>
+            <span class="text-sm text-gold/60 font-tech tracking-widest mt-4 block uppercase" data-i18n="hero_sub">
+                1M Hard Cap · Permadeath · 25 Solar Systems
+            </span>
+        </p>
+
+        <div class="absolute bottom-0 w-full border-t border-white/10 bg-black/50 backdrop-blur-sm">
+            <div class="max-w-7xl mx-auto px-6 py-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-left">
+                    <div class="text-[10px] text-gray-600 font-tech uppercase tracking-widest mb-1" data-i18n="kpi_cap">Total Cap</div>
+                    <div class="text-3xl font-tech text-white font-bold">1,000,000</div>
+                </div>
+                <div class="text-left">
+                    <div class="text-[10px] text-gray-600 font-tech uppercase tracking-widest mb-1" data-i18n="kpi_arr">Projected ARR</div>
+                    <div class="text-3xl font-tech text-green-400 font-bold">$16.6M+</div>
+                </div>
+                <div class="text-left">
+                    <div class="text-[10px] text-gray-600 font-tech uppercase tracking-widest mb-1" data-i18n="kpi_systems">Heritage Systems</div>
+                    <div class="text-3xl font-tech text-accent font-bold">25</div>
+                </div>
+                <div class="text-left">
+                    <div class="text-[10px] text-gray-600 font-tech uppercase tracking-widest mb-1" data-i18n="kpi_logic">Core Logic</div>
+                    <div class="text-xl font-serif text-danger font-bold mt-1">PERMADEATH</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="vision" class="py-32 px-6 max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-16 items-start">
+            <div class="sticky top-32">
+                <h2 class="text-5xl font-serif font-bold text-white mb-8 leading-tight">
+                    <span data-i18n="vision_title_1">Engineered for</span><br>
+                    <span class="text-gold" data-i18n="vision_title_2">Existential Anxiety</span>
+                </h2>
+                <p class="text-gray-400 leading-relaxed mb-10 text-sm" data-i18n="vision_desc">
+                    N/ONE is not just a metaverse. It is a sophisticated psychological lab. 
+                    By linking 'payment' with 'existence', we maximize the fear of loss (Permadeath) and the desire for recognition.
+                </p>
+                
+                <div class="space-y-6">
+                    <div class="glass p-6 border-l-2 border-danger">
+                        <h4 class="text-white font-bold mb-2 flex items-center"><i class="fa-solid fa-skull text-danger mr-3"></i> PERMADEATH</h4>
+                        <p class="text-xs text-gray-400" data-i18n="vision_permadeath">
+                            If you stop paying, you cease to exist. Your coordinates are lost forever.
+                        </p>
+                    </div>
+                    <div class="glass p-6 border-l-2 border-gold">
+                        <h4 class="text-white font-bold mb-2 flex items-center"><i class="fa-solid fa-coins text-gold mr-3"></i> SUNK COST</h4>
+                        <p class="text-xs text-gray-400" data-i18n="vision_sunkcost">
+                            The more you pay, the harder it is to leave. A paradoxical sense of belonging.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative aspect-[3/4] border border-white/5 bg-white/5 overflow-hidden flex items-center justify-center">
+                <div class="absolute inset-0 bg-[url('https://source.unsplash.com/random/800x1000/?galaxy,black')] opacity-20 bg-cover"></div>
+                <div class="z-10 text-center">
+                    <i class="fa-solid fa-fingerprint text-8xl text-white/20 mb-6 animate-pulse"></i>
+                    <div class="font-tech text-accent tracking-[0.5em] text-xs">IDENTITY VERIFIED</div>
+                </div>
+                <div class="absolute top-0 left-0 w-full h-[2px] bg-accent/50 shadow-[0_0_20px_#00F0FF] animate-[drift_3s_linear_infinite]"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="galaxy" class="py-32 bg-black relative">
+        <div class="max-w-7xl mx-auto px-6 text-center mb-12">
+            <h2 class="text-4xl font-serif text-white mb-4" data-i18n="galaxy_title">The 25 Heritage Systems</h2>
+            <p class="text-gray-500 font-tech tracking-wider uppercase text-xs" data-i18n="galaxy_sub">Heritage Stars · Orbital Mechanics · SignalR Sync</p>
+        </div>
+
+        <div class="relative w-full h-[60vh] border-y border-white/10">
+            <canvas id="galaxySim" class="w-full h-full block"></canvas>
+            
+            <div class="absolute top-8 left-8">
+                <div class="text-[10px] text-accent font-tech tracking-widest mb-1">LIVE SIMULATION</div>
+                <div class="text-2xl font-tech text-white font-bold">ZONE 0: SANCTUM</div>
+            </div>
+            <div class="absolute bottom-8 right-8 text-right">
+                <div class="text-[10px] text-gray-500 font-tech tracking-widest mb-1">CURRENT STATUS</div>
+                <div class="text-xl font-tech text-gold font-bold">25 SYSTEMS ACTIVE</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="class" class="py-32 px-6 max-w-7xl mx-auto">
+        <h2 class="text-4xl font-serif text-white text-center mb-20" data-i18n="class_title">The Hierarchy</h2>
+        
+        <div class="grid md:grid-cols-4 gap-6">
+            <div class="glass p-8 flex flex-col items-center text-center group hover:bg-white/5">
+                <div class="text-gray-600 font-tech text-xs tracking-widest mb-4">TIER 1 (94%)</div>
+                <h3 class="text-2xl font-serif font-bold text-gray-400 mb-6 group-hover:text-white transition">NOMAD</h3>
+                <div class="text-4xl font-light text-white mb-2 price-tag" data-usd="0.99">$0.99</div>
+                <div class="w-8 h-[1px] bg-gray-700 my-6"></div>
+                <ul class="text-xs text-gray-500 space-y-3 font-tech tracking-wide w-full text-left">
+                    <li data-i18n="tier_zone3">Zone 3 (Outer Rim)</li>
+                    <li data-i18n="tier_growth1">Growth 1.0x</li>
+                    <li data-i18n="tier_kyc_opt">Optional KYC</li>
+                </ul>
+            </div>
+
+            <div class="glass p-8 flex flex-col items-center text-center group hover:bg-white/5">
+                <div class="text-gray-500 font-tech text-xs tracking-widest mb-4">TIER 2 (5%)</div>
+                <h3 class="text-2xl font-serif font-bold text-gray-300 mb-6 group-hover:text-white transition">SETTLER</h3>
+                <div class="text-4xl font-light text-white mb-2 price-tag" data-usd="4.99">$4.99</div>
+                <div class="w-8 h-[1px] bg-gray-500 my-6"></div>
+                <ul class="text-xs text-gray-400 space-y-3 font-tech tracking-wide w-full text-left">
+                    <li data-i18n="tier_zone2">Zone 2 (Inner Rim)</li>
+                    <li data-i18n="tier_growth15">Growth 1.5x</li>
+                    <li data-i18n="tier_kyc_req">Mandatory KYC</li>
+                </ul>
+            </div>
+
+            <div class="glass p-8 flex flex-col items-center text-center border border-gold/30 bg-gold/5 relative overflow-hidden transform scale-105 z-10">
+                <div class="absolute top-0 right-0 bg-gold text-black text-[9px] font-bold px-2 py-1 font-tech">MOST POPULAR</div>
+                <div class="text-gold font-tech text-xs tracking-widest mb-4">TIER 3 (1%)</div>
+                <h3 class="text-2xl font-serif font-bold text-gold mb-6">ROYAL</h3>
+                <div class="text-4xl font-light text-white mb-2 price-tag" data-usd="19.99">$19.99</div>
+                <div class="w-8 h-[1px] bg-gold my-6"></div>
+                <ul class="text-xs text-gray-300 space-y-3 font-tech tracking-wide w-full text-left">
+                    <li data-i18n="tier_zone1">Zone 1 (The Core)</li>
+                    <li data-i18n="tier_growth2">Turbo Growth 2.0x</li>
+                    <li data-i18n="tier_card">Metal Physical Card</li>
+                </ul>
+                <button class="w-full mt-8 py-3 bg-gold text-black font-bold text-xs hover:bg-white transition" data-i18n="btn_waitlist">JOIN WAITLIST</button>
+            </div>
+
+            <div class="glass p-8 flex flex-col items-center text-center border border-accent/30 bg-accent/5 group">
+                <div class="text-accent font-tech text-xs tracking-widest mb-4">HERITAGE (25 SEATS)</div>
+                <h3 class="text-2xl font-serif font-bold text-white mb-6">THE HIDDEN</h3>
+                <div class="text-4xl font-light text-white mb-2 font-serif" data-i18n="price_auction">Auction</div>
+                <div class="w-8 h-[1px] bg-accent my-6"></div>
+                <ul class="text-xs text-gray-400 space-y-3 font-tech tracking-wide w-full text-left">
+                    <li data-i18n="tier_zone0">Zone 0 (Sanctum)</li>
+                    <li data-i18n="tier_tax">Tax 50% Off</li>
+                    <li data-i18n="tier_exclusive">Exclusive Rights</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="economy" class="py-32 bg-[#050505] border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row gap-16 items-center">
+                <div class="md:w-1/3 space-y-8">
+                    <div>
+                        <h2 class="text-4xl font-serif text-white mb-4" data-i18n="eco_title">AI Economy</h2>
+                        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="eco_desc">
+                            An AI-regulated 'Breathing Economy'. Entropy Tax and Auctions are key sinks to prevent ecosystem collapse.
+                        </p>
+                    </div>
+                    
+                    <div class="p-6 border border-white/10 rounded bg-white/5">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-gray-500 font-tech text-xs uppercase" data-i18n="eco_proj_rev">Projected Monthly Revenue</span>
+                            <span class="text-green-400 text-xs"><i class="fa-solid fa-arrow-trend-up"></i> +12%</span>
+                        </div>
+                        <div class="text-4xl font-tech text-white font-bold price-tag-large" data-val="1390000">$1,390,000</div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="border-l-2 border-green-500 pl-4">
+                            <div class="text-white font-bold text-sm" data-i18n="eco_inflow">INFLOW</div>
+                            <div class="text-gray-500 text-xs mt-1">Subscription, SD Packs</div>
+                        </div>
+                        <div class="border-l-2 border-danger pl-4">
+                            <div class="text-white font-bold text-sm" data-i18n="eco_outflow">OUTFLOW</div>
+                            <div class="text-gray-500 text-xs mt-1">Entropy Tax, Auction Burn</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:w-2/3 w-full glass p-8 rounded-xl">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tech" class="py-32 px-6 max-w-7xl mx-auto">
+        <h2 class="text-4xl font-serif text-white text-center mb-16" data-i18n="tech_title">Technology Stack</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="glass p-6 text-center hover:border-blue-500/50 transition">
+                <i class="fa-brands fa-microsoft text-4xl text-blue-500 mb-4"></i>
+                <div class="font-bold text-white mb-1">ASP.NET Core 8 & 10</div>
+                <div class="text-[10px] text-gray-500 font-tech uppercase" data-i18n="tech_backend">High Performance Backend</div>
+            </div>
+            <div class="glass p-6 text-center hover:border-white/50 transition">
+                <i class="fa-brands fa-unity text-4xl text-white mb-4"></i>
+                <div class="font-bold text-white mb-1">Unity 6</div>
+                <div class="text-[10px] text-gray-500 font-tech uppercase" data-i18n="tech_client">URP Visual Client</div>
+            </div>
+            <div class="glass p-6 text-center hover:border-green-500/50 transition">
+                <i class="fa-solid fa-tower-broadcast text-4xl text-green-500 mb-4"></i>
+                <div class="font-bold text-white mb-1">SignalR</div>
+                <div class="text-[10px] text-gray-500 font-tech uppercase" data-i18n="tech_sync">Real-time Coordination</div>
+            </div>
+            <div class="glass p-6 text-center hover:border-red-500/50 transition">
+                <i class="fa-solid fa-database text-4xl text-red-500 mb-4"></i>
+                <div class="font-bold text-white mb-1">Redis</div>
+                <div class="text-[10px] text-gray-500 font-tech uppercase" data-i18n="tech_db">In-Memory Backplane</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 bg-black border-t border-white/10 text-center">
+        <h2 class="text-3xl font-serif text-white mb-8" data-i18n="footer_cta">Are you ready to be the One?</h2>
+        <p class="text-gray-600 text-xs font-tech tracking-[0.3em] mb-10">© 2025 PROJECT N/ONE. ALL RIGHTS RESERVED.</p>
+        <button class="px-10 py-4 border border-white text-white font-bold font-tech tracking-widest hover:bg-white hover:text-black transition" data-i18n="btn_enter">ENTER UNIVERSE</button>
+    </footer>
+
+    <script>
+        // --- 1. Translations & Logic ---
+        const translations = {
+            en: {
+                nav_vision: "Vision", nav_galaxy: "Universe", nav_class: "Hierarchy", nav_economy: "Business", nav_tech: "Tech",
+                hero_status: "DIGITAL SOCIAL EXPERIMENT V3.0",
+                hero_slogan: "\"Less is More. Be the One in None.\"",
+                hero_sub: "1M Hard Cap · Permadeath · 25 Solar Systems",
+                kpi_cap: "TOTAL CAP", kpi_arr: "PROJECTED ARR", kpi_systems: "HERITAGE SYSTEMS", kpi_logic: "CORE LOGIC",
+                vision_title_1: "Engineered for", vision_title_2: "Existential Anxiety",
+                vision_desc: "N/ONE is not just a metaverse. It is a sophisticated psychological lab. By linking 'payment' with 'existence', we maximize the fear of loss (Permadeath) and the desire for recognition.",
+                vision_permadeath: "If you stop paying, you cease to exist. Your coordinates are lost forever.",
+                vision_sunkcost: "The more you pay, the harder it is to leave. A paradoxical sense of belonging.",
+                galaxy_title: "The 25 Heritage Systems", galaxy_sub: "Heritage Stars · Orbital Mechanics · SignalR Sync",
+                class_title: "The Hierarchy",
+                tier_zone3: "Zone 3 (Outer Rim)", tier_growth1: "Growth 1.0x", tier_kyc_opt: "Optional KYC",
+                tier_zone2: "Zone 2 (Inner Rim)", tier_growth15: "Growth 1.5x", tier_kyc_req: "Mandatory KYC",
+                tier_zone1: "Zone 1 (The Core)", tier_growth2: "Turbo Growth 2.0x", tier_card: "Metal Physical Card",
+                tier_zone0: "Zone 0 (Sanctum)", tier_tax: "Tax 50% Off", tier_exclusive: "Exclusive Rights",
+                price_auction: "Auction", btn_waitlist: "JOIN WAITLIST",
+                eco_title: "AI Economy", eco_desc: "An AI-regulated 'Breathing Economy'. Entropy Tax and Auctions are key sinks to prevent ecosystem collapse.",
+                eco_proj_rev: "Projected Monthly Revenue", eco_inflow: "INFLOW", eco_outflow: "OUTFLOW",
+                tech_title: "Technology Stack", tech_backend: "High Performance Backend", tech_client: "URP Visual Client", tech_sync: "Real-time Coordination", tech_db: "In-Memory Backplane",
+                footer_cta: "Are you ready to be the One?", btn_enter: "ENTER UNIVERSE"
+            },
+            ko: {
+                nav_vision: "비전", nav_galaxy: "우주", nav_class: "계급", nav_economy: "비즈니스", nav_tech: "기술",
+                hero_status: "디지털 사회 실험 V3.0",
+                hero_slogan: "\"Less is More. Be the One in None.\"",
+                hero_sub: "100만 명 하드캡 · 영구적 죽음 · 25개의 태양계",
+                kpi_cap: "총 수용 인원", kpi_arr: "예상 연매출", kpi_systems: "헤리티지 시스템", kpi_logic: "핵심 로직",
+                vision_title_1: "현대인의", vision_title_2: "실존적 불안을 설계하다",
+                vision_desc: "N/ONE은 단순한 메타버스가 아닙니다. 현대인의 '인정 욕구'와 '상실의 공포'를 자극하는 정교한 심리 실험실입니다. '지불'과 '존재'를 연결하여 유지율을 극대화합니다.",
+                vision_permadeath: "구독을 멈추면 존재도 사라집니다. 당신의 좌표는 영구적으로 소멸합니다.",
+                vision_sunkcost: "비용을 지불할수록 떠나기 힘들어집니다. 역설적인 소속감을 제공합니다.",
+                galaxy_title: "25개의 헤리티지 태양계", galaxy_sub: "헤리티지 항성 · 궤도 역학 · SignalR 동기화",
+                class_title: "계급 구조",
+                tier_zone3: "Zone 3 (Outer Rim)", tier_growth1: "성장 속도 1.0x", tier_kyc_opt: "본인인증 선택",
+                tier_zone2: "Zone 2 (Inner Rim)", tier_growth15: "성장 속도 1.5x", tier_kyc_req: "본인인증 필수",
+                tier_zone1: "Zone 1 (The Core)", tier_growth2: "터보 성장 2.0x", tier_card: "메탈 실물 카드",
+                tier_zone0: "Zone 0 (성역)", tier_tax: "세금 50% 감면", tier_exclusive: "경매 독점 참여권",
+                price_auction: "경매", btn_waitlist: "대기자 명단 등록",
+                eco_title: "AI 경제 시스템", eco_desc: "AI가 실시간으로 금리와 인플레이션을 조절하는 '숨 쉬는 경제'입니다. 엔트로피 세금과 경매는 생태계 붕괴를 막는 핵심 소각처입니다.",
+                eco_proj_rev: "예상 월 매출 (MRR)", eco_inflow: "유입 (수익)", eco_outflow: "유출 (소각)",
+                tech_title: "기술 스택", tech_backend: "고성능 백엔드", tech_client: "URP 비주얼 클라이언트", tech_sync: "실시간 좌표 동기화", tech_db: "인메모리 백플레인",
+                footer_cta: "단 하나의 존재가 될 준비가 되셨습니까?", btn_enter: "우주 진입"
+            },
+            th: {
+                nav_vision: "วิสัยทัศน์", nav_galaxy: "จักรวาล", nav_class: "ลำดับชั้น", nav_economy: "ธุรกิจ", nav_tech: "เทคโนโลยี",
+                hero_status: "การทดลองทางสังคมดิจิทัล V3.0",
+                hero_slogan: "\"Less is More. Be the One in None.\"",
+                hero_sub: "จำกัด 1 ล้านคน · การตายถาวร · 25 ระบบสุริยะ",
+                kpi_cap: "ประชากรสูงสุด", kpi_arr: "รายได้ต่อปี", kpi_systems: "ระบบเฮอริเทจ", kpi_logic: "ตรรกะหลัก",
+                vision_title_1: "ออกแบบมาเพื่อ", vision_title_2: "ความกังวลในการมีอยู่",
+                vision_desc: "N/ONE ไม่ใช่แค่เมตาเวิร์ส แต่เป็นห้องทดลองทางจิตวิทยาที่กระตุ้นความต้องการการยอมรับและความกลัวการสูญเสีย เชื่อมโยง 'การจ่าย' กับ 'การมีอยู่'",
+                vision_permadeath: "หากหยุดจ่าย คุณจะสูญสลาย พิกัดของคุณจะหายไปตลอดกาล",
+                vision_sunkcost: "ยิ่งจ่ายมาก ยิ่งยากที่จะจากไป มันมอบความรู้สึกเป็นเจ้าของที่ย้อนแย้ง",
+                galaxy_title: "25 ระบบสุริยะ", galaxy_sub: "ดาวฤกษ์เฮอริเทจ · กลศาสตร์วงโคจร · การซิงค์ SignalR",
+                class_title: "ลำดับชั้น",
+                tier_zone3: "Zone 3 (ขอบนอก)", tier_growth1: "อัตราเติบโต 1.0x", tier_kyc_opt: "ยืนยันตัวตน (ไม่บังคับ)",
+                tier_zone2: "Zone 2 (วงใน)", tier_growth15: "อัตราเติบโต 1.5x", tier_kyc_req: "ยืนยันตัวตน (บังคับ)",
+                tier_zone1: "Zone 1 (แกนกลาง)", tier_growth2: "เติบโตเร็ว 2.0x", tier_card: "บัตรโลหะจริง",
+                tier_zone0: "Zone 0 (ศักดิ์สิทธิ์)", tier_tax: "ลดภาษี 50%", tier_exclusive: "สิทธิ์ประมูลพิเศษ",
+                price_auction: "ประมูล", btn_waitlist: "ลงทะเบียนรอ",
+                eco_title: "ระบบเศรษฐกิจ AI", eco_desc: "AI ควบคุมอัตราดอกเบี้ยและเงินเฟ้อแบบเรียลไทม์ ภาษี Entropy และการประมูลคือตัวเผาผลาญหลักเพื่อป้องกันระบบล่มสลาย",
+                eco_proj_rev: "รายได้ต่อเดือน (คาดการณ์)", eco_inflow: "รายได้เข้า", eco_outflow: "การเผาผลาญ",
+                tech_title: "เทคโนโลยี", tech_backend: "แบ็คเอนด์ประสิทธิภาพสูง", tech_client: "ไคลเอนต์ภาพ URP", tech_sync: "การประสานงานเรียลไทม์", tech_db: "อินเมมโมรี่",
+                footer_cta: "คุณพร้อมจะเป็นหนึ่งเดียวแล้วหรือยัง?", btn_enter: "เข้าสู่จักรวาล"
+            }
+        };
+
+        function setLang(lang) {
+            // 1. Text Content Update
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(translations[lang][key]) el.innerHTML = translations[lang][key];
+            });
+
+            // 2. Font Switching (Gulim for KR)
+            if (lang === 'ko') document.body.classList.add('lang-ko');
+            else document.body.classList.remove('lang-ko');
+
+            // 3. Price Formatting (New Logic)
+            document.querySelectorAll('.price-tag').forEach(el => {
+                const usd = parseFloat(el.getAttribute('data-usd'));
+                let html = `$${usd}`;
+                
+                if (lang === 'ko') {
+                    const krw = Math.round(usd * 1400).toLocaleString();
+                    html += `<br><span class="text-xs text-gray-500 font-sans tracking-tight">(약 ${krw}원)</span>`;
+                } else if (lang === 'th') {
+                    const thb = Math.round(usd * 35).toLocaleString();
+                    html += `<br><span class="text-xs text-gray-500 font-sans tracking-tight">(≈฿${thb})</span>`;
+                }
+                el.innerHTML = html;
+            });
+
+            // 4. Large Numbers
+            const bigPrice = document.querySelector('.price-tag-large');
+            const val = parseFloat(bigPrice.getAttribute('data-val'));
+            if(lang === 'ko') {
+                const krw = Math.round(val * 1400 / 100000000).toLocaleString();
+                bigPrice.innerHTML = `₩${krw}억 <span class="text-lg">/ 월</span>`;
+            } else if (lang === 'th') {
+                bigPrice.innerHTML = `฿${(val * 35 / 1000000).toFixed(1)}M <span class="text-lg">/ mo</span>`;
+            } else {
+                bigPrice.innerHTML = `$1,390,000`;
+            }
+
+            // 5. Button State
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active', 'text-gold', 'opacity-100'));
+            document.getElementById('btn-' + lang).classList.add('active', 'text-gold', 'opacity-100');
+        }
+
+        // --- 2. Chart.js (Refined) ---
+        const ctxRev = document.getElementById('revenueChart').getContext('2d');
+        new Chart(ctxRev, {
+            type: 'doughnut',
+            data: {
+                labels: ['Subs (Stable)', 'Packs (Var)', 'Burn'],
+                datasets: [{
+                    data: [65, 25, 10],
+                    backgroundColor: ['#C8A165', '#333333', '#00F0FF'],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '80%',
+                plugins: { legend: { position: 'bottom', labels: { color: '#666', font: { family: 'Rajdhani' } } } }
+            }
         });
 
-        ctx.restore();
-        requestAnimationFrame(animate);
-      }
+        // --- 3. Galaxy Simulation (Refined Particles) ---
+        const canvas = document.getElementById('galaxySim');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const systems = [];
 
-      window.addEventListener('resize', resize);
-      window.addEventListener('load', init);
-    };
+        function initGalaxy() {
+            width = canvas.parentElement.offsetWidth;
+            height = canvas.parentElement.offsetHeight;
+            canvas.width = width;
+            canvas.height = height;
+            systems.length = 0;
+            
+            for(let i=0; i<25; i++) {
+                systems.push({
+                    x: Math.random() * width * 0.8 + width * 0.1,
+                    y: Math.random() * height * 0.8 + height * 0.1,
+                    color: i === 0 ? '#00F0FF' : '#C8A165',
+                    size: i === 0 ? 4 : 2,
+                    satellites: Array.from({length: Math.random() * 5 + 2}, () => ({
+                        r: Math.random() * 30 + 10,
+                        speed: (Math.random() - 0.5) * 0.05,
+                        theta: Math.random() * Math.PI * 2
+                    }))
+                });
+            }
+        }
 
-    // Economy Sunburst
-    const initEconomyChart = () => {
-      const data = [{
-        type: 'sunburst',
-        labels: ['Economy', 'Income', 'Burn', 'Subs', 'SD Packs', 'Tax', 'Fees', 'Items', 'T1~T3', 'Heritage', 'Starter', 'Noble', 'High', 'Entropy', 'Auction', 'Flex'],
-        parents: ['', 'Economy', 'Economy', 'Income', 'Income', 'Burn', 'Burn', 'Burn', 'Subs', 'Subs', 'SD Packs', 'SD Packs', 'SD Packs', 'Tax', 'Fees', 'Items'],
-        values: [100, 55, 45, 25, 30, 15, 10, 20, 22, 3, 10, 10, 10, 15, 10, 20],
-        branchvalues: 'total',
-        textinfo: 'label+value'
-      }];
-      const layout = { margin: { l: 0, r: 0, b: 0, t: 0 }, paper_bgcolor: 'rgba(0,0,0,0)' };
-      Plotly.newPlot('economySunburst', data, layout, { displayModeBar: false });
-    };
+        function animate() {
+            ctx.clearRect(0,0,width,height); 
+            
+            systems.forEach(sys => {
+                // Glow
+                ctx.beginPath();
+                ctx.arc(sys.x, sys.y, sys.size * 4, 0, Math.PI*2);
+                ctx.fillStyle = sys.color;
+                ctx.globalAlpha = 0.1;
+                ctx.fill();
+                
+                // Core
+                ctx.beginPath();
+                ctx.arc(sys.x, sys.y, sys.size, 0, Math.PI*2);
+                ctx.fillStyle = sys.color;
+                ctx.globalAlpha = 1;
+                ctx.fill();
 
-    window.addEventListener('load', () => {
-      initGalaxyMap();
-      initEconomyChart();
-    });
-  </script>
+                // Satellites
+                sys.satellites.forEach(sat => {
+                    sat.theta += sat.speed;
+                    const sx = sys.x + Math.cos(sat.theta) * sat.r;
+                    const sy = sys.y + Math.sin(sat.theta) * sat.r;
+                    ctx.fillStyle = '#fff';
+                    ctx.globalAlpha = 0.5;
+                    ctx.beginPath();
+                    ctx.arc(sx, sy, 1, 0, Math.PI*2);
+                    ctx.fill();
+                });
+            });
+            requestAnimationFrame(animate);
+        }
+
+        // --- 4. Background Starfield ---
+        const starCanvas = document.getElementById('starfield');
+        const starCtx = starCanvas.getContext('2d');
+        const stars = [];
+
+        function initStars() {
+            starCanvas.width = window.innerWidth;
+            starCanvas.height = window.innerHeight;
+            stars.length = 0;
+            for(let i=0; i<200; i++) {
+                stars.push({
+                    x: Math.random() * starCanvas.width,
+                    y: Math.random() * starCanvas.height,
+                    size: Math.random(),
+                    alpha: Math.random()
+                });
+            }
+        }
+
+        function drawStars() {
+            starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+            starCtx.fillStyle = 'white';
+            stars.forEach(s => {
+                starCtx.globalAlpha = s.alpha * 0.3;
+                starCtx.beginPath();
+                starCtx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+                starCtx.fill();
+            });
+            requestAnimationFrame(drawStars);
+        }
+
+        window.addEventListener('resize', () => { initGalaxy(); initStars(); });
+        
+        // Init
+        initGalaxy();
+        animate();
+        initStars();
+        drawStars();
+        setLang('en'); // Default Language: English
+
+    </script>
 </body>
 </html>
