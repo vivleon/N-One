@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROJECT N/ONE : The Absolute Void</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#020202',
+                        gold: '#C5A059',
+                        'gold-light': '#E5C585',
+                        'gold-dim': 'rgba(197, 160, 89, 0.1)',
+                        glass: 'rgba(255, 255, 255, 0.03)',
+                        'glass-border': 'rgba(255, 255, 255, 0.08)',
+                        accent: '#00F0FF' // Cyberpunk Accent
+                    },
+                    fontFamily: {
+                        serif: ['"Cinzel"', 'serif'],
+                        tech: ['"Rajdhani"', 'sans-serif'],
+                        sans: ['"Noto Sans KR"', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #020202; color: #E5E5E5; overflow-x: hidden; }
+        
+        /* Typography Utilities */
+        .text-glow { text-shadow: 0 0 20px rgba(197, 160, 89, 0.5); }
+        .text-accent-glow { text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #C5A059; }
+
+        /* Glass Cards */
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+        .glass-panel:hover {
+            border-color: rgba(197, 160, 89, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        
+        @keyframes scanline { 0% { top: -100%; } 100% { top: 100%; } }
+        .scanline::after {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(0, 240, 255, 0.05), transparent);
+            animation: scanline 4s linear infinite; pointer-events: none;
+        }
+
+        /* Background Canvas */
+        #starfield, #galaxySim { position: absolute; top: 0; left: 0; z-index: 0; }
+        #galaxySim { position: relative; width: 100%; height: 600px; border-radius: 100%; border: 1px solid rgba(255,255,255,0.05); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <canvas id="starfield" class="fixed w-full h-full opacity-40 pointer-events-none"></canvas>
+
+    <nav class="fixed w-full z-50 px-8 py-5 flex justify-between items-center bg-black/80 backdrop-blur-md border-b border-white/5">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-meteor text-gold text-xl animate-pulse"></i>
+            <div class="text-2xl font-serif font-bold tracking-[0.2em] text-white">N/ONE</div>
+        </div>
+        <div class="hidden md:flex gap-10 font-tech text-sm tracking-widest text-gray-400 uppercase">
+            <a href="#vision" class="hover:text-gold transition">Vision</a>
+            <a href="#galaxy" class="hover:text-gold transition">Galaxy Architecture</a>
+            <a href="#economy" class="hover:text-gold transition">Economy</a>
+            <a href="#tech" class="hover:text-accent transition text-white">Tech Stack</a>
+        </div>
+        <div class="px-4 py-2 border border-gold/30 bg-gold/10 rounded text-xs font-bold text-gold font-tech tracking-widest animate-pulse">
+            STATUS: ACTIVE DEV
+        </div>
+    </nav>
+
+    <header class="relative min-h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gold rounded-full opacity-5 blur-[120px]"></div>
+        
+        <h2 class="text-accent font-tech tracking-[0.5em] text-sm md:text-base mb-6 animate-float">DIGITAL SOCIAL EXPERIMENT V3.0</h2>
+        <h1 class="text-7xl md:text-9xl font-serif font-black text-white mb-4 leading-none tracking-tighter text-glow">
+            THE VOID
+        </h1>
+        <p class="text-xl md:text-2xl font-sans font-light text-gray-300 mb-12 max-w-2xl leading-relaxed">
+            "Less is More. Be the One in None."<br>
+            <span class="text-gold/80 text-sm md:text-base block mt-4 font-tech tracking-widest">
+                1,000,000 HARD CAP · PERMADEATH · AI ECONOMY
+            </span>
+        </p>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-5xl z-10">
+            <div class="glass-panel p-6 rounded-none border-l-2 border-l-gold">
+                <div class="text-gray-500 text-xs font-tech uppercase tracking-wider mb-2">Max Population</div>
+                <div class="text-3xl font-serif text-white">1,000,000</div>
+                <div class="text-[10px] text-gray-600 mt-1">Absolute Scarcity</div>
+            </div>
+            <div class="glass-panel p-6 rounded-none border-l-2 border-l-accent">
+                <div class="text-gray-500 text-xs font-tech uppercase tracking-wider mb-2">Heritage Seats</div>
+                <div class="text-3xl font-serif text-accent">25</div>
+                <div class="text-[10px] text-gray-600 mt-1">Zone 0: The Hidden</div>
+            </div>
+            <div class="glass-panel p-6 rounded-none border-l-2 border-l-green-500">
+                <div class="text-gray-500 text-xs font-tech uppercase tracking-wider mb-2">Projected ARR</div>
+                <div class="text-3xl font-serif text-green-400">$16.6M+</div>
+                <div class="text-[10px] text-gray-600 mt-1">Based on Subscription</div>
+            </div>
+            <div class="glass-panel p-6 rounded-none border-l-2 border-l-red-500">
+                <div class="text-gray-500 text-xs font-tech uppercase tracking-wider mb-2">Retention Hook</div>
+                <div class="text-3xl font-serif text-red-500 text-lg md:text-xl pt-2">PERMADEATH</div>
+                <div class="text-[10px] text-gray-600 mt-1">Sunk Cost Strategy</div>
+            </div>
+        </div>
+    </header>
+
+    <section id="vision" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row gap-16 items-start">
+            <div class="md:w-1/2 space-y-8 sticky top-24">
+                <h2 class="text-4xl font-serif font-bold text-white mb-2">Designed for <br><span class="text-gold text-glow">Existential Anxiety</span></h2>
+                <p class="text-gray-400 font-light leading-relaxed">
+                    N/ONE은 단순한 메타버스가 아닙니다. 현대인의 '인정 욕구'와 '상실의 공포'를 자극하는 정교한 심리 실험실입니다.
+                </p>
+                
+                <div class="space-y-4">
+                    <div class="glass-panel p-5 border-l-2 border-red-500 flex gap-4">
+                        <div class="text-2xl text-red-500"><i class="fa-solid fa-skull"></i></div>
+                        <div>
+                            <h3 class="font-bold text-white font-tech tracking-wider">PERMADEATH (영구적 죽음)</h3>
+                            <p class="text-sm text-gray-400 mt-1">구독 해지 또는 세금 미납 시 별은 즉시 소멸하며, 좌표는 영구적으로 타인에게 넘어갑니다.</p>
+                        </div>
+                    </div>
+                    <div class="glass-panel p-5 border-l-2 border-gold flex gap-4">
+                        <div class="text-2xl text-gold"><i class="fa-solid fa-coins"></i></div>
+                        <div>
+                            <h3 class="font-bold text-white font-tech tracking-wider">SUNK COST (매몰 비용)</h3>
+                            <p class="text-sm text-gray-400 mt-1">유지 비용이 누적될수록 유저는 떠날 수 없습니다. 역설적인 소속감을 부여합니다.</p>
+                        </div>
+                    </div>
+                    <div class="glass-panel p-5 border-l-2 border-accent flex gap-4">
+                        <div class="text-2xl text-accent"><i class="fa-solid fa-person-walking"></i></div>
+                        <div>
+                            <h3 class="font-bold text-white font-tech tracking-wider">COSMIC DRIFT (GPS)</h3>
+                            <p class="text-sm text-gray-400 mt-1">현실의 걷기 데이터(HealthKit)와 연동됩니다. 건강한 신체가 디지털 성운(Nebula)을 만듭니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="md:w-1/2 w-full">
+                <div class="glass-panel p-1 rounded w-full h-full min-h-[400px] flex items-center justify-center bg-black/50 relative overflow-hidden scanline">
+                    <div class="absolute inset-0 flex flex-col justify-center items-center text-center opacity-30">
+                        <i class="fa-solid fa-fingerprint text-9xl text-gray-800"></i>
+                        <span class="mt-4 font-tech text-4xl text-gray-700">IDENTITY</span>
+                    </div>
+                    <div class="z-10 text-center space-y-4">
+                        <div class="text-xs text-accent font-tech tracking-widest mb-2">/// SYSTEM LOGIC</div>
+                        <div class="bg-black/80 border border-green-500/30 p-4 font-mono text-xs text-green-400 text-left w-full max-w-sm mx-auto shadow-[0_0_15px_rgba(0,255,0,0.1)]">
+                            > User.Connect()<br>
+                            > Check.Subscription()...<br>
+                            > <span class="text-green-200">Status: ACTIVE (Royal)</span><br>
+                            > Entropy Tax: Calculated<br>
+                            > GPS Drift: Syncing...<br>
+                            <span class="animate-pulse">> _</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="galaxy" class="py-24 bg-gradient-to-b from-void via-[#0a0a0a] to-void relative">
+        <div class="max-w-7xl mx-auto px-6 text-center mb-12">
+            <h2 class="text-4xl font-serif font-bold text-white mb-4">Galaxy Architecture</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto">
+                중앙의 <span class="text-gold font-bold">25개 헤리티지(The Hidden)</span>를 중심으로,<br>
+                100만 명의 유저가 계급에 따라 궤도를 순환하는 절대 위계 구조입니다.
+            </p>
+        </div>
+
+        <div class="relative max-w-4xl mx-auto aspect-square md:aspect-video flex items-center justify-center">
+            <canvas id="galaxySim"></canvas>
+            
+            <div class="absolute top-[45%] left-[50%] -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                <span class="text-[10px] text-gold font-tech tracking-widest bg-black/50 px-2 py-1 rounded border border-gold/20">ZONE 0: SANCTUM (25 SEATS)</span>
+            </div>
+            <div class="absolute bottom-10 right-10 text-right pointer-events-none">
+                <div class="flex items-center justify-end gap-2 text-xs text-gray-400 mb-1">
+                    <span class="w-2 h-2 rounded-full bg-gold"></span> Zone 1: Royal (Elite)
+                </div>
+                <div class="flex items-center justify-end gap-2 text-xs text-gray-400 mb-1">
+                    <span class="w-2 h-2 rounded-full bg-gray-400"></span> Zone 2: Settler (Middle)
+                </div>
+                <div class="flex items-center justify-end gap-2 text-xs text-gray-400">
+                    <span class="w-2 h-2 rounded-full bg-gray-700"></span> Zone 3: Nomad (Mass)
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="class" class="py-24 px-6 max-w-7xl mx-auto">
+        <h2 class="text-4xl font-serif font-bold text-white text-center mb-16">The Hierarchy</h2>
+        
+        <div class="grid md:grid-cols-4 gap-6">
+            <div class="glass-panel p-8 flex flex-col items-center text-center border-t-4 border-t-gray-700 group">
+                <div class="text-gray-500 text-xs font-tech tracking-widest mb-4">TIER 1 (94%)</div>
+                <h3 class="text-2xl font-serif font-bold text-gray-400 mb-2 group-hover:text-white transition">NOMAD</h3>
+                <div class="text-3xl font-light text-white mb-6">$0.99<span class="text-sm text-gray-500">/mo</span></div>
+                <ul class="text-xs text-left w-full space-y-3 text-gray-400 mb-8 flex-grow">
+                    <li class="flex items-center"><i class="fa-solid fa-circle text-[6px] mr-3 text-gray-600"></i>Zone 3 (Outer Rim)</li>
+                    <li class="flex items-center"><i class="fa-solid fa-circle text-[6px] mr-3 text-gray-600"></i>기본 성장 (1.0x)</li>
+                    <li class="flex items-center"><i class="fa-solid fa-circle text-[6px] mr-3 text-gray-600"></i>KYC 선택</li>
+                </ul>
+                <button class="w-full py-3 border border-gray-700 text-gray-400 text-xs font-bold hover:bg-gray-800 transition">VIEW DETAILS</button>
+            </div>
+
+            <div class="glass-panel p-8 flex flex-col items-center text-center border-t-4 border-t-gray-400 group">
+                <div class="text-gray-400 text-xs font-tech tracking-widest mb-4">TIER 2 (5%)</div>
+                <h3 class="text-2xl font-serif font-bold text-gray-300 mb-2 group-hover:text-white transition">SETTLER</h3>
+                <div class="text-3xl font-light text-white mb-6">$4.99<span class="text-sm text-gray-500">/mo</span></div>
+                <ul class="text-xs text-left w-full space-y-3 text-gray-400 mb-8 flex-grow">
+                    <li class="flex items-center"><i class="fa-solid fa-circle text-[6px] mr-3 text-gray-400"></i>Zone 2 (Inner Rim)</li>
+                    <li class="flex items-center"><i class="fa-solid fa-circle text-[6px] mr-3 text-gray-400"></i>빠른 성장 (1.5x)</li>
+                    <li class="flex items-center"><i class="fa-solid fa-circle text-[6px] mr-3 text-gray-400"></i>KYC 필수</li>
+                </ul>
+                <button class="w-full py-3 border border-gray-500 text-gray-300 text-xs font-bold hover:bg-gray-700 transition">VIEW DETAILS</button>
+            </div>
+
+            <div class="glass-panel p-8 flex flex-col items-center text-center border-t-4 border-t-gold bg-gold/5 group transform scale-105 shadow-[0_0_30px_rgba(197,160,89,0.15)] relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-gold text-black text-[9px] font-bold px-2 py-1 font-tech">RECOMMENDED</div>
+                <div class="text-gold text-xs font-tech tracking-widest mb-4">TIER 3 (1%)</div>
+                <h3 class="text-2xl font-serif font-bold text-gold mb-2">ROYAL</h3>
+                <div class="text-3xl font-light text-white mb-6">$19.99<span class="text-sm text-gray-500">/mo</span></div>
+                <ul class="text-xs text-left w-full space-y-3 text-gray-300 mb-8 flex-grow">
+                    <li class="flex items-center"><i class="fa-solid fa-star text-[8px] mr-3 text-gold"></i>Zone 1 (The Core)</li>
+                    <li class="flex items-center"><i class="fa-solid fa-bolt text-[8px] mr-3 text-gold"></i>가속 성장 (2.0x)</li>
+                    <li class="flex items-center"><i class="fa-solid fa-credit-card text-[8px] mr-3 text-gold"></i>실물 메탈 카드</li>
+                </ul>
+                <button class="w-full py-3 bg-gold text-black text-xs font-bold hover:bg-white transition">JOIN WAITLIST</button>
+            </div>
+
+            <div class="glass-panel p-8 flex flex-col items-center text-center border-t-4 border-t-accent bg-accent/5 group">
+                <div class="text-accent text-xs font-tech tracking-widest mb-4">HERITAGE (25 SEATS)</div>
+                <h3 class="text-2xl font-serif font-bold text-white mb-2">THE HIDDEN</h3>
+                <div class="text-3xl font-light text-white mb-6">Auction<span class="text-sm text-gray-500"> Only</span></div>
+                <ul class="text-xs text-left w-full space-y-3 text-gray-400 mb-8 flex-grow">
+                    <li class="flex items-center"><i class="fa-solid fa-gem text-[8px] mr-3 text-accent"></i>Zone 0 (Sanctum)</li>
+                    <li class="flex items-center"><i class="fa-solid fa-percent text-[8px] mr-3 text-accent"></i>세금 50% 감면</li>
+                    <li class="flex items-center"><i class="fa-solid fa-crown text-[8px] mr-3 text-accent"></i>경매 독점권</li>
+                </ul>
+                <button class="w-full py-3 border border-accent text-accent text-xs font-bold hover:bg-accent hover:text-black transition">VIEW AUCTION</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="economy" class="py-24 bg-[#050505]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row gap-12">
+                <div class="md:w-1/3 space-y-8">
+                    <div>
+                        <h2 class="text-4xl font-serif font-bold text-white mb-4">AI Economy Ecosystem</h2>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            AI가 실시간으로 금리와 인플레이션을 조절하는 '숨 쉬는 경제'입니다.
+                            Entropy Tax(세금)와 Auction(경매)은 생태계 붕괴를 막는 핵심 소각처입니다.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="p-4 bg-green-900/10 border border-green-500/20 rounded">
+                            <h4 class="text-green-400 font-bold mb-2 text-sm font-tech"><i class="fa-solid fa-arrow-down mr-2"></i>INFLOW (INCOME)</h4>
+                            <ul class="text-xs text-gray-400 list-disc ml-4 space-y-1">
+                                <li>Tier Subscription (구독)</li>
+                                <li>Stardust (SD) Packs</li>
+                                <li>Staking Rewards</li>
+                            </ul>
+                        </div>
+                        <div class="p-4 bg-red-900/10 border border-red-500/20 rounded">
+                            <h4 class="text-red-400 font-bold mb-2 text-sm font-tech"><i class="fa-solid fa-fire mr-2"></i>SINKS (BURN)</h4>
+                            <ul class="text-xs text-gray-400 list-disc ml-4 space-y-1">
+                                <li>Entropy Tax (좌표 유지비)</li>
+                                <li>Zone 0 Auction Bids</li>
+                                <li>Visual Items (Flex)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:w-2/3 grid md:grid-cols-2 gap-6">
+                    <div class="glass-panel p-6">
+                        <h4 class="text-xs text-center text-gray-500 font-tech uppercase mb-4">Revenue Mix (Projected)</h4>
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                    <div class="glass-panel p-6">
+                        <h4 class="text-xs text-center text-gray-500 font-tech uppercase mb-4">User Tier Distribution</h4>
+                        <canvas id="userChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tech" class="py-24 px-6 max-w-7xl mx-auto mb-10">
+        <h2 class="text-4xl font-serif font-bold text-white text-center mb-16">Technology Stack</h2>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20">
+            <div class="glass-panel p-6 text-center hover:bg-blue-900/10 transition group">
+                <i class="fa-brands fa-microsoft text-5xl text-blue-500 mb-4 group-hover:scale-110 transition"></i>
+                <h3 class="font-bold text-white">ASP.NET Core 8</h3>
+                <p class="text-xs text-gray-500 font-tech mt-2">BACKEND SERVER</p>
+                <div class="mt-4 text-[10px] text-gray-600 border-t border-gray-800 pt-2">
+                    High Performance API<br>Worker Service Architecture
+                </div>
+            </div>
+            <div class="glass-panel p-6 text-center hover:bg-gray-800/50 transition group">
+                <i class="fa-brands fa-unity text-5xl text-white mb-4 group-hover:scale-110 transition"></i>
+                <h3 class="font-bold text-white">Unity 6</h3>
+                <p class="text-xs text-gray-500 font-tech mt-2">VISUAL CLIENT</p>
+                <div class="mt-4 text-[10px] text-gray-600 border-t border-gray-800 pt-2">
+                    Universal Render Pipeline<br>New Input System
+                </div>
+            </div>
+            <div class="glass-panel p-6 text-center hover:bg-green-900/10 transition group">
+                <i class="fa-solid fa-signal text-5xl text-green-500 mb-4 group-hover:scale-110 transition"></i>
+                <h3 class="font-bold text-white">SignalR</h3>
+                <p class="text-xs text-gray-500 font-tech mt-2">REAL-TIME SYNC</p>
+                <div class="mt-4 text-[10px] text-gray-600 border-t border-gray-800 pt-2">
+                    WebSocket Protocol<br>Live Coordinates
+                </div>
+            </div>
+            <div class="glass-panel p-6 text-center hover:bg-red-900/10 transition group">
+                <i class="fa-solid fa-server text-5xl text-red-500 mb-4 group-hover:scale-110 transition"></i>
+                <h3 class="font-bold text-white">Redis</h3>
+                <p class="text-xs text-gray-500 font-tech mt-2">INFRASTRUCTURE</p>
+                <div class="mt-4 text-[10px] text-gray-600 border-t border-gray-800 pt-2">
+                    Backplane for Scale-out<br>In-Memory Caching
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-panel p-8 max-w-3xl mx-auto">
+            <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-terminal text-gold"></i> Development Status Log
+            </h3>
+            <div class="space-y-4 font-mono text-sm">
+                <div class="flex items-start gap-4">
+                    <span class="text-green-500 mt-1">✓</span>
+                    <div>
+                        <span class="text-white font-bold">Phase 1: Foundation Core</span>
+                        <p class="text-gray-500 text-xs mt-1">Server Setup (.NET 8), SignalR Hub Configuration, Basic Unity Viewer, Chat System</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <span class="text-green-500 mt-1">✓</span>
+                    <div>
+                        <span class="text-white font-bold">Phase 1.5: Auction Engine</span>
+                        <p class="text-gray-500 text-xs mt-1">AuctionWorker.cs Implemented, Real-time Bidding Logic, Redis State Management</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 p-3 bg-gold/5 border border-gold/20 rounded">
+                    <span class="text-gold mt-1 animate-pulse">▶</span>
+                    <div>
+                        <span class="text-gold font-bold">Phase 2: Economy & Mobile (Current)</span>
+                        <p class="text-gray-400 text-xs mt-1">Payment Gateway Integration, Pinch Zoom (Mobile Input), GPS Data Sync</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 opacity-50">
+                    <span class="text-gray-600 mt-1">•</span>
+                    <div>
+                        <span class="text-gray-400 font-bold">Phase 3: Global & AI</span>
+                        <p class="text-gray-600 text-xs mt-1">Localization (7 Languages), AI Dummy Simulation, Marketing Launch</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/10 bg-black py-12 text-center relative z-10">
+        <h2 class="text-2xl font-serif font-bold text-white mb-6">Are you ready to be the One?</h2>
+        <p class="text-gray-600 text-xs font-tech tracking-widest mb-8">© 2025 PROJECT N/ONE. ALL RIGHTS RESERVED.</p>
+        <button class="px-10 py-4 bg-white text-black font-bold font-tech tracking-widest hover:bg-gold transition transform hover:scale-105">
+            ENTER THE UNIVERSE
+        </button>
+    </footer>
+
+    <script>
+        // --- 1. Galaxy Simulation (Canvas) ---
+        // Requirement: 25 Heritage Stars in Center + 1/n Orbiting Stars
+        const galaxyCanvas = document.getElementById('galaxySim');
+        const gCtx = galaxyCanvas.getContext('2d');
+        let gWidth, gHeight;
+
+        const heritageCount = 25;
+        const heritageStars = [];
+        const ringStars = [];
+
+        function initGalaxy() {
+            // High DPI adjustment
+            const dpr = window.devicePixelRatio || 1;
+            const rect = galaxyCanvas.getBoundingClientRect();
+            
+            galaxyCanvas.width = rect.width * dpr;
+            galaxyCanvas.height = rect.height * dpr;
+            gCtx.scale(dpr, dpr);
+            gWidth = rect.width;
+            gHeight = rect.height;
+
+            // Create Heritage Stars (Center Cluster)
+            heritageStars.length = 0;
+            for(let i=0; i<heritageCount; i++) {
+                heritageStars.push({
+                    x: (Math.random() - 0.5) * 60, // Tight cluster
+                    y: (Math.random() - 0.5) * 60,
+                    size: Math.random() * 2 + 2,
+                    alpha: Math.random(),
+                    pulseSpeed: 0.02 + Math.random() * 0.03
+                });
+            }
+
+            // Create Orbit Rings (1/n Distribution Simulation)
+            // Zone 1 (Royal): Small radius, Fewer stars, Fast
+            createRing(100, 140, 60, 0.5, '#C5A059'); 
+            // Zone 2 (Settler): Medium radius, More stars, Medium speed
+            createRing(150, 220, 150, 0.3, '#888888'); 
+            // Zone 3 (Nomad): Large radius, Most stars, Slow speed
+            createRing(230, 350, 300, 0.1, '#444444');
+        }
+
+        function createRing(minR, maxR, count, speed, color) {
+            for(let i=0; i<count; i++) {
+                const r = minR + Math.random() * (maxR - minR);
+                const theta = Math.random() * Math.PI * 2;
+                ringStars.push({
+                    r: r,
+                    theta: theta,
+                    speed: (speed + Math.random() * 0.1) * (Math.random() > 0.5 ? 1 : -1) * 0.005, // Some orbit different ways
+                    size: Math.random() * 1.5 + 0.5,
+                    color: color
+                });
+            }
+        }
+
+        function animateGalaxy() {
+            gCtx.clearRect(0, 0, gWidth, gHeight);
+            gCtx.save();
+            gCtx.translate(gWidth/2, gHeight/2);
+
+            // Draw Heritage (Center) - Diamond Shape
+            gCtx.fillStyle = '#00F0FF'; // Accent Color for Heritage
+            gCtx.shadowBlur = 15;
+            gCtx.shadowColor = '#00F0FF';
+            heritageStars.forEach(star => {
+                star.alpha += star.pulseSpeed;
+                const opacity = (Math.sin(star.alpha) + 1) / 2 * 0.5 + 0.5;
+                gCtx.globalAlpha = opacity;
+                
+                // Draw Diamond
+                gCtx.beginPath();
+                gCtx.moveTo(star.x, star.y - star.size);
+                gCtx.lineTo(star.x + star.size, star.y);
+                gCtx.lineTo(star.x, star.y + star.size);
+                gCtx.lineTo(star.x - star.size, star.y);
+                gCtx.fill();
+            });
+            gCtx.shadowBlur = 0;
+            gCtx.globalAlpha = 1;
+
+            // Draw Orbit Rings
+            ringStars.forEach(star => {
+                star.theta += star.speed;
+                const x = star.r * Math.cos(star.theta);
+                const y = star.r * Math.sin(star.theta);
+                
+                gCtx.fillStyle = star.color;
+                gCtx.beginPath();
+                gCtx.arc(x, y, star.size, 0, Math.PI * 2);
+                gCtx.fill();
+            });
+
+            gCtx.restore();
+            requestAnimationFrame(animateGalaxy);
+        }
+
+        // --- 2. Background Starfield ---
+        const bgCanvas = document.getElementById('starfield');
+        const bgCtx = bgCanvas.getContext('2d');
+        let bgStars = [];
+
+        function initBg() {
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+            bgStars = [];
+            for(let i=0; i<300; i++) {
+                bgStars.push({
+                    x: Math.random() * bgCanvas.width,
+                    y: Math.random() * bgCanvas.height,
+                    size: Math.random(),
+                    alpha: Math.random()
+                });
+            }
+        }
+        function animateBg() {
+            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+            bgCtx.fillStyle = 'white';
+            bgStars.forEach(s => {
+                bgCtx.globalAlpha = s.alpha;
+                bgCtx.beginPath();
+                bgCtx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+                bgCtx.fill();
+            });
+            requestAnimationFrame(animateBg);
+        }
+
+        // --- 3. Chart.js Config ---
+        Chart.defaults.font.family = '"Rajdhani", sans-serif';
+        Chart.defaults.color = '#666';
+
+        // Revenue Chart (Doughnut)
+        new Chart(document.getElementById('revenueChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Subscriptions (Stable)', 'Items/Add-on (Variable)', 'Auction (High Value)'],
+                datasets: [{
+                    data: [65, 20, 15],
+                    backgroundColor: ['#C5A059', '#333333', '#00F0FF'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                cutout: '70%',
+                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle' } } }
+            }
+        });
+
+        // User Chart (Bar - Horizontal)
+        new Chart(document.getElementById('userChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Nomad', 'Settler', 'Royal', 'Hidden'],
+                datasets: [{
+                    label: 'User Count',
+                    data: [940000, 50000, 9975, 25],
+                    backgroundColor: ['#444', '#888', '#C5A059', '#00F0FF'],
+                    barThickness: 10
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                scales: { x: { display: false }, y: { grid: { display: false } } },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        // Init All
+        window.addEventListener('resize', () => { initGalaxy(); initBg(); });
+        initGalaxy();
+        animateGalaxy();
+        initBg();
+        animateBg();
+
+    </script>
+</body>
+</html>
