@@ -3,518 +3,586 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>N/ONE : The Exclusive Orbit</title>
+    <title>PROJECT N/ONE : The Absolute Void</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@200;400;600;800&family=Noto+Sans+KR:wght@300;500;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        void: '#050505',
-                        panel: 'rgba(20, 20, 20, 0.6)',
-                        gold: '#D4AF37',
-                        'gold-light': '#F2D06B',
-                        'gold-dark': '#997B19',
-                        neon: '#00f3ff',
+                        void: '#020202',
+                        gold: '#C5A059',
+                        'gold-light': '#E5C585',
+                        'gold-dim': 'rgba(197, 160, 89, 0.1)',
+                        glass: 'rgba(255, 255, 255, 0.03)',
+                        'glass-border': 'rgba(255, 255, 255, 0.08)',
+                        accent: '#00F0FF' // Cyberpunk Accent
                     },
                     fontFamily: {
-                        sans: ['"Inter"', '"Noto Sans KR"', 'sans-serif'],
                         serif: ['"Cinzel"', 'serif'],
+                        tech: ['"Rajdhani"', 'sans-serif'],
+                        sans: ['"Noto Sans KR"', 'sans-serif'],
                     },
                     backgroundImage: {
-                        'gradient-gold': 'linear-gradient(135deg, #F2D06B 0%, #D4AF37 50%, #997B19 100%)',
-                        'gradient-dark': 'linear-gradient(to bottom, #050505, #1a1a1a)',
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
                     }
                 }
             }
         }
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <style>
-        body { background-color: #050505; color: #ffffff; overflow-x: hidden; }
+        body { background-color: #020202; color: #E5E5E5; overflow-x: hidden; }
         
-        /* Custom Scrollbar */
+        /* Typography Utilities */
+        .text-glow { text-shadow: 0 0 20px rgba(197, 160, 89, 0.5); }
+        .text-accent-glow { text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); }
+        
+        /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+        ::-webkit-scrollbar-thumb:hover { background: #C5A059; }
 
-        /* Glass Effect */
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        /* Glass Cards */
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
         }
-        
-        .glass-gold {
-            background: rgba(212, 175, 55, 0.05);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
-        }
-
-        /* Typography Gradients */
-        .text-gradient-gold {
-            background: linear-gradient(135deg, #FFF5C3 0%, #D4AF37 50%, #8A6E14 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .glass-panel:hover {
+            border-color: rgba(197, 160, 89, 0.3);
+            transform: translateY(-2px);
         }
 
         /* Animations */
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-            will-change: opacity, visibility;
-        }
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: none;
-        }
-
-        /* Starfield Canvas */
-        #starfield {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        
+        @keyframes scanline { 0% { top: -100%; } 100% { top: 100%; } }
+        .scanline::after {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(0, 240, 255, 0.05), transparent);
+            animation: scanline 4s linear infinite; pointer-events: none;
         }
 
-        /* Glitch Text Effect */
-        .glitch-wrapper { position: relative; }
-        .glitch::before, .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-        }
-        .glitch::before {
-            left: 2px; text-shadow: -1px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim-1 5s infinite linear alternate-reverse;
-        }
-        .glitch::after {
-            left: -2px; text-shadow: -1px 0 #00fff9; clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim-2 5s infinite linear alternate-reverse;
-        }
-        @keyframes glitch-anim-1 {
-            0% { clip: rect(30px, 9999px, 10px, 0); }
-            5% { clip: rect(70px, 9999px, 90px, 0); }
-            100% { clip: rect(10px, 9999px, 80px, 0); }
-        }
-        @keyframes glitch-anim-2 {
-            0% { clip: rect(10px, 9999px, 90px, 0); }
-            5% { clip: rect(30px, 9999px, 10px, 0); }
-            100% { clip: rect(80px, 9999px, 30px, 0); }
-        }
+        /* Background Canvas */
+        #starfield, #galaxySim { position: absolute; top: 0; left: 0; z-index: 0; }
+        #galaxySim { position: relative; width: 100%; height: 600px; border-radius: 100%; border: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
 <body class="antialiased">
 
-    <canvas id="starfield"></canvas>
+    <canvas id="starfield" class="fixed w-full h-full opacity-40 pointer-events-none"></canvas>
 
-    <nav class="fixed w-full z-50 px-6 py-4 flex justify-between items-center bg-black/50 backdrop-blur-md border-b border-white/5">
-        <div class="text-2xl font-serif font-bold tracking-widest text-white">N/ONE</div>
-        <div class="hidden md:flex gap-8 text-xs font-light tracking-widest uppercase text-gray-400">
-            <a href="#vision" class="hover:text-gold transition">Vision</a>
-            <a href="#hierarchy" class="hover:text-gold transition">Hierarchy</a>
-            <a href="#revenue" class="text-gold font-bold hover:text-white transition">Business Model</a>
-            <a href="#tech" class="hover:text-gold transition">Tech Stack</a>
+    <nav class="fixed w-full z-50 px-8 py-5 flex justify-between items-center bg-black/80 backdrop-blur-md border-b border-white/5">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-meteor text-gold text-xl animate-pulse"></i>
+            <div class="text-2xl font-serif font-bold tracking-[0.2em] text-white">N/ONE</div>
         </div>
-        <div class="px-3 py-1 border border-gold/50 rounded-full text-[10px] text-gold uppercase tracking-widest animate-pulse">
-            Dev Status: Active
+        <div class="hidden md:flex gap-10 font-tech text-sm tracking-widest text-gray-400 uppercase">
+            <a href="#vision" class="hover:text-gold transition">Vision</a>
+            <a href="#galaxy" class="hover:text-gold transition">Galaxy Architecture</a>
+            <a href="#economy" class="hover:text-gold transition">Economy</a>
+            <a href="#tech" class="hover:text-accent transition text-white">Tech Stack</a>
+        </div>
+        <div class="px-4 py-2 border border-gold/30 bg-gold/10 rounded text-xs font-bold text-gold font-tech tracking-widest animate-pulse">
+            STATUS: ACTIVE DEV
         </div>
     </nav>
 
-    <header class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-void/50 to-void pointer-events-none"></div>
+    <header class="relative min-h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gold rounded-full opacity-5 blur-[120px]"></div>
         
-        <h2 class="text-gray-400 text-xs md:text-sm tracking-[0.8em] uppercase mb-6 fade-in-section">Digital Social Experiment</h2>
-        <div class="glitch-wrapper mb-8 fade-in-section">
-            <h1 class="text-7xl md:text-9xl font-serif font-black text-white leading-none glitch" data-text="THE VOID">
-                THE VOID
-            </h1>
-        </div>
-        <p class="max-w-2xl text-gray-400 text-lg md:text-xl font-light mb-12 leading-relaxed fade-in-section">
-            <span class="text-white font-medium">"Less is More. Be the One in None."</span><br>
-            100만 명의 한정된 자리. 당신의 좌표는 영원하지 않습니다.<br>
-            <span class="text-gold/80 text-sm mt-2 block">현대인의 실존적 불안과 자본 계급을 투영한 하이엔드 메타버스</span>
+        <h2 class="text-accent font-tech tracking-[0.5em] text-sm md:text-base mb-6 animate-float">DIGITAL SOCIAL EXPERIMENT V3.0</h2>
+        <h1 class="text-7xl md:text-9xl font-serif font-black text-white mb-4 leading-none tracking-tighter text-glow">
+            THE VOID
+        </h1>
+        <p class="text-xl md:text-2xl font-sans font-light text-gray-300 mb-12 max-w-2xl leading-relaxed">
+            "Less is More. Be the One in None."<br>
+            <span class="text-gold/80 text-sm md:text-base block mt-4 font-tech tracking-widest">
+                1,000,000 HARD CAP · PERMADEATH · AI ECONOMY
+            </span>
         </p>
-        
-        <div class="flex gap-4 fade-in-section">
-            <button class="px-8 py-4 bg-gradient-gold text-black font-bold text-sm tracking-widest hover:scale-105 transition transform shadow-[0_0_20px_rgba(212,175,55,0.4)]">
-                ENTER ORBIT
-            </button>
-            <button class="px-8 py-4 border border-white/20 text-white font-bold text-sm tracking-widest hover:bg-white/10 transition backdrop-blur-sm">
-                VIEW DECK
-            </button>
-        </div>
 
-        <div class="absolute bottom-10 w-full max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-left border-t border-white/10 pt-6 fade-in-section">
-            <div>
-                <div class="text-xs text-gray-500 uppercase tracking-wider">Total Cap</div>
-                <div class="text-2xl font-serif text-white">1,000,000</div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-5xl z-10">
+            <div class="glass-panel p-6 rounded-none border-l-2 border-l-gold">
+                <div class="text-gray-500 text-xs font-tech uppercase tracking-wider mb-2">Max Population</div>
+                <div class="text-3xl font-serif text-white">1,000,000</div>
+                <div class="text-[10px] text-gray-600 mt-1">Absolute Scarcity</div>
             </div>
-            <div>
-                <div class="text-xs text-gray-500 uppercase tracking-wider">Zones</div>
-                <div class="text-2xl font-serif text-white">4 <span class="text-xs text-gray-600 align-middle">Layers</span></div>
+            <div class="glass-panel p-6 rounded-none border-l-2 border-l-accent">
+                <div class="text-gray-500 text-xs font-tech uppercase tracking-wider mb-2">Heritage Seats</div>
+                <div class="text-3xl font-serif text-accent">25</div>
+                <div class="text-[10px] text-gray-600 mt-1">Zone 0: The Hidden</div>
             </div>
-            <div>
-                <div class="text-xs text-gray-500 uppercase tracking-wider">Potential MRR</div>
-                <div class="text-2xl font-serif text-gold">$1.4M+</div>
+            <div class="glass-panel p-6 rounded-none border-l-2 border-l-green-500">
+                <div class="text-gray-500 text-xs font-tech uppercase tracking-wider mb-2">Projected ARR</div>
+                <div class="text-3xl font-serif text-green-400">$16.6M+</div>
+                <div class="text-[10px] text-gray-600 mt-1">Based on Subscription</div>
             </div>
-            <div>
-                <div class="text-xs text-gray-500 uppercase tracking-wider">Retention Strategy</div>
-                <div class="text-2xl font-serif text-red-500 text-sm mt-1">PERMADEATH</div>
+            <div class="glass-panel p-6 rounded-none border-l-2 border-l-red-500">
+                <div class="text-gray-500 text-xs font-tech uppercase tracking-wider mb-2">Retention Hook</div>
+                <div class="text-3xl font-serif text-red-500 text-lg md:text-xl pt-2">PERMADEATH</div>
+                <div class="text-[10px] text-gray-600 mt-1">Sunk Cost Strategy</div>
             </div>
         </div>
     </header>
 
-    <section id="vision" class="py-32 px-6 max-w-7xl mx-auto">
-        <div class="grid md:grid-cols-2 gap-16 items-center">
-            <div class="space-y-8 fade-in-section">
-                <h2 class="text-4xl md:text-5xl font-serif font-bold text-white">Engineered for<br><span class="text-gradient-gold">Extreme Retention</span></h2>
-                <div class="space-y-6">
-                    <div class="glass p-6 border-l-2 border-red-500">
-                        <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-skull-crossbones text-red-500 mr-2"></i> Permadeath (영구적 소멸)</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">
-                            구독을 해지하거나 세금(Entropy Tax)을 내지 못하면 별은 즉시 소멸합니다. 
-                            좌표는 영구적으로 타인에게 넘어갑니다. <span class="text-white">상실에 대한 공포(Loss Aversion)</span>가 가장 강력한 유지 동기입니다.
-                        </p>
+    <section id="vision" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row gap-16 items-start">
+            <div class="md:w-1/2 space-y-8 sticky top-24">
+                <h2 class="text-4xl font-serif font-bold text-white mb-2">Designed for <br><span class="text-gold text-glow">Existential Anxiety</span></h2>
+                <p class="text-gray-400 font-light leading-relaxed">
+                    N/ONE은 단순한 메타버스가 아닙니다. 현대인의 '인정 욕구'와 '상실의 공포'를 자극하는 정교한 심리 실험실입니다.
+                </p>
+                
+                <div class="space-y-4">
+                    <div class="glass-panel p-5 border-l-2 border-red-500 flex gap-4">
+                        <div class="text-2xl text-red-500"><i class="fa-solid fa-skull"></i></div>
+                        <div>
+                            <h3 class="font-bold text-white font-tech tracking-wider">PERMADEATH (영구적 죽음)</h3>
+                            <p class="text-sm text-gray-400 mt-1">구독 해지 또는 세금 미납 시 별은 즉시 소멸하며, 좌표는 영구적으로 타인에게 넘어갑니다.</p>
+                        </div>
                     </div>
-                    <div class="glass p-6 border-l-2 border-gold">
-                        <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-link text-gold mr-2"></i> Sunk Cost & Status</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">
-                            유저는 별을 유지하기 위해 비용을 지불하며, 역설적으로 그 과정에서 강렬한 소속감과 우월감을 느낍니다. 
-                            "나는 이 100만 명 중 하나다"라는 <span class="text-white">디지털 멤버십</span>입니다.
-                        </p>
+                    <div class="glass-panel p-5 border-l-2 border-gold flex gap-4">
+                        <div class="text-2xl text-gold"><i class="fa-solid fa-coins"></i></div>
+                        <div>
+                            <h3 class="font-bold text-white font-tech tracking-wider">SUNK COST (매몰 비용)</h3>
+                            <p class="text-sm text-gray-400 mt-1">유지 비용이 누적될수록 유저는 떠날 수 없습니다. 역설적인 소속감을 부여합니다.</p>
+                        </div>
                     </div>
-                    <div class="glass p-6 border-l-2 border-blue-500">
-                        <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-person-walking text-blue-500 mr-2"></i> Cosmic Drift (GPS)</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">
-                            현실의 걷기 데이터(HealthKit)와 연동되어 별 주변에 '성운'이 생성됩니다. 
-                            <span class="text-white">Play to Flex</span>: 건강한 신체가 곧 디지털 공간에서의 아름다움이 됩니다.
-                        </p>
+                    <div class="glass-panel p-5 border-l-2 border-accent flex gap-4">
+                        <div class="text-2xl text-accent"><i class="fa-solid fa-person-walking"></i></div>
+                        <div>
+                            <h3 class="font-bold text-white font-tech tracking-wider">COSMIC DRIFT (GPS)</h3>
+                            <p class="text-sm text-gray-400 mt-1">현실의 걷기 데이터(HealthKit)와 연동됩니다. 건강한 신체가 디지털 성운(Nebula)을 만듭니다.</p>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="relative h-[600px] bg-black border border-white/10 rounded-full flex justify-center items-center fade-in-section">
-                <div class="absolute w-[90%] h-[90%] border border-gray-800 rounded-full animate-[spin_60s_linear_infinite]"></div>
-                <div class="absolute w-[65%] h-[65%] border border-gray-700 rounded-full animate-[spin_45s_linear_infinite_reverse]"></div>
-                <div class="absolute w-[40%] h-[40%] border border-gold/30 rounded-full shadow-[0_0_50px_rgba(212,175,55,0.1)] animate-[spin_30s_linear_infinite]"></div>
-                <div class="w-[100px] h-[100px] bg-gradient-gold rounded-full shadow-[0_0_100px_rgba(212,175,55,0.5)] z-10 flex items-center justify-center">
-                    <span class="font-serif font-black text-black text-2xl">0</span>
-                </div>
-                <div class="absolute top-1/2 right-4 text-xs text-gray-600 text-right">
-                    <div class="font-bold text-gray-400">ZONE 3 (Nomad)</div>
-                    <div>Mass Population</div>
-                </div>
-                <div class="absolute top-[30%] right-[15%] text-xs text-gray-500 text-right">
-                    <div class="font-bold text-gray-300">ZONE 2 (Settler)</div>
-                    <div>Middle Class</div>
-                </div>
-                <div class="absolute top-[40%] left-[35%] text-xs text-gold text-center">
-                    <div class="font-bold">ZONE 1 (Royal)</div>
-                    <div>Elite</div>
+            <div class="md:w-1/2 w-full">
+                <div class="glass-panel p-1 rounded w-full h-full min-h-[400px] flex items-center justify-center bg-black/50 relative overflow-hidden scanline">
+                    <div class="absolute inset-0 flex flex-col justify-center items-center text-center opacity-30">
+                        <i class="fa-solid fa-fingerprint text-9xl text-gray-800"></i>
+                        <span class="mt-4 font-tech text-4xl text-gray-700">IDENTITY</span>
+                    </div>
+                    <div class="z-10 text-center space-y-4">
+                        <div class="text-xs text-accent font-tech tracking-widest mb-2">/// SYSTEM LOGIC</div>
+                        <div class="bg-black/80 border border-green-500/30 p-4 font-mono text-xs text-green-400 text-left w-full max-w-sm mx-auto shadow-[0_0_15px_rgba(0,255,0,0.1)]">
+                            > User.Connect()<br>
+                            > Check.Subscription()...<br>
+                            > <span class="text-green-200">Status: ACTIVE (Royal)</span><br>
+                            > Entropy Tax: Calculated<br>
+                            > GPS Drift: Syncing...<br>
+                            <span class="animate-pulse">> _</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="revenue" class="py-32 bg-gradient-to-b from-void to-gray-900">
+    <section id="galaxy" class="py-24 bg-gradient-to-b from-void via-[#0a0a0a] to-void relative">
+        <div class="max-w-7xl mx-auto px-6 text-center mb-12">
+            <h2 class="text-4xl font-serif font-bold text-white mb-4">Galaxy Architecture</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto">
+                중앙의 <span class="text-gold font-bold">25개 헤리티지(The Hidden)</span>를 중심으로,<br>
+                100만 명의 유저가 계급에 따라 궤도를 순환하는 절대 위계 구조입니다.
+            </p>
+        </div>
+
+        <div class="relative max-w-4xl mx-auto aspect-square md:aspect-video flex items-center justify-center">
+            <canvas id="galaxySim"></canvas>
+            
+            <div class="absolute top-[45%] left-[50%] -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                <span class="text-[10px] text-gold font-tech tracking-widest bg-black/50 px-2 py-1 rounded border border-gold/20">ZONE 0: SANCTUM (25 SEATS)</span>
+            </div>
+            <div class="absolute bottom-10 right-10 text-right pointer-events-none">
+                <div class="flex items-center justify-end gap-2 text-xs text-gray-400 mb-1">
+                    <span class="w-2 h-2 rounded-full bg-gold"></span> Zone 1: Royal (Elite)
+                </div>
+                <div class="flex items-center justify-end gap-2 text-xs text-gray-400 mb-1">
+                    <span class="w-2 h-2 rounded-full bg-gray-400"></span> Zone 2: Settler (Middle)
+                </div>
+                <div class="flex items-center justify-end gap-2 text-xs text-gray-400">
+                    <span class="w-2 h-2 rounded-full bg-gray-700"></span> Zone 3: Nomad (Mass)
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="class" class="py-24 px-6 max-w-7xl mx-auto">
+        <h2 class="text-4xl font-serif font-bold text-white text-center mb-16">The Hierarchy</h2>
+        
+        <div class="grid md:grid-cols-4 gap-6">
+            <div class="glass-panel p-8 flex flex-col items-center text-center border-t-4 border-t-gray-700 group">
+                <div class="text-gray-500 text-xs font-tech tracking-widest mb-4">TIER 1 (94%)</div>
+                <h3 class="text-2xl font-serif font-bold text-gray-400 mb-2 group-hover:text-white transition">NOMAD</h3>
+                <div class="text-3xl font-light text-white mb-6">$0.99<span class="text-sm text-gray-500">/mo</span></div>
+                <ul class="text-xs text-left w-full space-y-3 text-gray-400 mb-8 flex-grow">
+                    <li class="flex items-center"><i class="fa-solid fa-circle text-[6px] mr-3 text-gray-600"></i>Zone 3 (Outer Rim)</li>
+                    <li class="flex items-center"><i class="fa-solid fa-circle text-[6px] mr-3 text-gray-600"></i>기본 성장 (1.0x)</li>
+                    <li class="flex items-center"><i class="fa-solid fa-circle text-[6px] mr-3 text-gray-600"></i>KYC 선택</li>
+                </ul>
+                <button class="w-full py-3 border border-gray-700 text-gray-400 text-xs font-bold hover:bg-gray-800 transition">VIEW DETAILS</button>
+            </div>
+
+            <div class="glass-panel p-8 flex flex-col items-center text-center border-t-4 border-t-gray-400 group">
+                <div class="text-gray-400 text-xs font-tech tracking-widest mb-4">TIER 2 (5%)</div>
+                <h3 class="text-2xl font-serif font-bold text-gray-300 mb-2 group-hover:text-white transition">SETTLER</h3>
+                <div class="text-3xl font-light text-white mb-6">$4.99<span class="text-sm text-gray-500">/mo</span></div>
+                <ul class="text-xs text-left w-full space-y-3 text-gray-400 mb-8 flex-grow">
+                    <li class="flex items-center"><i class="fa-solid fa-circle text-[6px] mr-3 text-gray-400"></i>Zone 2 (Inner Rim)</li>
+                    <li class="flex items-center"><i class="fa-solid fa-circle text-[6px] mr-3 text-gray-400"></i>빠른 성장 (1.5x)</li>
+                    <li class="flex items-center"><i class="fa-solid fa-circle text-[6px] mr-3 text-gray-400"></i>KYC 필수</li>
+                </ul>
+                <button class="w-full py-3 border border-gray-500 text-gray-300 text-xs font-bold hover:bg-gray-700 transition">VIEW DETAILS</button>
+            </div>
+
+            <div class="glass-panel p-8 flex flex-col items-center text-center border-t-4 border-t-gold bg-gold/5 group transform scale-105 shadow-[0_0_30px_rgba(197,160,89,0.15)] relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-gold text-black text-[9px] font-bold px-2 py-1 font-tech">RECOMMENDED</div>
+                <div class="text-gold text-xs font-tech tracking-widest mb-4">TIER 3 (1%)</div>
+                <h3 class="text-2xl font-serif font-bold text-gold mb-2">ROYAL</h3>
+                <div class="text-3xl font-light text-white mb-6">$19.99<span class="text-sm text-gray-500">/mo</span></div>
+                <ul class="text-xs text-left w-full space-y-3 text-gray-300 mb-8 flex-grow">
+                    <li class="flex items-center"><i class="fa-solid fa-star text-[8px] mr-3 text-gold"></i>Zone 1 (The Core)</li>
+                    <li class="flex items-center"><i class="fa-solid fa-bolt text-[8px] mr-3 text-gold"></i>가속 성장 (2.0x)</li>
+                    <li class="flex items-center"><i class="fa-solid fa-credit-card text-[8px] mr-3 text-gold"></i>실물 메탈 카드</li>
+                </ul>
+                <button class="w-full py-3 bg-gold text-black text-xs font-bold hover:bg-white transition">JOIN WAITLIST</button>
+            </div>
+
+            <div class="glass-panel p-8 flex flex-col items-center text-center border-t-4 border-t-accent bg-accent/5 group">
+                <div class="text-accent text-xs font-tech tracking-widest mb-4">HERITAGE (25 SEATS)</div>
+                <h3 class="text-2xl font-serif font-bold text-white mb-2">THE HIDDEN</h3>
+                <div class="text-3xl font-light text-white mb-6">Auction<span class="text-sm text-gray-500"> Only</span></div>
+                <ul class="text-xs text-left w-full space-y-3 text-gray-400 mb-8 flex-grow">
+                    <li class="flex items-center"><i class="fa-solid fa-gem text-[8px] mr-3 text-accent"></i>Zone 0 (Sanctum)</li>
+                    <li class="flex items-center"><i class="fa-solid fa-percent text-[8px] mr-3 text-accent"></i>세금 50% 감면</li>
+                    <li class="flex items-center"><i class="fa-solid fa-crown text-[8px] mr-3 text-accent"></i>경매 독점권</li>
+                </ul>
+                <button class="w-full py-3 border border-accent text-accent text-xs font-bold hover:bg-accent hover:text-black transition">VIEW AUCTION</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="economy" class="py-24 bg-[#050505]">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-16 fade-in-section">
-                <div>
-                    <h2 class="text-xs text-gold font-bold tracking-widest uppercase mb-2">Business Model</h2>
-                    <h3 class="text-4xl md:text-5xl font-serif font-bold text-white">Projected Revenue</h3>
+            <div class="flex flex-col md:flex-row gap-12">
+                <div class="md:w-1/3 space-y-8">
+                    <div>
+                        <h2 class="text-4xl font-serif font-bold text-white mb-4">AI Economy Ecosystem</h2>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            AI가 실시간으로 금리와 인플레이션을 조절하는 '숨 쉬는 경제'입니다.
+                            Entropy Tax(세금)와 Auction(경매)은 생태계 붕괴를 막는 핵심 소각처입니다.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="p-4 bg-green-900/10 border border-green-500/20 rounded">
+                            <h4 class="text-green-400 font-bold mb-2 text-sm font-tech"><i class="fa-solid fa-arrow-down mr-2"></i>INFLOW (INCOME)</h4>
+                            <ul class="text-xs text-gray-400 list-disc ml-4 space-y-1">
+                                <li>Tier Subscription (구독)</li>
+                                <li>Stardust (SD) Packs</li>
+                                <li>Staking Rewards</li>
+                            </ul>
+                        </div>
+                        <div class="p-4 bg-red-900/10 border border-red-500/20 rounded">
+                            <h4 class="text-red-400 font-bold mb-2 text-sm font-tech"><i class="fa-solid fa-fire mr-2"></i>SINKS (BURN)</h4>
+                            <ul class="text-xs text-gray-400 list-disc ml-4 space-y-1">
+                                <li>Entropy Tax (좌표 유지비)</li>
+                                <li>Zone 0 Auction Bids</li>
+                                <li>Visual Items (Flex)</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-gray-400 text-right text-sm mt-4 md:mt-0">
-                    Based on 100% Occupancy (1M Users)<br>
-                    Conservative Estimate (Excluding Auction & Transaction Fees)
-                </p>
-            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16 fade-in-section">
-                <div class="glass p-8 rounded-none border-t-2 border-gray-600 hover:bg-white/5 transition">
-                    <div class="text-gray-500 text-xs uppercase tracking-widest mb-2">Total Users</div>
-                    <div class="text-3xl font-serif text-white">1,000,000</div>
-                    <div class="text-xs text-green-500 mt-2">Hard Cap Limit</div>
-                </div>
-                <div class="glass p-8 rounded-none border-t-2 border-gold hover:bg-white/5 transition">
-                    <div class="text-gray-500 text-xs uppercase tracking-widest mb-2">Monthly Recurring (MRR)</div>
-                    <div class="text-3xl font-serif text-gold">$1,390,000</div>
-                    <div class="text-xs text-gray-400 mt-2">Subscription Only</div>
-                </div>
-                <div class="glass p-8 rounded-none border-t-2 border-gold hover:bg-white/5 transition">
-                    <div class="text-gray-500 text-xs uppercase tracking-widest mb-2">Annual Recurring (ARR)</div>
-                    <div class="text-3xl font-serif text-white">$16,680,000</div>
-                    <div class="text-xs text-gray-400 mt-2">Base Projection</div>
-                </div>
-                <div class="glass p-8 rounded-none border-t-2 border-blue-500 hover:bg-white/5 transition">
-                    <div class="text-gray-500 text-xs uppercase tracking-widest mb-2">Add-on Revenue</div>
-                    <div class="text-3xl font-serif text-blue-400">Variable</div>
-                    <div class="text-xs text-gray-400 mt-2">Auction + Tax + Items</div>
-                </div>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8 h-[400px] fade-in-section">
-                <div class="glass p-6 col-span-1 flex flex-col">
-                    <h4 class="text-sm text-gray-400 mb-4 uppercase tracking-wider">Tier Distribution (Users)</h4>
-                    <div class="flex-grow relative">
+                <div class="md:w-2/3 grid md:grid-cols-2 gap-6">
+                    <div class="glass-panel p-6">
+                        <h4 class="text-xs text-center text-gray-500 font-tech uppercase mb-4">Revenue Mix (Projected)</h4>
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                    <div class="glass-panel p-6">
+                        <h4 class="text-xs text-center text-gray-500 font-tech uppercase mb-4">User Tier Distribution</h4>
                         <canvas id="userChart"></canvas>
                     </div>
                 </div>
-                <div class="glass p-6 col-span-2 flex flex-col">
-                    <h4 class="text-sm text-gray-400 mb-4 uppercase tracking-wider">Revenue Growth Simulation (Year 1)</h4>
-                    <div class="flex-grow relative">
-                        <canvas id="revenueChart"></canvas>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
-    <section id="hierarchy" class="py-32 px-6 max-w-7xl mx-auto">
-        <h2 class="text-4xl md:text-5xl font-serif font-bold text-center text-white mb-20 fade-in-section">The Hierarchy</h2>
+    <section id="tech" class="py-24 px-6 max-w-7xl mx-auto mb-10">
+        <h2 class="text-4xl font-serif font-bold text-white text-center mb-16">Technology Stack</h2>
         
-        <div class="grid md:grid-cols-4 gap-4 fade-in-section">
-            <div class="glass p-8 text-center hover:transform hover:-translate-y-2 transition duration-500 cursor-default group">
-                <div class="text-gray-500 text-xs tracking-widest uppercase mb-4">Tier 1</div>
-                <h3 class="text-2xl font-serif font-bold text-white mb-2 group-hover:text-gray-300">NOMAD</h3>
-                <div class="text-4xl font-light text-gray-400 mb-6">$0.99<span class="text-sm text-gray-600">/mo</span></div>
-                <ul class="text-left text-xs text-gray-400 space-y-3 mb-8 min-h-[100px]">
-                    <li class="flex items-center"><i class="fa-solid fa-check text-gray-600 mr-2"></i> Zone 3 (Outer Rim)</li>
-                    <li class="flex items-center"><i class="fa-solid fa-check text-gray-600 mr-2"></i> Basic Growth (1.0x)</li>
-                    <li class="flex items-center"><i class="fa-solid fa-check text-gray-600 mr-2"></i> Optional KYC</li>
-                </ul>
-                <div class="w-full h-1 bg-gray-800 mt-4"></div>
-            </div>
-
-            <div class="glass p-8 text-center hover:transform hover:-translate-y-2 transition duration-500 cursor-default group">
-                <div class="text-gray-500 text-xs tracking-widest uppercase mb-4">Tier 2</div>
-                <h3 class="text-2xl font-serif font-bold text-white mb-2 group-hover:text-gray-200">SETTLER</h3>
-                <div class="text-4xl font-light text-gray-300 mb-6">$4.99<span class="text-sm text-gray-600">/mo</span></div>
-                <ul class="text-left text-xs text-gray-400 space-y-3 mb-8 min-h-[100px]">
-                    <li class="flex items-center"><i class="fa-solid fa-check text-gray-500 mr-2"></i> Zone 2 (Inner Rim)</li>
-                    <li class="flex items-center"><i class="fa-solid fa-check text-gray-500 mr-2"></i> Faster Growth (1.5x)</li>
-                    <li class="flex items-center"><i class="fa-solid fa-shield text-gray-500 mr-2"></i> KYC Mandatory</li>
-                </ul>
-                <div class="w-full h-1 bg-gray-600 mt-4"></div>
-            </div>
-
-            <div class="glass-gold p-8 text-center transform scale-105 z-10 cursor-default group relative overflow-hidden">
-                <div class="absolute top-0 right-0 bg-gold text-black text-[10px] font-bold px-2 py-1">MOST POPULAR</div>
-                <div class="text-gold text-xs tracking-widest uppercase mb-4">Tier 3</div>
-                <h3 class="text-2xl font-serif font-bold text-white mb-2 text-gradient-gold">ROYAL</h3>
-                <div class="text-4xl font-light text-gold mb-6">$19.99<span class="text-sm text-gold/50">/mo</span></div>
-                <ul class="text-left text-xs text-gray-300 space-y-3 mb-8 min-h-[100px]">
-                    <li class="flex items-center"><i class="fa-solid fa-crown text-gold mr-2"></i> Zone 1 (The Core)</li>
-                    <li class="flex items-center"><i class="fa-solid fa-bolt text-gold mr-2"></i> Turbo Growth (2.0x)</li>
-                    <li class="flex items-center"><i class="fa-solid fa-credit-card text-gold mr-2"></i> Physical Metal Card</li>
-                </ul>
-                <button class="w-full py-3 bg-gold text-black font-bold text-xs hover:bg-white transition">JOIN WAITLIST</button>
-            </div>
-
-            <div class="glass p-8 text-center hover:transform hover:-translate-y-2 transition duration-500 cursor-default border border-white/20 bg-white/5">
-                <div class="text-neon text-xs tracking-widest uppercase mb-4">Heritage</div>
-                <h3 class="text-2xl font-serif font-bold text-white mb-2">THE HIDDEN</h3>
-                <div class="text-4xl font-light text-white mb-6">Auction<span class="text-sm text-gray-600"> Only</span></div>
-                <ul class="text-left text-xs text-gray-400 space-y-3 mb-8 min-h-[100px]">
-                    <li class="flex items-center"><i class="fa-solid fa-gem text-neon mr-2"></i> Zone 0 (Sanctum)</li>
-                    <li class="flex items-center"><i class="fa-solid fa-percent text-neon mr-2"></i> Tax 50% Off</li>
-                    <li class="flex items-center"><i class="fa-solid fa-fingerprint text-neon mr-2"></i> Unique Identity</li>
-                </ul>
-                <div class="w-full h-1 bg-neon mt-4 shadow-[0_0_10px_#00f3ff]"></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="tech" class="py-32 px-6 max-w-7xl mx-auto border-t border-white/5">
-        <div class="grid md:grid-cols-2 gap-16">
-            <div class="fade-in-section">
-                <h3 class="text-2xl font-serif font-bold text-white mb-8">Technical Foundation</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="glass p-4">
-                        <div class="text-blue-500 font-bold mb-1">ASP.NET Core 8</div>
-                        <div class="text-xs text-gray-500">Robust Backend Performance</div>
-                    </div>
-                    <div class="glass p-4">
-                        <div class="text-white font-bold mb-1">Unity 6</div>
-                        <div class="text-xs text-gray-500">High-Fidelity Rendering</div>
-                    </div>
-                    <div class="glass p-4">
-                        <div class="text-green-500 font-bold mb-1">SignalR</div>
-                        <div class="text-xs text-gray-500">Real-time Coordinate Sync</div>
-                    </div>
-                    <div class="glass p-4">
-                        <div class="text-red-500 font-bold mb-1">Redis</div>
-                        <div class="text-xs text-gray-500">In-Memory Backplane</div>
-                    </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20">
+            <div class="glass-panel p-6 text-center hover:bg-blue-900/10 transition group">
+                <i class="fa-brands fa-microsoft text-5xl text-blue-500 mb-4 group-hover:scale-110 transition"></i>
+                <h3 class="font-bold text-white">ASP.NET Core 8</h3>
+                <p class="text-xs text-gray-500 font-tech mt-2">BACKEND SERVER</p>
+                <div class="mt-4 text-[10px] text-gray-600 border-t border-gray-800 pt-2">
+                    High Performance API<br>Worker Service Architecture
                 </div>
             </div>
+            <div class="glass-panel p-6 text-center hover:bg-gray-800/50 transition group">
+                <i class="fa-brands fa-unity text-5xl text-white mb-4 group-hover:scale-110 transition"></i>
+                <h3 class="font-bold text-white">Unity 6</h3>
+                <p class="text-xs text-gray-500 font-tech mt-2">VISUAL CLIENT</p>
+                <div class="mt-4 text-[10px] text-gray-600 border-t border-gray-800 pt-2">
+                    Universal Render Pipeline<br>New Input System
+                </div>
+            </div>
+            <div class="glass-panel p-6 text-center hover:bg-green-900/10 transition group">
+                <i class="fa-solid fa-signal text-5xl text-green-500 mb-4 group-hover:scale-110 transition"></i>
+                <h3 class="font-bold text-white">SignalR</h3>
+                <p class="text-xs text-gray-500 font-tech mt-2">REAL-TIME SYNC</p>
+                <div class="mt-4 text-[10px] text-gray-600 border-t border-gray-800 pt-2">
+                    WebSocket Protocol<br>Live Coordinates
+                </div>
+            </div>
+            <div class="glass-panel p-6 text-center hover:bg-red-900/10 transition group">
+                <i class="fa-solid fa-server text-5xl text-red-500 mb-4 group-hover:scale-110 transition"></i>
+                <h3 class="font-bold text-white">Redis</h3>
+                <p class="text-xs text-gray-500 font-tech mt-2">INFRASTRUCTURE</p>
+                <div class="mt-4 text-[10px] text-gray-600 border-t border-gray-800 pt-2">
+                    Backplane for Scale-out<br>In-Memory Caching
+                </div>
+            </div>
+        </div>
 
-            <div class="fade-in-section">
-                <h3 class="text-2xl font-serif font-bold text-white mb-8">Development Roadmap</h3>
-                <div class="relative border-l border-white/10 pl-8 space-y-8">
-                    <div class="relative">
-                        <div class="absolute -left-[37px] top-1 w-4 h-4 rounded-full bg-green-500 border-4 border-black"></div>
-                        <h4 class="text-white font-bold">Phase 1: Foundation (Completed)</h4>
-                        <p class="text-sm text-gray-500 mt-1">Server Setup, SignalR Core, Basic Viewer, Chat System</p>
+        <div class="glass-panel p-8 max-w-3xl mx-auto">
+            <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-terminal text-gold"></i> Development Status Log
+            </h3>
+            <div class="space-y-4 font-mono text-sm">
+                <div class="flex items-start gap-4">
+                    <span class="text-green-500 mt-1">✓</span>
+                    <div>
+                        <span class="text-white font-bold">Phase 1: Foundation Core</span>
+                        <p class="text-gray-500 text-xs mt-1">Server Setup (.NET 8), SignalR Hub Configuration, Basic Unity Viewer, Chat System</p>
                     </div>
-                    <div class="relative">
-                        <div class="absolute -left-[37px] top-1 w-4 h-4 rounded-full bg-gold border-4 border-black animate-pulse"></div>
-                        <h4 class="text-gold font-bold">Phase 2: Economy & Auction (Active)</h4>
-                        <p class="text-sm text-gray-500 mt-1">AuctionWorker Logic, Payment Integration, Mobile Input System</p>
+                </div>
+                <div class="flex items-start gap-4">
+                    <span class="text-green-500 mt-1">✓</span>
+                    <div>
+                        <span class="text-white font-bold">Phase 1.5: Auction Engine</span>
+                        <p class="text-gray-500 text-xs mt-1">AuctionWorker.cs Implemented, Real-time Bidding Logic, Redis State Management</p>
                     </div>
-                    <div class="relative">
-                        <div class="absolute -left-[37px] top-1 w-4 h-4 rounded-full bg-gray-700 border-4 border-black"></div>
-                        <h4 class="text-gray-400 font-bold">Phase 3: Global Launch</h4>
-                        <p class="text-sm text-gray-500 mt-1">Localization (7 Languages), AI Dummy Simulation, Marketing</p>
+                </div>
+                <div class="flex items-start gap-4 p-3 bg-gold/5 border border-gold/20 rounded">
+                    <span class="text-gold mt-1 animate-pulse">▶</span>
+                    <div>
+                        <span class="text-gold font-bold">Phase 2: Economy & Mobile (Current)</span>
+                        <p class="text-gray-400 text-xs mt-1">Payment Gateway Integration, Pinch Zoom (Mobile Input), GPS Data Sync</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 opacity-50">
+                    <span class="text-gray-600 mt-1">•</span>
+                    <div>
+                        <span class="text-gray-400 font-bold">Phase 3: Global & AI</span>
+                        <p class="text-gray-600 text-xs mt-1">Localization (7 Languages), AI Dummy Simulation, Marketing Launch</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="py-12 text-center text-gray-600 text-xs border-t border-white/5 bg-black">
-        <p class="mb-4 text-gold">PROJECT N/ONE : THE ORBIT</p>
-        <p>© 2025 All Rights Reserved. Investment Proposal Version.</p>
+    <footer class="border-t border-white/10 bg-black py-12 text-center relative z-10">
+        <h2 class="text-2xl font-serif font-bold text-white mb-6">Are you ready to be the One?</h2>
+        <p class="text-gray-600 text-xs font-tech tracking-widest mb-8">© 2025 PROJECT N/ONE. ALL RIGHTS RESERVED.</p>
+        <button class="px-10 py-4 bg-white text-black font-bold font-tech tracking-widest hover:bg-gold transition transform hover:scale-105">
+            ENTER THE UNIVERSE
+        </button>
     </footer>
 
     <script>
-        // --- 1. Starfield Background (Smoother & Darker) ---
-        const canvas = document.getElementById('starfield');
-        const ctx = canvas.getContext('2d');
-        let width, height, stars = [];
+        // --- 1. Galaxy Simulation (Canvas) ---
+        // Requirement: 25 Heritage Stars in Center + 1/n Orbiting Stars
+        const galaxyCanvas = document.getElementById('galaxySim');
+        const gCtx = galaxyCanvas.getContext('2d');
+        let gWidth, gHeight;
 
-        function initStars() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-            stars = [];
-            for (let i = 0; i < 400; i++) {
-                stars.push({
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    radius: Math.random() * 1.2,
-                    vx: (Math.random() - 0.5) * 0.1,
-                    vy: (Math.random() - 0.5) * 0.1,
-                    alpha: Math.random()
+        const heritageCount = 25;
+        const heritageStars = [];
+        const ringStars = [];
+
+        function initGalaxy() {
+            // High DPI adjustment
+            const dpr = window.devicePixelRatio || 1;
+            const rect = galaxyCanvas.getBoundingClientRect();
+            
+            galaxyCanvas.width = rect.width * dpr;
+            galaxyCanvas.height = rect.height * dpr;
+            gCtx.scale(dpr, dpr);
+            gWidth = rect.width;
+            gHeight = rect.height;
+
+            // Create Heritage Stars (Center Cluster)
+            heritageStars.length = 0;
+            for(let i=0; i<heritageCount; i++) {
+                heritageStars.push({
+                    x: (Math.random() - 0.5) * 60, // Tight cluster
+                    y: (Math.random() - 0.5) * 60,
+                    size: Math.random() * 2 + 2,
+                    alpha: Math.random(),
+                    pulseSpeed: 0.02 + Math.random() * 0.03
+                });
+            }
+
+            // Create Orbit Rings (1/n Distribution Simulation)
+            // Zone 1 (Royal): Small radius, Fewer stars, Fast
+            createRing(100, 140, 60, 0.5, '#C5A059'); 
+            // Zone 2 (Settler): Medium radius, More stars, Medium speed
+            createRing(150, 220, 150, 0.3, '#888888'); 
+            // Zone 3 (Nomad): Large radius, Most stars, Slow speed
+            createRing(230, 350, 300, 0.1, '#444444');
+        }
+
+        function createRing(minR, maxR, count, speed, color) {
+            for(let i=0; i<count; i++) {
+                const r = minR + Math.random() * (maxR - minR);
+                const theta = Math.random() * Math.PI * 2;
+                ringStars.push({
+                    r: r,
+                    theta: theta,
+                    speed: (speed + Math.random() * 0.1) * (Math.random() > 0.5 ? 1 : -1) * 0.005, // Some orbit different ways
+                    size: Math.random() * 1.5 + 0.5,
+                    color: color
                 });
             }
         }
 
-        function animateStars() {
-            ctx.clearRect(0, 0, width, height);
-            stars.forEach(star => {
-                ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                ctx.fill();
-                star.x += star.vx;
-                star.y += star.vy;
-                if (star.x < 0) star.x = width; if (star.x > width) star.x = 0;
-                if (star.y < 0) star.y = height; if (star.y > height) star.y = 0;
+        function animateGalaxy() {
+            gCtx.clearRect(0, 0, gWidth, gHeight);
+            gCtx.save();
+            gCtx.translate(gWidth/2, gHeight/2);
+
+            // Draw Heritage (Center) - Diamond Shape
+            gCtx.fillStyle = '#00F0FF'; // Accent Color for Heritage
+            gCtx.shadowBlur = 15;
+            gCtx.shadowColor = '#00F0FF';
+            heritageStars.forEach(star => {
+                star.alpha += star.pulseSpeed;
+                const opacity = (Math.sin(star.alpha) + 1) / 2 * 0.5 + 0.5;
+                gCtx.globalAlpha = opacity;
+                
+                // Draw Diamond
+                gCtx.beginPath();
+                gCtx.moveTo(star.x, star.y - star.size);
+                gCtx.lineTo(star.x + star.size, star.y);
+                gCtx.lineTo(star.x, star.y + star.size);
+                gCtx.lineTo(star.x - star.size, star.y);
+                gCtx.fill();
             });
-            requestAnimationFrame(animateStars);
+            gCtx.shadowBlur = 0;
+            gCtx.globalAlpha = 1;
+
+            // Draw Orbit Rings
+            ringStars.forEach(star => {
+                star.theta += star.speed;
+                const x = star.r * Math.cos(star.theta);
+                const y = star.r * Math.sin(star.theta);
+                
+                gCtx.fillStyle = star.color;
+                gCtx.beginPath();
+                gCtx.arc(x, y, star.size, 0, Math.PI * 2);
+                gCtx.fill();
+            });
+
+            gCtx.restore();
+            requestAnimationFrame(animateGalaxy);
         }
-        window.addEventListener('resize', initStars);
-        initStars();
-        animateStars();
 
-        // --- 2. Charts (Monetization) ---
+        // --- 2. Background Starfield ---
+        const bgCanvas = document.getElementById('starfield');
+        const bgCtx = bgCanvas.getContext('2d');
+        let bgStars = [];
+
+        function initBg() {
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+            bgStars = [];
+            for(let i=0; i<300; i++) {
+                bgStars.push({
+                    x: Math.random() * bgCanvas.width,
+                    y: Math.random() * bgCanvas.height,
+                    size: Math.random(),
+                    alpha: Math.random()
+                });
+            }
+        }
+        function animateBg() {
+            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+            bgCtx.fillStyle = 'white';
+            bgStars.forEach(s => {
+                bgCtx.globalAlpha = s.alpha;
+                bgCtx.beginPath();
+                bgCtx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+                bgCtx.fill();
+            });
+            requestAnimationFrame(animateBg);
+        }
+
+        // --- 3. Chart.js Config ---
+        Chart.defaults.font.family = '"Rajdhani", sans-serif';
         Chart.defaults.color = '#666';
-        Chart.defaults.font.family = '"Inter", sans-serif';
 
-        // Chart 1: User Distribution (Doughnut)
-        const ctxUser = document.getElementById('userChart').getContext('2d');
-        new Chart(ctxUser, {
+        // Revenue Chart (Doughnut)
+        new Chart(document.getElementById('revenueChart'), {
             type: 'doughnut',
             data: {
-                labels: ['Nomad (94%)', 'Settler (5%)', 'Royal (1%)'],
+                labels: ['Subscriptions (Stable)', 'Items/Add-on (Variable)', 'Auction (High Value)'],
                 datasets: [{
-                    data: [94, 5, 1],
-                    backgroundColor: ['#333333', '#666666', '#D4AF37'],
-                    borderWidth: 0,
-                    hoverOffset: 4
+                    data: [65, 20, 15],
+                    backgroundColor: ['#C5A059', '#333333', '#00F0FF'],
+                    borderWidth: 0
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom', labels: { boxWidth: 10, padding: 20 } }
-                },
-                cutout: '70%'
+                cutout: '70%',
+                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle' } } }
             }
         });
 
-        // Chart 2: Revenue Growth (Line)
-        const ctxRev = document.getElementById('revenueChart').getContext('2d');
-        
-        // Creating gradient for the line
-        let gradient = ctxRev.createLinearGradient(0, 0, 0, 400);
-        gradient.addColorStop(0, 'rgba(212, 175, 55, 0.5)');
-        gradient.addColorStop(1, 'rgba(212, 175, 55, 0.0)');
-
-        new Chart(ctxRev, {
-            type: 'line',
+        // User Chart (Bar - Horizontal)
+        new Chart(document.getElementById('userChart'), {
+            type: 'bar',
             data: {
-                labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9', 'M10', 'M11', 'M12'],
+                labels: ['Nomad', 'Settler', 'Royal', 'Hidden'],
                 datasets: [{
-                    label: 'Cumulative Revenue ($)',
-                    data: [100000, 250000, 450000, 800000, 1500000, 2800000, 4500000, 6800000, 9500000, 12500000, 14500000, 16680000],
-                    borderColor: '#D4AF37',
-                    backgroundColor: gradient,
-                    fill: true,
-                    tension: 0.4,
-                    borderWidth: 2,
-                    pointRadius: 0,
-                    pointHoverRadius: 6
+                    label: 'User Count',
+                    data: [940000, 50000, 9975, 25],
+                    backgroundColor: ['#444', '#888', '#C5A059', '#00F0FF'],
+                    barThickness: 10
                 }]
             },
             options: {
+                indexAxis: 'y',
                 responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        grid: { color: 'rgba(255,255,255,0.05)' },
-                        ticks: { callback: function(value) { return '$' + value / 1000000 + 'M'; } }
-                    },
-                    x: { grid: { display: false } }
-                },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: { mode: 'index', intersect: false }
-                }
+                scales: { x: { display: false }, y: { grid: { display: false } } },
+                plugins: { legend: { display: false } }
             }
         });
 
-        // --- 3. Scroll Animations ---
-        const observerOptions = { threshold: 0.1 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                }
-            });
-        }, observerOptions);
+        // Init All
+        window.addEventListener('resize', () => { initGalaxy(); initBg(); });
+        initGalaxy();
+        animateGalaxy();
+        initBg();
+        animateBg();
 
-        document.querySelectorAll('.fade-in-section').forEach(section => {
-            observer.observe(section);
-        });
     </script>
 </body>
 </html>
