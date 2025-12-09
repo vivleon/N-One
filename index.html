@@ -65,6 +65,18 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
         .nav-link {
             position: relative;
             color: #A3A3A3;
@@ -262,7 +274,7 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Tier 1 -->
-                <div class="bg-stone-800/50 p-6 rounded-2xl border border-stone-700 hover:border-stone-500 transition-colors group">
+                <div class="glass-card p-6 rounded-2xl group">
                     <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🌪️</div>
                     <h3 class="text-2xl font-bold text-stone-300 mb-2">Nomad</h3>
                     <p class="text-xs text-stone-500 font-mono mb-4">TIER 1 • OUTER ORBIT</p>
@@ -275,7 +287,7 @@
                 </div>
 
                 <!-- Tier 2 -->
-                <div class="bg-stone-800/50 p-6 rounded-2xl border border-stone-600 hover:border-blue-500 transition-colors group">
+                <div class="glass-card p-6 rounded-2xl group hover:border-blue-500/50">
                     <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">📍</div>
                     <h3 class="text-2xl font-bold text-blue-200 mb-2">Settler</h3>
                     <p class="text-xs text-blue-500 font-mono mb-4">TIER 2 • MIDDLE ORBIT</p>
@@ -288,7 +300,7 @@
                 </div>
 
                 <!-- Tier 3 -->
-                <div class="bg-stone-800/50 p-6 rounded-2xl border border-purple-900 hover:border-purple-500 transition-colors group">
+                <div class="glass-card p-6 rounded-2xl group hover:border-purple-500/50">
                     <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">👑</div>
                     <h3 class="text-2xl font-bold text-purple-200 mb-2">Royal</h3>
                     <p class="text-xs text-purple-500 font-mono mb-4">TIER 3 • INNER ORBIT</p>
@@ -416,8 +428,9 @@
         // --- 1. Galaxy Map Visualization ---
         const initGalaxyMap = () => {
             const canvas = document.getElementById('galaxyCanvas');
+            const container = document.getElementById('universe-container');
             const ctx = canvas.getContext('2d');
-            let width, height, centerX, centerY;
+            let width, height, centerX, centerY, scale;
             const systems = [];
             const galaxyRadius = 250;
 
@@ -434,12 +447,13 @@
             }
 
             function resize() {
-                width = canvas.parentElement.clientWidth;
-                height = canvas.parentElement.clientHeight;
+                width = container.clientWidth;
+                height = container.clientHeight;
                 canvas.width = width;
                 canvas.height = height;
                 centerX = width / 2;
                 centerY = height / 2;
+                scale = Math.min(width, height) / 800; // Adjusted scale for galaxy view
             }
 
             function animate() {
@@ -447,20 +461,21 @@
                 ctx.fillRect(0, 0, width, height);
 
                 const zoom = 0.8;
+                
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.scale(scale, scale);
 
                 // Draw Galaxy Center Orbit
                 ctx.strokeStyle = "rgba(255,255,255,0.05)";
                 ctx.beginPath();
-                ctx.arc(centerX, centerY, galaxyRadius * zoom, 0, Math.PI * 2);
+                ctx.arc(0, 0, galaxyRadius, 0, Math.PI * 2);
                 ctx.stroke();
 
                 systems.forEach((sys, idx) => {
-                    const sx = centerX + sys.x * zoom;
-                    const sy = centerY + sys.y * zoom;
-
                     // Draw Sun
                     ctx.beginPath();
-                    ctx.arc(sx, sy, sys.size, 0, Math.PI * 2);
+                    ctx.arc(sys.x, sys.y, sys.size, 0, Math.PI * 2);
                     ctx.fillStyle = sys.color;
                     ctx.shadowBlur = 15;
                     ctx.shadowColor = sys.color;
@@ -472,8 +487,8 @@
                     for(let j=0; j<3; j++) {
                         const orbitR = 15 + (j * 10);
                         const pAngle = time * sys.orbitSpeed * (j+1) + (idx);
-                        const px = sx + Math.cos(pAngle) * orbitR;
-                        const py = sy + Math.sin(pAngle) * orbitR;
+                        const px = sys.x + Math.cos(pAngle) * orbitR;
+                        const py = sys.y + Math.sin(pAngle) * orbitR;
 
                         ctx.beginPath();
                         ctx.arc(px, py, 1.5, 0, Math.PI*2);
@@ -482,6 +497,7 @@
                     }
                 });
 
+                ctx.restore();
                 requestAnimationFrame(animate);
             }
 
