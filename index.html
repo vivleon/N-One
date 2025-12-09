@@ -1,33 +1,439 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>N/ONE: Master Plan v9.0 (Code-Aligned Galaxy)</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Urbanist:wght@400;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<style>
-:root { --bg:#050505; --text:#E5E5E5; --accent:#FFD700; }
-body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); }
-.brand { font-family: 'Urbanist', sans-serif; }
-.glass { background: rgba(20,20,20,0.82); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); }
-.dynamic-island { animation: pulse-border 3s infinite; }
-@keyframes pulse-border { 0%{border-color:rgba(255,255,255,0.08);} 50%{border-color:rgba(255,215,0,0.45);} 100%{border-color:rgba(255,255,255,0.08);} }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>N/ONE: Master Plan v9.0 (Code-Aligned Galaxy)</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+  <!-- Fonts / Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Urbanist:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root { --bg:#050505; --text:#E5E5E5; --accent:#FFD700; }
+    body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); }
+    .brand { font-family: 'Urbanist', sans-serif; }
+    .glass { background: rgba(20,20,20,0.82); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); }
+    .dynamic-island { animation: pulse-border 3s infinite; }
+    @keyframes pulse-border {
+      0% { border-color: rgba(255,255,255,0.08); }
+      50% { border-color: rgba(255,215,0,0.45); }
+      100% { border-color: rgba(255,255,255,0.08); }
+    }
+  </style>
 </head>
+
 <body class="selection:bg-yellow-500 selection:text-black">
 
+  <!-- NAV -->
+  <nav class="fixed top-0 w-full z-50 glass border-b border-white/10 p-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <span class="brand text-2xl font-black text-white">N/ONE</span>
+        <span class="text-[10px] bg-yellow-500 text-black px-2 py-0.5 rounded font-bold">v9.0 Code-Aligned</span>
+      </div>
+      <div class="hidden md:flex gap-6 text-sm font-bold text-stone-400">
+        <a href="#vision" class="hover:text-white transition">VISION</a>
+        <a href="#galaxy" class="hover:text-white transition">GALAXY</a>
+        <a href="#shop" class="hover:text-white transition">SHOP</a>
+        <a href="#items" class="hover:text-white transition">ITEMS</a>
+        <a href="#economy" class="hover:text-white transition">ECONOMY</a>
+        <a href="#stack" class="hover:text-white transition">STACK</a>
+      </div>
+    </div>
+  </nav>
 
-<!-- NAV -->
-<nav class="fixed top-0 w-full z-50 glass border-b border-white/10 p-4">
-<div class="max-w-7xl mx-auto flex justify-between items-center">
-<div class="flex items-center gap-3">
-<span class="brand text-2xl font-black text-white">N/ONE</span>
-<span class="text-[10px] bg-yellow-500 text-black px-2 py-0.5 rounded font-bold">v9.0 Code-Aligned</span>
-</div>
-<div class="hidden md:flex gap-6 text-sm font-bold text-stone-400">
-<a href="#vision" class="hover:text-white transition">VISION</a>
+  <!-- HERO / VISION -->
+  <header id="vision" class="pt-32 pb-20 px-6 text-center">
+    <h1 class="text-6xl md:text-8xl font-black mb-6 brand leading-tight">
+      THE<br /><span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-600">ORBIT</span>
+    </h1>
+    <p class="text-xl text-stone-400 font-light mb-3">"25 Systems. 1 Million Souls. A Quiet War of Light."</p>
+    <p class="text-sm text-stone-500 mb-12">Simple on the Outside, Complex on the Inside.</p>
+
+    <!-- Dynamic Island Demo -->
+    <div class="max-w-md mx-auto mb-12">
+      <div class="glass rounded-full h-12 flex items-center px-2 relative dynamic-island border border-white/10 group cursor-default">
+        <div class="w-8 h-8 bg-stone-800 rounded-full flex items-center justify-center border border-white/20 ml-1">
+          <i class="fas fa-crown text-yellow-500 text-xs"></i>
+        </div>
+        <div class="ml-4 flex-1 text-left">
+          <p class="text-xs font-bold text-white">System Alert</p>
+          <p class="text-[10px] text-stone-400">Auction tick • Genesis System seat #00 updated</p>
+        </div>
+      </div>
+      <p class="mt-3 text-[10px] text-stone-500">Prototype UI: Unity Dynamic Island 연출과 동일한 메시지 허브 컨셉</p>
+    </div>
+  </header>
+
+  <!-- GALAXY -->
+  <section id="galaxy" class="py-20 bg-stone-900">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-12 text-center">Galaxy & Hierarchy</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-white">25 Solar Systems • Local Orbit Hierarchy</h3>
+          <p class="text-stone-400 leading-relaxed">
+            최신 구현은 <strong>단일 거대 존(Zone 0~3)</strong> 중심 구조에서,
+            <strong>25개 시스템</strong>이 은하를 이루는 구조로 전환됩니다.
+            각 시스템은 <strong>Heritage(항성)</strong>를 중심으로
+            <strong>Royal / Settler / Nomad</strong>가 서로 다른 거리의 궤도에 분포하는 형태로 설계됩니다.
+          </p>
+          <ul class="space-y-3 text-sm font-mono text-stone-300">
+            <li class="flex items-center gap-3"><i class="fas fa-sun text-yellow-500"></i> <strong>Heritage (Tier 4):</strong> System Sun • 최고 시각 우선권</li>
+            <li class="flex items-center gap-3"><i class="fas fa-circle text-purple-400"></i> <strong>Royal (Tier 3):</strong> Inner Orbit • 위치/시야 중심</li>
+            <li class="flex items-center gap-3"><i class="fas fa-circle text-blue-400"></i> <strong>Settler (Tier 2):</strong> Middle Orbit • 안정적 정착</li>
+            <li class="flex items-center gap-3"><i class="fas fa-circle text-stone-500"></i> <strong>Nomad (Tier 1):</strong> Outer Orbit • 유동성/생존 압박</li>
+          </ul>
+          <div class="glass p-4 rounded-xl text-xs text-stone-400">
+            <p class="font-bold text-white mb-1">Prototype Note</p>
+            <p>시스템 센터는 테스트 기준 원형 배치이며, 실제 서비스 단계에서 시스템 간 거리/분포는 밀도, 시즌 이벤트, 경제 밸런스에 따라 가변화될 수 있습니다.</p>
+          </div>
+        </div>
+
+        <div id="universe-container" class="lg:col-span-1 h-[400px] bg-black rounded-2xl border border-stone-800 relative overflow-hidden shadow-2xl">
+          <canvas id="galaxyCanvas" class="w-full h-full"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOP -->
+  <section id="shop" class="py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-12 text-center text-white">Shop Packs & Subscription (Prototype)</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <div class="glass p-6 rounded-xl border-t-4 border-yellow-500 hover:-translate-y-1 transition-transform">
+          <div class="text-4xl mb-4">✨</div>
+          <h3 class="text-xl font-bold text-white mb-1">Starter SD Pack</h3>
+          <p class="text-xs text-stone-500 mb-4">입문 유저용 최소 단위 패키지</p>
+          <div class="flex justify-between items-center border-t border-white/10 pt-4">
+            <span class="text-xs font-mono text-yellow-500">+1,000 SD</span>
+            <span class="font-bold text-white">$0.99</span>
+          </div>
+        </div>
+
+        <div class="glass p-6 rounded-xl border-t-4 border-blue-500 hover:-translate-y-1 transition-transform">
+          <div class="text-4xl mb-4">🌌</div>
+          <h3 class="text-xl font-bold text-white mb-1">Noble SD Pack</h3>
+          <p class="text-xs text-stone-500 mb-4">중간 레벨 경제 참여 촉진</p>
+          <div class="flex justify-between items-center border-t border-white/10 pt-4">
+            <span class="text-xs font-mono text-blue-400">+10,000 SD</span>
+            <span class="font-bold text-white">$9.99</span>
+          </div>
+        </div>
+
+        <div class="glass p-6 rounded-xl border-t-4 border-purple-500 hover:-translate-y-1 transition-transform">
+          <div class="text-4xl mb-4">👑</div>
+          <h3 class="text-xl font-bold text-white mb-1">Heritage SD Pack</h3>
+          <p class="text-xs text-stone-500 mb-4">상위 티어 전환/경매 접근성 강화</p>
+          <div class="flex justify-between items-center border-t border-white/10 pt-4">
+            <span class="text-xs font-mono text-purple-400">+100,000 SD</span>
+            <span class="font-bold text-white">$99.99</span>
+          </div>
+        </div>
+
+      </div>
+      <p class="mt-6 text-center text-[10px] text-stone-500">현재 샵 패키지 수치/가격은 Unity UI 구현과 동일한 프로토타입 값입니다.</p>
+    </div>
+  </section>
+
+  <!-- ITEMS -->
+  <section id="items" class="py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-12 text-center text-white">과시 & 기능성 아이템 (Flex & Utility)</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <!-- Flex 1 -->
+        <div class="glass p-6 rounded-xl border-t-4 border-yellow-500 hover:-translate-y-2 transition-transform">
+          <div class="text-4xl mb-4">💥</div>
+          <h3 class="text-xl font-bold text-white mb-2">초신성 (Supernova)</h3>
+          <p class="text-sm text-stone-400 mb-4">5초간 해당 시스템 화면을 화이트아웃시키고 닉네임을 각인합니다.</p>
+          <div class="flex justify-between items-center border-t border-white/10 pt-4">
+            <span class="text-xs font-mono text-yellow-500">Tier 3+ Only</span>
+            <span class="font-bold text-white">10,000 SD</span>
+          </div>
+        </div>
+
+        <!-- Flex 2 -->
+        <div class="glass p-6 rounded-xl border-t-4 border-purple-500 hover:-translate-y-2 transition-transform">
+          <div class="text-4xl mb-4">🕳️</div>
+          <h3 class="text-xl font-bold text-white mb-2">중력 우물 (Gravity Well)</h3>
+          <p class="text-sm text-stone-400 mb-4">주변 별을 일시적으로 내 쪽으로 끌어당겨 주목도를 폭발시킵니다.</p>
+          <div class="flex justify-between items-center border-t border-white/10 pt-4">
+            <span class="text-xs font-mono text-purple-500">Tier 2+ Only</span>
+            <span class="font-bold text-white">5,000 SD</span>
+          </div>
+        </div>
+
+        <!-- Flex 3 -->
+        <div class="glass p-6 rounded-xl border-t-4 border-blue-500 hover:-translate-y-2 transition-transform">
+          <div class="text-4xl mb-4">⚓</div>
+          <h3 class="text-xl font-bold text-white mb-2">차원 앵커 (Anchor)</h3>
+          <p class="text-sm text-stone-400 mb-4">리셋 주기에도 현재 좌표/궤도 위치를 유지하도록 고정합니다.</p>
+          <div class="flex justify-between items-center border-t border-white/10 pt-4">
+            <span class="text-xs font-mono text-blue-500">All Tiers</span>
+            <span class="font-bold text-white">1,000 SD</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Utility Items -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass p-6 rounded-xl border-t-4 border-emerald-500">
+          <div class="text-3xl mb-3">🛡️</div>
+          <h3 class="text-lg font-bold text-white mb-1">Entropy Shield</h3>
+          <p class="text-xs text-stone-400">
+            엔트로피/소멸 감각을 완화하는 보호권. 특정 기간 세금/감산 룰을 완충하는 컨셉.
+          </p>
+          <div class="flex justify-between items-center border-t border-white/10 pt-4">
+            <span class="text-xs font-mono text-emerald-400">Utility</span>
+            <span class="font-bold text-white">5,000 SD</span>
+          </div>
+        </div>
+
+        <div class="glass p-6 rounded-xl border-t-4 border-cyan-500">
+          <div class="text-3xl mb-3">🎫</div>
+          <h3 class="text-lg font-bold text-white mb-1">Warp Ticket</h3>
+          <p class="text-xs text-stone-400">
+            시스템 간 이동/위기 회피용 즉시 워프권. 하이 텐션 경제 루프의 안전장치 역할.
+          </p>
+          <div class="flex justify-between items-center border-t border-white/10 pt-4">
+            <span class="text-xs font-mono text-cyan-400">Utility</span>
+            <span class="font-bold text-white">10,000 SD</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-6 text-center text-[10px] text-stone-500">Utility 2종 가격은 현재 Unity 클라이언트 프로토타입과 동일합니다.</p>
+    </div>
+  </section>
+
+  <!-- ECONOMY -->
+  <section id="economy" class="py-20 bg-stone-900">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-12 text-center">Economy Ecosystem</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+        <div class="glass p-8 rounded-2xl">
+          <h3 class="text-xl font-bold text-white mb-4 pl-4 border-l-4 border-green-500">자금 흐름 (Prototype Mix)</h3>
+          <div class="chart-container" style="height: 350px;">
+            <div id="economySunburst"></div>
+          </div>
+          <p class="mt-3 text-[10px] text-stone-500">수치는 초기 메시지 구조/피칭용 비주얼을 위한 임시 배분입니다.</p>
+        </div>
+
+        <div class="space-y-6">
+          <div class="glass p-6 rounded-xl">
+            <h4 class="font-bold text-white mb-2">Auto Reward Engine (Dev Build)</h4>
+            <p class="text-sm text-stone-400">
+              현재 개발 빌드에서는 티어별 SD 지급이 초단위로 빠르게 순환하는 테스트 설정을 사용합니다.
+              운영 빌드에서는 일/주 단위 지급 및 AI 금리/세금 정책으로 전환될 수 있습니다.
+            </p>
+          </div>
+
+          <div class="glass p-6 rounded-xl">
+            <h4 class="font-bold text-white mb-2">Entropy Tax (Prototype Rule)</h4>
+            <p class="text-sm text-stone-400">
+              현 시점 구현은 “보유 SD가 1,000을 초과할 경우 보상 지급분에서 일부 감산” 형태의 단순 룰을 채택합니다.
+              계획서의 ‘일일 1% 소각’ 정책은 운영 단계에서 재도입 가능한 To-Be 항목입니다.
+            </p>
+          </div>
+
+          <div class="glass p-6 rounded-xl">
+            <h4 class="font-bold text-white mb-2">System Auction (MVP Simulation)</h4>
+            <p class="text-sm text-stone-400">
+              서버 워커 기반으로 특정 좌석 경매가 순환 시작되며, 낙찰 메시지와 호가 업데이트가 실시간 전송됩니다.
+              현재는 연출/영구 고정/자산 차감 등 일부 고급 룰이 단계적 확장 대상으로 남아 있습니다.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section id="stack" class="py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-12 text-center text-white">Architecture Snapshot</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="glass p-6 rounded-2xl">
+          <h3 class="text-lg font-bold text-white mb-2">Client</h3>
+          <ul class="text-sm text-stone-400 space-y-2">
+            <li>Unity WebGL/PC Prototype</li>
+            <li>SignalR 실시간 좌표/채팅/경매</li>
+            <li>Dynamic Island UI</li>
+            <li>Shop/Settings/Profile</li>
+          </ul>
+        </div>
+        <div class="glass p-6 rounded-2xl">
+          <h3 class="text-lg font-bold text-white mb-2">Server</h3>
+          <ul class="text-sm text-stone-400 space-y-2">
+            <li>ASP.NET Core + SignalR</li>
+            <li>HostedService: Reward/Auction</li>
+            <li>Redis Backplane (Scale-out)</li>
+          </ul>
+        </div>
+        <div class="glass p-6 rounded-2xl">
+          <h3 class="text-lg font-bold text-white mb-2">Data</h3>
+          <ul class="text-sm text-stone-400 space-y-2">
+            <li>Redis: 실시간 브로드캐스트/캐시</li>
+            <li>Persistent Ledger: To-Be</li>
+            <li>Economy Rule Engine: 확장 예정</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-8 text-center text-stone-600 text-xs border-t border-white/5">
+    &copy; 2025 Project N/ONE. Prototype universe synced.
+  </footer>
+
+  <script>
+    // Galaxy Canvas (lightweight visual mock)
+    const initGalaxyMap = () => {
+      const canvas = document.getElementById('galaxyCanvas');
+      const container = document.getElementById('universe-container');
+      const ctx = canvas.getContext('2d');
+      let width, height, centerX, centerY, scale;
+
+      const TOTAL_SYSTEMS = 25;
+      const galaxyRadius = 250;
+      const systems = [];
+
+      function init() {
+        resize();
+        createSystems();
+        animate();
+      }
+
+      function resize() {
+        width = container.clientWidth;
+        height = container.clientHeight;
+        canvas.width = width;
+        canvas.height = height;
+        centerX = width / 2;
+        centerY = height / 2;
+        scale = Math.min(width, height) / 800;
+      }
+
+      function createSystems() {
+        systems.length = 0;
+        for (let i = 0; i < TOTAL_SYSTEMS; i++) {
+          const angle = (i / TOTAL_SYSTEMS) * Math.PI * 2;
+          systems.push({
+            x: Math.cos(angle) * galaxyRadius,
+            y: Math.sin(angle) * galaxyRadius,
+            size: i === 0 ? 8 : 4,
+            color: i === 0 ? '#FFD700' : `hsl(${i * 15}, 70%, 60%)`,
+            orbitSpeed: 0.0002 + (Math.random() * 0.0005)
+          });
+        }
+      }
+
+      function animate() {
+        ctx.fillStyle = '#0c0a09';
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.scale(scale, scale);
+
+        ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+        ctx.beginPath();
+        ctx.arc(0, 0, galaxyRadius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        systems.forEach((sys, idx) => {
+          ctx.beginPath();
+          ctx.arc(sys.x, sys.y, sys.size, 0, Math.PI * 2);
+          ctx.fillStyle = sys.color;
+          ctx.shadowBlur = 14;
+          ctx.shadowColor = sys.color;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          const time = Date.now();
+          for (let j = 0; j < 3; j++) {
+            const orbitR = 15 + j * 10;
+            const pAngle = time * sys.orbitSpeed * (j + 1) + idx;
+            const px = sys.x + Math.cos(pAngle) * orbitR;
+            const py = sys.y + Math.sin(pAngle) * orbitR;
+
+            ctx.beginPath();
+            ctx.arc(px, py, 1.5, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255,255,255,0.55)';
+            ctx.fill();
+          }
+        });
+
+        ctx.restore();
+        requestAnimationFrame(animate);
+      }
+
+      window.addEventListener('resize', resize);
+      window.addEventListener('load', init);
+    };
+
+    // Economy Sunburst (pitch-friendly placeholder)
+    const initEconomyChart = () => {
+      const data = [{
+        type: 'sunburst',
+        labels: [
+          'Economy',
+          'Income', 'Burn',
+          'Subs', 'SD Packs',
+          'Prototype Tax', 'Auction Fees', 'Items',
+          'T1~T3', 'Heritage',
+          'Starter', 'Noble', 'Heritage Pack',
+          'Supernova', 'Gravity Well', 'Anchor', 'Shield', 'Warp'
+        ],
+        parents: [
+          '',
+          'Economy', 'Economy',
+          'Income', 'Income',
+          'Burn', 'Burn', 'Burn',
+          'Subs', 'Subs',
+          'SD Packs', 'SD Packs', 'SD Packs',
+          'Items', 'Items', 'Items', 'Items', 'Items'
+        ],
+        values: [
+          100,
+          55, 45,
+          25, 30,
+          12, 13, 20,
+          22, 3,
+          6, 10, 14,
+          6, 4, 3, 3, 4
+        ],
+        branchvalues: 'total',
+        leaf: { opacity: 0.6 },
+        marker: { line: { width: 2 } },
+        textinfo: 'label+value'
+      }];
+
+      const layout = {
+        margin: { l: 0, r: 0, b: 0, t: 0 },
+        paper_bgcolor: 'rgba(0,0,0,0)'
+      };
+
+      Plotly.newPlot('economySunburst', data, layout, { displayModeBar: false });
+    };
+
+    window.addEventListener('load', () => {
+      initGalaxyMap();
+      initEconomyChart();
+    });
+  </script>
+</body>
 </html>
