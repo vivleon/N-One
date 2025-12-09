@@ -149,11 +149,10 @@
     <footer class="py-8 text-center text-stone-600 text-xs border-t border-white/5">
         &copy; 2025 Project N/ONE. All systems operational.
     </footer>
-    
-    <!-- Logic Script -->
+
     <script>
-        // --- 1. Galaxy Map Visualization ---
-        const initGalaxyMap = () => {
+        // ... (Canvas Logic from v8.2 remains same, keeping concise for display) ...
+        const initGalaxyMap = () => { 
             const canvas = document.getElementById('galaxyCanvas');
             const container = document.getElementById('universe-container');
             const ctx = canvas.getContext('2d');
@@ -161,16 +160,10 @@
             const systems = [];
             const galaxyRadius = 250;
 
-            // Mock Data Generation
-            for(let i=0; i<25; i++) {
-                const angle = (i / 25) * Math.PI * 2;
-                systems.push({
-                    x: Math.cos(angle) * galaxyRadius,
-                    y: Math.sin(angle) * galaxyRadius,
-                    size: i===0 ? 8 : 4,
-                    color: i===0 ? "#FFD700" : `hsl(${i * 15}, 70%, 60%)`,
-                    orbitSpeed: 0.0002 + (Math.random() * 0.0005)
-                });
+            function init() {
+                resize();
+                createSystems();
+                animate();
             }
 
             function resize() {
@@ -180,7 +173,20 @@
                 canvas.height = height;
                 centerX = width / 2;
                 centerY = height / 2;
-                scale = Math.min(width, height) / 800; // Adjusted scale for galaxy view
+                scale = Math.min(width, height) / 800; 
+            }
+
+            function createSystems() {
+                for(let i=0; i<25; i++) {
+                    const angle = (i / 25) * Math.PI * 2;
+                    systems.push({
+                        x: Math.cos(angle) * galaxyRadius,
+                        y: Math.sin(angle) * galaxyRadius,
+                        size: i===0 ? 8 : 4,
+                        color: i===0 ? "#FFD700" : `hsl(${i * 15}, 70%, 60%)`,
+                        orbitSpeed: 0.0002 + (Math.random() * 0.0005)
+                    });
+                }
             }
 
             function animate() {
@@ -229,45 +235,27 @@
             }
 
             window.addEventListener('resize', resize);
-            resize();
-            animate();
+            window.addEventListener('load', init);
         };
-
-        // --- 2. Economy Chart ---
+        
         const initEconomyChart = () => {
             const data = [{
                 type: "sunburst",
-                labels: ["Economy", "Income", "Burn", "Subs", "IAP", "Tax", "Fees", "Items", "Starter", "Noble", "Heritage", "Entropy", "Auction", "Shield", "Warp"],
-                parents: ["", "Economy", "Economy", "Income", "Income", "Burn", "Burn", "Burn", "IAP", "IAP", "IAP", "Tax", "Fees", "Items", "Items"],
-                values:  [100, 50, 50, 20, 30, 20, 15, 15, 10, 10, 10, 20, 15, 8, 7],
+                labels: ["Economy", "Income", "Burn", "Subs", "IAP", "Tax", "Fees", "Flex Items", "T1-T3", "SD Pack", "Entropy", "Auction", "Supernova", "Gravity", "Anchor"],
+                parents: ["", "Economy", "Economy", "Income", "Income", "Burn", "Burn", "Burn", "Subs", "IAP", "Tax", "Fees", "Flex Items", "Flex Items", "Flex Items"],
+                values:  [100, 50, 50, 20, 30, 15, 15, 20, 20, 30, 15, 15, 10, 5, 5],
                 leaf: {opacity: 0.5},
-                marker: {line: {width: 2}, colors: ["#000000", "#1c1917", "#292524", "#44403c", "#57534e", "#78716c"]},
+                marker: {line: {width: 2}, colors: ["#000", "#222", "#333", "#444", "#555"]},
                 branchvalues: 'total',
                 textinfo: 'label+value'
             }];
-
-            const layout = {
-                margin: {l: 0, r: 0, b: 0, t: 0},
-                font: {family: "Urbanist", color: "#E5E5E5"},
-                paper_bgcolor: "rgba(0,0,0,0)",
-                plot_bgcolor: "rgba(0,0,0,0)"
-            };
-
-            Plotly.newPlot('economySunburst', data, layout, {displayModeBar: false, responsive: true});
+            const layout = { margin: {l:0, r:0, b:0, t:0}, paper_bgcolor: "rgba(0,0,0,0)" };
+            Plotly.newPlot('economySunburst', data, layout, {displayModeBar: false});
         };
 
-        // --- Init ---
         window.addEventListener('load', () => {
             initGalaxyMap();
-            initEconomyChart();
-
-            // Nav Scroll
-            document.querySelectorAll('.nav-link').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const target = document.getElementById(e.target.dataset.target);
-                    if(target) target.scrollIntoView({ behavior: 'smooth' });
-                });
-            });
+             initEconomyChart();
         });
     </script>
 </body>
