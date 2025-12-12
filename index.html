@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROJECT N/ONE : The Perfection Protocol v8.0</title>
+    <title>PROJECT N/ONE : The Perfection Protocol v8.3</title>
     
-    <!-- Fonts: Rajdhani for FUI/Numbers, Inter for Body -->
+    <!-- Fonts: Rajdhani for FUI/Numbers, Inter for Body, Noto Sans for KR/TH support -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Rajdhani:wght@300;500;700&family=Noto+Sans+KR:wght@300;500;700&family=Noto+Sans+Thai:wght@300;500;700&display=swap" rel="stylesheet">
     
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -35,7 +35,7 @@
                         border: 'rgba(255, 255, 255, 0.1)'
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Inter', 'Noto Sans KR', 'Noto Sans Thai', 'sans-serif'],
                         fui: ['Rajdhani', 'sans-serif'],
                         serif: ['Cinzel', 'serif']
                     },
@@ -124,18 +124,21 @@
     <nav class="fixed top-0 w-full z-50 bg-void/90 backdrop-blur border-b border-white/10 h-16 flex items-center justify-between px-6">
         <div class="flex items-center gap-3">
             <div class="w-2 h-8 bg-gold"></div>
-            <h1 class="font-fui font-bold text-2xl tracking-widest text-white">N/ONE <span class="text-xs text-gray-500 ml-2">PROTOCOL v8.0</span></h1>
+            <h1 class="font-fui font-bold text-2xl tracking-widest text-white">N/ONE <span class="text-xs text-gray-500 ml-2">PROTOCOL v8.3</span></h1>
         </div>
         <div class="hidden md:flex gap-8 font-fui text-sm tracking-wide text-gray-400">
             <a href="#vision" class="hover:text-cyan transition-colors">VISION</a>
             <a href="#architecture" class="hover:text-cyan transition-colors">ARCHITECTURE</a>
             <a href="#hierarchy" class="hover:text-cyan transition-colors">HIERARCHY</a>
             <a href="#economy" class="hover:text-cyan transition-colors">ECONOMY</a>
+            <a href="#localization" class="hover:text-cyan transition-colors">GLOBAL</a>
             <a href="#uiux" class="hover:text-cyan transition-colors">FUI SYSTEM</a>
         </div>
-        <button class="border border-gold text-gold px-4 py-1 font-fui text-sm hover:bg-gold hover:text-black transition-all">
-            ACCESS TERMINAL
-        </button>
+        <div class="flex gap-2">
+             <button onclick="changeLang('en')" class="border border-white/20 text-gray-400 px-2 py-1 font-fui text-xs hover:border-white hover:text-white transition-all">EN</button>
+             <button onclick="changeLang('ko')" class="border border-white/20 text-gray-400 px-2 py-1 font-fui text-xs hover:border-cyan hover:text-cyan transition-all">KR</button>
+             <button onclick="changeLang('th')" class="border border-white/20 text-gray-400 px-2 py-1 font-fui text-xs hover:border-gold hover:text-gold transition-all">TH</button>
+        </div>
     </nav>
 
     <!-- Hero Section -->
@@ -143,25 +146,25 @@
         <canvas id="starfield" class="absolute inset-0 z-0"></canvas>
         
         <div class="relative z-10 p-8 border-y border-white/10 bg-void/50 backdrop-blur-sm max-w-4xl">
-            <h2 class="font-serif text-5xl md:text-7xl mb-4 text-white text-glow">THE DIGITAL VOID</h2>
-            <p class="font-fui text-xl md:text-2xl text-cyan tracking-[0.2em] mb-8">1,000,000 USERS. 1 GALAXY. ABSOLUTE SCARCITY.</p>
+            <h2 id="hero-title" class="font-serif text-5xl md:text-7xl mb-4 text-white text-glow">THE DIGITAL VOID</h2>
+            <p id="hero-subtitle" class="font-fui text-xl md:text-2xl text-cyan tracking-[0.2em] mb-8">1,000,000 USERS. 1 GALAXY. ABSOLUTE SCARCITY.</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left mt-12">
                 <div class="fui-box p-4 rounded-sm">
-                    <h3 class="text-gold font-fui text-lg mb-2">PASSIVE TRACK</h3>
-                    <p class="text-xs text-gray-400 font-sans">Silence & Observation. Your star grows automatically. Just exist.</p>
+                    <h3 id="card-passive-title" class="text-gold font-fui text-lg mb-2">PASSIVE TRACK</h3>
+                    <p id="card-passive-desc" class="text-xs text-gray-400 font-sans">Silence & Observation. Your star grows automatically. Just exist.</p>
                 </div>
                 <div class="fui-box p-4 rounded-sm border-cyan/50">
-                    <h3 class="text-cyan font-fui text-lg mb-2">ACTIVE TRACK</h3>
-                    <p class="text-xs text-gray-400 font-sans">Economy, War, & Vanity. Acquire Stardust. Bid for the Core.</p>
+                    <h3 id="card-active-title" class="text-cyan font-fui text-lg mb-2">ACTIVE TRACK</h3>
+                    <p id="card-active-desc" class="text-xs text-gray-400 font-sans">Economy, War, & Vanity. Acquire Stardust. Bid for the Core.</p>
                 </div>
                 <div class="fui-box p-4 rounded-sm">
-                    <h3 class="text-white font-fui text-lg mb-2">PERMADEATH</h3>
-                    <p class="text-xs text-gray-400 font-sans">Stop subscribing, and you vanish. Your coordinates are recycled.</p>
+                    <h3 id="card-permadeath-title" class="text-white font-fui text-lg mb-2">PERMADEATH</h3>
+                    <p id="card-permadeath-desc" class="text-xs text-gray-400 font-sans">Stop subscribing, and you vanish. Your coordinates are recycled.</p>
                 </div>
             </div>
         </div>
         
-        <div class="absolute bottom-10 animate-bounce text-gray-600 text-xs font-fui tracking-widest">
+        <div id="scroll-hint" class="absolute bottom-10 animate-bounce text-gray-600 text-xs font-fui tracking-widest">
             SCROLL TO INITIALIZE
         </div>
     </section>
@@ -191,6 +194,7 @@
                             <li><strong class="text-white">Redis Cluster:</strong> High-speed backplane & position caching.</li>
                             <li><strong class="text-white">Multi-threaded Workers:</strong> Background services for Physics/Auctions.</li>
                             <li><strong class="text-white">Rate Limiting:</strong> 5 ops/sec throttling per client.</li>
+                            <li><strong class="text-white">DevOps:</strong> AWS Global Accelerator (Seoul/Singapore Regions).</li>
                         </ul>
                     </div>
 
@@ -203,6 +207,7 @@
                             <li><strong class="text-white">LOD System:</strong> Mesh (Near) -> Instancing (Mid) -> Points (Far).</li>
                             <li><strong class="text-white">ECS Job System:</strong> Parallel processing for 1M orbit calculations.</li>
                             <li><strong class="text-white">URP Bloom:</strong> High-performance glow effects for stars.</li>
+                             <li><strong class="text-white">Localization:</strong> English/Korean/Thai dynamic font fallback.</li>
                         </ul>
                     </div>
                 </div>
@@ -213,7 +218,7 @@
                     <div class="chart-container">
                         <canvas id="techChart"></canvas>
                     </div>
-                    <p class="text-center text-xs text-gray-500 mt-4 font-fui">DATA: INTERNAL BENCHMARK v8.0</p>
+                    <p class="text-center text-xs text-gray-500 mt-4 font-fui">DATA: INTERNAL BENCHMARK v8.3</p>
                 </div>
             </div>
         </div>
@@ -384,6 +389,70 @@
         </div>
     </section>
 
+    <!-- Global & Profitability Section (New v8.3 Addition) -->
+    <section id="localization" class="py-20 px-6 bg-void relative border-t border-white/5">
+         <div class="max-w-6xl mx-auto">
+            <div class="flex items-end gap-4 mb-12">
+                <h2 class="text-4xl font-fui font-bold text-white">03.5 GLOBAL & PROFIT</h2>
+                <span class="text-gold font-fui text-sm mb-2">// EXPANSION PLAN</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Localization Cards -->
+                <div>
+                     <h3 class="text-xl font-fui text-white mb-6">LOCALIZATION STRATEGY</h3>
+                     <div class="space-y-4">
+                        <div class="fui-box p-4 flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="text-2xl">🇺🇸</span>
+                                <div>
+                                    <h4 class="text-white font-bold font-fui">ENGLISH (GLOBAL)</h4>
+                                    <p class="text-xs text-gray-400">Tone: Dry, SF, Void</p>
+                                </div>
+                            </div>
+                            <span class="text-cyan text-xs font-fui">PRIMARY</span>
+                        </div>
+                        <div class="fui-box p-4 flex items-center justify-between border-cyan/30">
+                            <div class="flex items-center gap-4">
+                                <span class="text-2xl">🇰🇷</span>
+                                <div>
+                                    <h4 class="text-cyan font-bold font-fui">KOREAN (DOMESTIC)</h4>
+                                    <p class="text-xs text-gray-400">Tone: Poetic, Emotional</p>
+                                </div>
+                            </div>
+                            <span class="text-gray-500 text-xs font-fui">LAUNCH</span>
+                        </div>
+                        <div class="fui-box p-4 flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="text-2xl">🇹🇭</span>
+                                <div>
+                                    <h4 class="text-white font-bold font-fui">THAI (EMERGING)</h4>
+                                    <p class="text-xs text-gray-400">Tone: Polite, Soft</p>
+                                </div>
+                            </div>
+                            <span class="text-gray-500 text-xs font-fui">WAVE 1</span>
+                        </div>
+                     </div>
+                </div>
+
+                <!-- Profitability Chart -->
+                <div>
+                    <h3 class="text-xl font-fui text-white mb-6">MONTHLY REVENUE PROJECTION</h3>
+                    <div class="fui-box p-6 h-64 flex flex-col justify-center relative">
+                        <div class="chart-container" style="height: 200px;">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                        <div class="absolute top-4 right-4 text-right">
+                             <div class="text-xs text-gray-500">EST. TOTAL</div>
+                             <div class="text-xl text-green-400 font-bold font-fui">~$672,650</div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-4 font-sans text-center">Based on 1M Downloads / 30% MAU / 5% Payer Conversion</p>
+                </div>
+            </div>
+         </div>
+    </section>
+
     <!-- FUI Showcase Section -->
     <section id="uiux" class="py-20 px-6 bg-void relative overflow-hidden">
         <!-- Background Grid -->
@@ -525,6 +594,47 @@
 
     <!-- Scripts -->
     <script>
+        // Localization Data
+        const translations = {
+            en: {
+                title: "THE DIGITAL VOID",
+                subtitle: "1,000,000 USERS. 1 GALAXY. ABSOLUTE SCARCITY.",
+                passive: { title: "PASSIVE TRACK", desc: "Silence & Observation. Your star grows automatically. Just exist." },
+                active: { title: "ACTIVE TRACK", desc: "Economy, War, & Vanity. Acquire Stardust. Bid for the Core." },
+                permadeath: { title: "PERMADEATH", desc: "Stop subscribing, and you vanish. Your coordinates are recycled." },
+                scroll: "SCROLL TO INITIALIZE"
+            },
+            ko: {
+                title: "디지털 공허",
+                subtitle: "100만 명의 사용자. 하나의 은하. 절대적 희소성.",
+                passive: { title: "침묵의 관조", desc: "아무것도 하지 마세요. 존재만으로 당신의 별은 빛납니다." },
+                active: { title: "능동적 투쟁", desc: "경매와 전쟁, 그리고 과시. 스타더스트를 모아 우주의 중심으로 나아가세요." },
+                permadeath: { title: "영구적 소멸", desc: "구독을 멈추면 당신의 별은 즉시 사라집니다. 좌표는 회수됩니다." },
+                scroll: "시스템 초기화 중..."
+            },
+            th: {
+                title: "ความว่างเปล่าดิจิทัล",
+                subtitle: "1,000,000 ผู้ใช้ 1 กาแล็กซี ความหายากที่แท้จริง",
+                passive: { title: "เส้นทางสงบ", desc: "ความเงียบและการเฝ้าดู ดาวของคุณจะเติบโตโดยอัตโนมัติ เพียงแค่ดำรงอยู่" },
+                active: { title: "เส้นทางต่อสู้", desc: "เศรษฐกิจ สงคราม และความภาคภูมิใจ ครอบครอง Stardust ประมูลเพื่อแกนกลาง" },
+                permadeath: { title: "ความตายถาวร", desc: "หากหยุดสมัครสมาชิก คุณจะหายไปทันที พิกัดของคุณจะถูกนำกลับมาใช้ใหม่" },
+                scroll: "เลื่อนเพื่อเริ่มต้น"
+            }
+        };
+
+        function changeLang(lang) {
+            const t = translations[lang];
+            document.getElementById('hero-title').innerText = t.title;
+            document.getElementById('hero-subtitle').innerText = t.subtitle;
+            document.getElementById('card-passive-title').innerText = t.passive.title;
+            document.getElementById('card-passive-desc').innerText = t.passive.desc;
+            document.getElementById('card-active-title').innerText = t.active.title;
+            document.getElementById('card-active-desc').innerText = t.active.desc;
+            document.getElementById('card-permadeath-title').innerText = t.permadeath.title;
+            document.getElementById('card-permadeath-desc').innerText = t.permadeath.desc;
+            document.getElementById('scroll-hint').innerText = t.scroll;
+        }
+
         // --- 1. Starfield Animation ---
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
@@ -665,18 +775,32 @@
             }
         });
 
-    </script>
+        // --- 4. Revenue Doughnut Chart (New) ---
+        const revCtx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(revCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Nomad Sub', 'Settler Sub', 'Royal Sub', 'IAP Vanity', 'IAP Utility'],
+                datasets: [{
+                    data: [198000, 149700, 99950, 150000, 75000],
+                    backgroundColor: ['#333333', '#00F3FF', '#D4AF37', '#FF2A6D', '#FFFFFF'],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { color: '#ccc', font: { family: 'Rajdhani' }, boxWidth: 10 }
+                    }
+                },
+                cutout: '70%'
+            }
+        });
 
-    <!-- 
-    PLACEHOLDER COMMENTS:
-    <!-- Chosen Palette: Void Black (#050505), Royal Gold (#D4AF37), Tech Cyan (#00F3FF) -->
-    <!-- Application Structure Plan: A single-page vertical scroll experience. 1. Hero (Emotional Hook), 2. Tech Stack (Trust), 3. Hierarchy (Desire), 4. Economy (Logic), 5. FUI Showcase (Expectation). Designed to persuade stakeholders by visualising the 'Invisible' backend and 'Visible' luxury. -->
-    <!-- Visualization & Content Choices: 
-         1. Starfield Canvas: Represents the 1M user cap and 'Living Universe'.
-         2. Radar Chart: Justifies the tech stack choice (MessagePack/DOTS) visually.
-         3. Economy Line Chart: Demonstrates the AI's role in balancing the ecosystem (Burn vs Mint).
-         4. CSS FUI Mockup: Demonstrates the Endless Space 2 aesthetic without needing heavy assets. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. All visual elements are CSS/Canvas/Chart.js. -->
-    -->
+    </script>
 </body>
 </html>
