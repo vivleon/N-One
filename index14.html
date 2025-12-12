@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROJECT N/ONE : The Perfection Protocol v8.3</title>
+    
+    <!-- Fonts: Rajdhani for FUI/Numbers, Inter for Body, Noto Sans for KR/TH support -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Rajdhani:wght@300;500;700&family=Noto+Sans+KR:wght@300;500;700&family=Noto+Sans+Thai:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#050505',
+                        'void-light': '#0a0a0a',
+                        gold: '#D4AF37',
+                        'gold-dim': 'rgba(212, 175, 55, 0.2)',
+                        cyan: '#00F3FF',
+                        'cyan-dim': 'rgba(0, 243, 255, 0.1)',
+                        glass: 'rgba(255, 255, 255, 0.03)',
+                        border: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans KR', 'Noto Sans Thai', 'sans-serif'],
+                        fui: ['Rajdhani', 'sans-serif'],
+                        serif: ['Cinzel', 'serif']
+                    },
+                    backgroundImage: {
+                        'scanline': 'linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2))',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: #e5e5e5;
+            overflow-x: hidden;
+        }
+
+        /* FUI Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 0; }
+        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+
+        /* FUI Animations */
+        .fui-box {
+            position: relative;
+            background: rgba(20, 20, 20, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .fui-box:hover {
+            border-color: rgba(0, 243, 255, 0.5);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+        }
+
+        .fui-corner::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: -1px;
+            width: 8px; height: 8px;
+            border-top: 2px solid #D4AF37;
+            border-left: 2px solid #D4AF37;
+        }
+        .fui-corner::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; right: -1px;
+            width: 8px; height: 8px;
+            border-bottom: 2px solid #D4AF37;
+            border-right: 2px solid #D4AF37;
+        }
+
+        .scanline {
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            pointer-events: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 9999;
+            opacity: 0.3;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 350px;
+            margin: 0 auto;
+        }
+
+        /* Typography Utilities */
+        .text-glow { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+        .text-glow-gold { text-shadow: 0 0 10px rgba(212, 175, 55, 0.6); }
+        .text-glow-cyan { text-shadow: 0 0 10px rgba(0, 243, 255, 0.6); }
+    </style>
+</head>
+<body>
+
+    <!-- Overlay Scanline Effect -->
+    <div class="scanline"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-void/90 backdrop-blur border-b border-white/10 h-16 flex items-center justify-between px-6">
+        <div class="flex items-center gap-3">
+            <div class="w-2 h-8 bg-gold"></div>
+            <h1 class="font-fui font-bold text-2xl tracking-widest text-white">N/ONE <span class="text-xs text-gray-500 ml-2">PROTOCOL v8.3</span></h1>
+        </div>
+        <div class="hidden md:flex gap-8 font-fui text-sm tracking-wide text-gray-400">
+            <a href="#vision" class="hover:text-cyan transition-colors" id="nav-vision">VISION</a>
+            <a href="#architecture" class="hover:text-cyan transition-colors" id="nav-architecture">ARCHITECTURE</a>
+            <a href="#hierarchy" class="hover:text-cyan transition-colors" id="nav-hierarchy">HIERARCHY</a>
+            <a href="#economy" class="hover:text-cyan transition-colors" id="nav-economy">ECONOMY</a>
+            <a href="#localization" class="hover:text-cyan transition-colors" id="nav-global">GLOBAL</a>
+            <a href="#uiux" class="hover:text-cyan transition-colors" id="nav-fui">FUI SYSTEM</a>
+        </div>
+        <div class="flex gap-2">
+             <button onclick="changeLang('en')" class="border border-white/20 text-gray-400 px-2 py-1 font-fui text-xs hover:border-white hover:text-white transition-all">EN</button>
+             <button onclick="changeLang('ko')" class="border border-white/20 text-gray-400 px-2 py-1 font-fui text-xs hover:border-cyan hover:text-cyan transition-all">KR</button>
+             <button onclick="changeLang('th')" class="border border-white/20 text-gray-400 px-2 py-1 font-fui text-xs hover:border-gold hover:text-gold transition-all">TH</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="vision" class="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden">
+        <canvas id="starfield" class="absolute inset-0 z-0"></canvas>
+        
+        <div class="relative z-10 p-8 border-y border-white/10 bg-void/50 backdrop-blur-sm max-w-4xl">
+            <h2 id="hero-title" class="font-serif text-5xl md:text-7xl mb-4 text-white text-glow">THE DIGITAL VOID</h2>
+            <p id="hero-subtitle" class="font-fui text-xl md:text-2xl text-cyan tracking-[0.2em] mb-8">1,000,000 USERS. 1 GALAXY. ABSOLUTE SCARCITY.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left mt-12">
+                <div class="fui-box p-4 rounded-sm">
+                    <h3 id="card-passive-title" class="text-gold font-fui text-lg mb-2">PASSIVE TRACK</h3>
+                    <p id="card-passive-desc" class="text-xs text-gray-400 font-sans">Silence & Observation. Your star grows automatically. Just exist.</p>
+                </div>
+                <div class="fui-box p-4 rounded-sm border-cyan/50">
+                    <h3 id="card-active-title" class="text-cyan font-fui text-lg mb-2">ACTIVE TRACK</h3>
+                    <p id="card-active-desc" class="text-xs text-gray-400 font-sans">Economy, War, & Vanity. Acquire Stardust. Bid for the Core.</p>
+                </div>
+                <div class="fui-box p-4 rounded-sm">
+                    <h3 id="card-permadeath-title" class="text-white font-fui text-lg mb-2">PERMADEATH</h3>
+                    <p id="card-permadeath-desc" class="text-xs text-gray-400 font-sans">Stop subscribing, and you vanish. Your coordinates are recycled.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="scroll-hint" class="absolute bottom-10 animate-bounce text-gray-600 text-xs font-fui tracking-widest">
+            SCROLL TO INITIALIZE
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture" class="py-20 px-6 bg-void-light relative">
+        <!-- Decoration Lines -->
+        <div class="absolute top-0 left-10 w-px h-full bg-white/5"></div>
+        <div class="absolute top-20 right-0 w-full h-px bg-white/5"></div>
+
+        <div class="max-w-6xl mx-auto">
+            <div class="flex items-end gap-4 mb-12">
+                <h2 id="arch-title" class="text-4xl font-fui font-bold text-white">01. ARCHITECTURE</h2>
+                <span id="arch-subtitle" class="text-cyan font-fui text-sm mb-2">// THE BEDROCK</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Tech Stack Cards -->
+                <div class="space-y-4">
+                    <div class="fui-box p-6 fui-corner">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 id="server-title" class="text-cyan font-bold font-fui text-xl">SERVER (ASP.NET CORE 8)</h3>
+                            <i class="fa-solid fa-server text-white/50"></i>
+                        </div>
+                        <ul id="server-list" class="text-sm text-gray-400 font-sans space-y-2 list-disc list-inside">
+                            <li><strong class="text-white">MessagePack Protocol:</strong> 80% traffic reduction vs JSON.</li>
+                            <li><strong class="text-white">Redis Cluster:</strong> High-speed backplane & position caching.</li>
+                            <li><strong class="text-white">Multi-threaded Workers:</strong> Background services for Physics/Auctions.</li>
+                            <li><strong class="text-white">Rate Limiting:</strong> 5 ops/sec throttling per client.</li>
+                            <li><strong class="text-white">DevOps:</strong> AWS Global Accelerator (Seoul/Singapore Regions).</li>
+                        </ul>
+                    </div>
+
+                    <div class="fui-box p-6 fui-corner">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 id="client-title" class="text-gold font-bold font-fui text-xl">CLIENT (UNITY 6 + DOTS)</h3>
+                            <i class="fa-brands fa-unity text-white/50"></i>
+                        </div>
+                        <ul id="client-list" class="text-sm text-gray-400 font-sans space-y-2 list-disc list-inside">
+                            <li><strong class="text-white">LOD System:</strong> Mesh (Near) -> Instancing (Mid) -> Points (Far).</li>
+                            <li><strong class="text-white">ECS Job System:</strong> Parallel processing for 1M orbit calculations.</li>
+                            <li><strong class="text-white">URP Bloom:</strong> High-performance glow effects for stars.</li>
+                             <li><strong class="text-white">Localization:</strong> English/Korean/Thai dynamic font fallback.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Performance Chart -->
+                <div class="fui-box p-6 bg-void/50">
+                    <h4 id="perf-chart-title" class="text-center font-fui text-gray-500 text-sm mb-4">PROTOCOL EFFICIENCY COMPARISON</h4>
+                    <div class="chart-container">
+                        <canvas id="techChart"></canvas>
+                    </div>
+                    <p id="perf-chart-caption" class="text-center text-xs text-gray-500 mt-4 font-fui">DATA: INTERNAL BENCHMARK v8.3</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hierarchy (Tiers) Section -->
+    <section id="hierarchy" class="py-20 px-6 bg-void border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 id="hierarchy-title" class="text-4xl font-fui font-bold text-white mb-2">02. THE HIERARCHY</h2>
+                <p id="hierarchy-subtitle" class="text-gray-400 font-sans max-w-2xl mx-auto">"Capital determines physical location and power. Subscribe to survive."</p>
+            </div>
+
+            <!-- Tier Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Nomad -->
+                <div class="fui-box p-6 hover:bg-white/5 transition-colors group">
+                    <div class="h-1 w-10 bg-gray-500 mb-4"></div>
+                    <h3 class="text-2xl font-serif text-white mb-1">NOMAD</h3>
+                    <div class="text-xl font-fui text-gray-400 mb-6">$0.99<span class="text-xs">/mo</span></div>
+                    
+                    <div id="tier-nomad-list" class="space-y-4 text-sm text-gray-400 font-sans border-t border-white/10 pt-4">
+                        <div class="flex justify-between">
+                            <span>Zone</span>
+                            <span class="text-white">Outer (3)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Reset</span>
+                            <span class="text-white">Daily (Random)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Visual</span>
+                            <span class="text-white">White Dot</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Growth</span>
+                            <span class="text-white">1.0x</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-8 py-2 border border-gray-600 text-gray-400 font-fui text-sm hover:border-white hover:text-white transition-all tier-select-btn">SELECT</button>
+                </div>
+
+                <!-- Settler -->
+                <div class="fui-box p-6 hover:bg-cyan-dim/20 transition-colors group border-cyan/30">
+                    <div class="h-1 w-10 bg-cyan mb-4"></div>
+                    <h3 class="text-2xl font-serif text-cyan mb-1">SETTLER</h3>
+                    <div class="text-xl font-fui text-cyan mb-6">$4.99<span class="text-xs">/mo</span></div>
+                    
+                    <div id="tier-settler-list" class="space-y-4 text-sm text-gray-400 font-sans border-t border-white/10 pt-4">
+                        <div class="flex justify-between">
+                            <span>Zone</span>
+                            <span class="text-cyan">Ring (2)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Reset</span>
+                            <span class="text-white">Weekly (Select)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Visual</span>
+                            <span class="text-cyan">Blue Aura</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Growth</span>
+                            <span class="text-white">1.5x</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-8 py-2 bg-cyan/10 border border-cyan text-cyan font-fui text-sm hover:bg-cyan hover:text-black transition-all tier-select-btn">SELECT</button>
+                </div>
+
+                <!-- Royal -->
+                <div class="fui-box p-6 hover:bg-gold-dim/20 transition-colors group border-gold/50 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-gold text-black text-[10px] font-bold px-2 py-1 font-fui">POPULAR</div>
+                    <div class="h-1 w-10 bg-gold mb-4"></div>
+                    <h3 class="text-2xl font-serif text-gold mb-1">ROYAL</h3>
+                    <div class="text-xl font-fui text-gold mb-6">$19.99<span class="text-xs">/mo</span></div>
+                    
+                    <div id="tier-royal-list" class="space-y-4 text-sm text-gray-300 font-sans border-t border-white/10 pt-4">
+                        <div class="flex justify-between">
+                            <span>Zone</span>
+                            <span class="text-gold">Core (1)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Reset</span>
+                            <span class="text-white">Manual (1-30d)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Visual</span>
+                            <span class="text-gold">Gold Ring</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Growth</span>
+                            <span class="text-white">2.0x</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-8 py-2 bg-gold/10 border border-gold text-gold font-fui text-sm hover:bg-gold hover:text-black transition-all tier-select-btn">SELECT</button>
+                </div>
+
+                <!-- Heritage -->
+                <div class="fui-box p-6 bg-gradient-to-b from-white/5 to-transparent border-white/40 fui-corner">
+                    <div class="h-1 w-10 bg-white mb-4 shadow-[0_0_10px_white]"></div>
+                    <h3 class="text-2xl font-serif text-white mb-1 text-glow">HERITAGE</h3>
+                    <div id="tier-heritage-price" class="text-xl font-fui text-white mb-6">INVITE ONLY<span class="text-xs text-gray-500 block">Top 0.1% Net Worth</span></div>
+                    
+                    <div id="tier-heritage-list" class="space-y-4 text-sm text-gray-300 font-sans border-t border-white/10 pt-4">
+                        <div class="flex justify-between">
+                            <span>Zone</span>
+                            <span class="text-white font-bold">Sanctum (0)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Tax</span>
+                            <span class="text-white">50% Reduction</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Visual</span>
+                            <span class="text-white">Diamond + Platinum</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Perk</span>
+                            <span class="text-white">Physical Card</span>
+                        </div>
+                    </div>
+                    <button id="tier-heritage-btn" class="w-full mt-8 py-2 border border-white/50 text-white font-fui text-sm hover:bg-white hover:text-black transition-all">VIEW CRITERIA</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Economy Section -->
+    <section id="economy" class="py-20 px-6 bg-void-light">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div class="lg:col-span-1">
+                <div class="flex items-end gap-4 mb-8">
+                    <h2 id="economy-title" class="text-4xl font-fui font-bold text-white">03. AI ECONOMY</h2>
+                </div>
+                <p id="economy-desc" class="text-gray-400 mb-8 font-sans text-sm leading-relaxed">
+                    The "AI Central Bank" monitors Stardust (SD) circulation in real-time. It automatically adjusts interest rates and item prices to control inflation.
+                </p>
+                
+                <div id="economy-stats" class="space-y-4 font-fui">
+                    <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                        <span class="text-gray-500">GLOBAL INFLATION</span>
+                        <span class="text-green-400">2.4% <i class="fa-solid fa-arrow-trend-down"></i></span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                        <span class="text-gray-500">TOTAL SD BURNED</span>
+                        <span class="text-gold">45,201,992 SD</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                        <span class="text-gray-500">ACTIVE AUCTIONS</span>
+                        <span class="text-cyan">12 ZONES</span>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-4 bg-red-900/10 border border-red-500/30 rounded text-xs text-red-300 font-sans">
+                    <i class="fa-solid fa-triangle-exclamation mr-2"></i>
+                    <strong id="economy-warning">WARNING: If you unsubscribe, your star enters "Blackhole State" instantly.</strong>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2">
+                <div class="fui-box p-4 h-full">
+                    <h4 id="economy-chart-title" class="font-fui text-gray-500 text-sm mb-4 ml-4">STARDUST FLOW SIMULATION</h4>
+                    <div class="chart-container">
+                        <canvas id="economyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Global & Profitability Section (New v8.3 Addition) -->
+    <section id="localization" class="py-20 px-6 bg-void relative border-t border-white/5">
+         <div class="max-w-6xl mx-auto">
+            <div class="flex items-end gap-4 mb-12">
+                <h2 id="global-title" class="text-4xl font-fui font-bold text-white">03.5 GLOBAL & PROFIT</h2>
+                <span id="global-subtitle" class="text-gold font-fui text-sm mb-2">// EXPANSION PLAN</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Localization Cards -->
+                <div>
+                     <h3 id="local-strat-title" class="text-xl font-fui text-white mb-6">LOCALIZATION STRATEGY</h3>
+                     <div class="space-y-4">
+                        <div class="fui-box p-4 flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="text-2xl">🇺🇸</span>
+                                <div>
+                                    <h4 class="text-white font-bold font-fui" id="lang-en-title">ENGLISH (GLOBAL)</h4>
+                                    <p class="text-xs text-gray-400" id="lang-en-tone">Tone: Dry, SF, Void</p>
+                                </div>
+                            </div>
+                            <span class="text-cyan text-xs font-fui" id="lang-en-tag">PRIMARY</span>
+                        </div>
+                        <div class="fui-box p-4 flex items-center justify-between border-cyan/30">
+                            <div class="flex items-center gap-4">
+                                <span class="text-2xl">🇰🇷</span>
+                                <div>
+                                    <h4 class="text-cyan font-bold font-fui" id="lang-ko-title">KOREAN (DOMESTIC)</h4>
+                                    <p class="text-xs text-gray-400" id="lang-ko-tone">Tone: Poetic, Emotional</p>
+                                </div>
+                            </div>
+                            <span class="text-gray-500 text-xs font-fui" id="lang-ko-tag">LAUNCH</span>
+                        </div>
+                        <div class="fui-box p-4 flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="text-2xl">🇹🇭</span>
+                                <div>
+                                    <h4 class="text-white font-bold font-fui" id="lang-th-title">THAI (EMERGING)</h4>
+                                    <p class="text-xs text-gray-400" id="lang-th-tone">Tone: Polite, Soft</p>
+                                </div>
+                            </div>
+                            <span class="text-gray-500 text-xs font-fui" id="lang-th-tag">WAVE 1</span>
+                        </div>
+                     </div>
+                </div>
+
+                <!-- Profitability Chart -->
+                <div>
+                    <h3 id="profit-title" class="text-xl font-fui text-white mb-6">MONTHLY REVENUE PROJECTION</h3>
+                    <div class="fui-box p-6 h-64 flex flex-col justify-center relative">
+                        <div class="chart-container" style="height: 200px;">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                        <div class="absolute top-4 right-4 text-right">
+                             <div class="text-xs text-gray-500" id="profit-est-label">EST. TOTAL</div>
+                             <div class="text-xl text-green-400 font-bold font-fui">~$672,650</div>
+                        </div>
+                    </div>
+                    <p id="profit-desc" class="text-xs text-gray-500 mt-4 font-sans text-center">Based on 1M Downloads / 30% MAU / 5% Payer Conversion</p>
+                </div>
+            </div>
+         </div>
+    </section>
+
+    <!-- FUI Showcase Section -->
+    <section id="uiux" class="py-20 px-6 bg-void relative overflow-hidden">
+        <!-- Background Grid -->
+        <div class="absolute inset-0 z-0" style="background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 50px 50px; opacity: 0.1;"></div>
+
+        <div class="max-w-5xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 id="fui-title" class="text-4xl font-fui font-bold text-white mb-2">04. ORBITAL HUD</h2>
+                <p id="fui-subtitle" class="text-cyan font-fui text-sm">// SYSTEM: ENDLESS FUI PROTOCOL</p>
+            </div>
+
+            <!-- Interactive UI Mockup -->
+            <div class="relative w-full aspect-video border border-white/10 bg-black/80 rounded-lg overflow-hidden shadow-2xl group">
+                <!-- 3D Content Placeholder -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <!-- The Star -->
+                    <div class="w-32 h-32 rounded-full bg-white shadow-[0_0_50px_rgba(255,255,255,0.8)] relative z-10 animate-pulse"></div>
+                    <!-- Orbit Rings -->
+                    <div class="absolute w-64 h-64 border border-white/10 rounded-full animate-[spin_20s_linear_infinite]"></div>
+                    <div class="absolute w-96 h-96 border border-white/5 rounded-full animate-[spin_30s_linear_infinite_reverse]"></div>
+                </div>
+
+                <!-- HUD Layer -->
+                <div class="absolute inset-0 p-8 flex flex-col justify-between pointer-events-none">
+                    <!-- Top Bar -->
+                    <div class="flex justify-between items-start">
+                        <div class="fui-box px-4 py-2 pointer-events-auto">
+                            <div class="text-xs text-gray-500 font-fui" id="hud-system-label">SYSTEM</div>
+                            <div class="text-lg text-white font-fui font-bold tracking-widest">KEPLER-186F</div>
+                        </div>
+                        <div class="fui-box px-4 py-2 pointer-events-auto text-right">
+                            <div class="text-xs text-gray-500 font-fui" id="hud-wallet-label">WALLET</div>
+                            <div class="text-lg text-gold font-fui font-bold">1,204,500 SD</div>
+                        </div>
+                    </div>
+
+                    <!-- Center Reticle (Shows on Hover) -->
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 border border-cyan/50 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 scale-150 group-hover:scale-100 flex items-center justify-center">
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-2 bg-cyan"></div>
+                        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1 h-2 bg-cyan"></div>
+                        <div class="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-1 bg-cyan"></div>
+                        <div class="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-2 h-1 bg-cyan"></div>
+                    </div>
+
+                    <!-- Side Panel (Mockup) -->
+                    <div class="absolute right-8 top-1/4 bottom-1/4 w-64 bg-glass border-l border-white/10 backdrop-blur-md transform translate-x-full group-hover:translate-x-0 transition-transform duration-500 p-4 pointer-events-auto">
+                        <div class="h-full border-l border-cyan/30 pl-4 flex flex-col gap-4">
+                            <div>
+                                <div class="text-xs text-cyan font-fui mb-1" id="hud-owner-label">OWNER</div>
+                                <div class="text-white font-bold">USER_4092</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-cyan font-fui mb-1" id="hud-tier-label">TIER</div>
+                                <div class="text-gold font-bold">ROYAL CLASS</div>
+                            </div>
+                            <div class="flex-1 bg-white/5 rounded border border-white/5 p-2">
+                                <div class="text-xs text-gray-500 mb-2" id="hud-log-label">VISITOR LOG</div>
+                                <div class="text-xs text-gray-400 space-y-1">
+                                    <p>> User_A (Nomad)</p>
+                                    <p>> User_B (Settler)</p>
+                                    <p class="text-cyan">> Guild_Alpha</p>
+                                </div>
+                            </div>
+                            <button class="w-full py-2 bg-cyan text-black font-bold font-fui text-sm hover:bg-white transition-colors" id="hud-trace-btn">
+                                TRACE SIGNAL
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Bar -->
+                    <div class="flex justify-center gap-4 pointer-events-auto">
+                        <button class="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center hover:border-gold hover:text-gold transition-colors"><i class="fa-solid fa-shop"></i></button>
+                        <button class="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center hover:border-cyan hover:text-cyan transition-colors"><i class="fa-solid fa-location-crosshairs"></i></button>
+                        <button class="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center hover:border-red-500 hover:text-red-500 transition-colors"><i class="fa-solid fa-shield-halved"></i></button>
+                    </div>
+                </div>
+            </div>
+            <p id="fui-hint" class="text-center text-xs text-gray-500 mt-4 font-fui">HOVER OR TAP TO INTERACT WITH THE HUD</p>
+        </div>
+    </section>
+
+    <!-- Development Roadmap Checklist -->
+    <section id="roadmap" class="py-20 px-6 bg-void-light">
+        <div class="max-w-4xl mx-auto">
+            <h2 id="roadmap-title" class="text-3xl font-fui font-bold text-white mb-10 text-center">DEVELOPMENT SEQUENCE</h2>
+            
+            <div class="space-y-4">
+                <!-- Phase 1 -->
+                <div class="fui-box p-4 border-l-4 border-l-green-500">
+                    <div class="flex justify-between items-center cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+                        <h3 id="phase1-title" class="text-white font-fui font-bold">PHASE 1: SERVER & FOUNDATION</h3>
+                        <span class="text-green-500 text-xs font-fui">100% COMPLETE</span>
+                    </div>
+                    <div class="mt-4 hidden space-y-2 text-sm text-gray-400 font-sans border-t border-white/10 pt-2">
+                        <div class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> MessagePack Protocol Implemented</div>
+                        <div class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Redis Backplane Setup</div>
+                        <div class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Apple/Google Auth Integration</div>
+                    </div>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="fui-box p-4 border-l-4 border-l-cyan">
+                    <div class="flex justify-between items-center cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+                        <h3 id="phase2-title" class="text-white font-fui font-bold">PHASE 2: COSMOS SIMULATION</h3>
+                        <span class="text-cyan text-xs font-fui animate-pulse">IN PROGRESS</span>
+                    </div>
+                    <div class="mt-4 space-y-2 text-sm text-gray-400 font-sans border-t border-white/10 pt-2">
+                        <div class="flex items-center gap-2"><i class="fa-solid fa-spinner fa-spin text-cyan"></i> 1M Entity ECS Job System</div>
+                        <div class="flex items-center gap-2"><i class="fa-regular fa-square"></i> LOD 0/1/2 Rendering Pipeline</div>
+                        <div class="flex items-center gap-2"><i class="fa-regular fa-square"></i> Kepler Orbit Physics</div>
+                    </div>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="fui-box p-4 border-l-4 border-l-gray-600">
+                    <div class="flex justify-between items-center cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+                        <h3 id="phase3-title" class="text-gray-300 font-fui font-bold">PHASE 3: HYBRID ECONOMY</h3>
+                        <span class="text-gray-500 text-xs font-fui">PENDING</span>
+                    </div>
+                    <div class="hidden mt-4 space-y-2 text-sm text-gray-400 font-sans border-t border-white/10 pt-2">
+                        <div class="flex items-center gap-2"><i class="fa-regular fa-square"></i> IAP Receipt Validation Server</div>
+                        <div class="flex items-center gap-2"><i class="fa-regular fa-square"></i> Shop UI & Transaction Ledger</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-void border-t border-white/10 py-12 text-center">
+        <h2 class="text-white font-serif text-2xl mb-4">BE THE ONE IN NONE</h2>
+        <div class="flex justify-center gap-6 mb-8">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors"><i class="fa-brands fa-discord text-xl"></i></a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors"><i class="fa-brands fa-twitter text-xl"></i></a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors"><i class="fa-solid fa-envelope text-xl"></i></a>
+        </div>
+        <p class="text-gray-700 text-xs font-fui">© 2025 N/ONE PROJECT. ALL RIGHTS RESERVED. <br> DIGITAL VOID EXPERIMENT.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Localization Data
+        const translations = {
+            en: {
+                nav: { vision: "VISION", arch: "ARCHITECTURE", hier: "HIERARCHY", eco: "ECONOMY", glob: "GLOBAL", fui: "FUI SYSTEM" },
+                title: "THE DIGITAL VOID",
+                subtitle: "1,000,000 USERS. 1 GALAXY. ABSOLUTE SCARCITY.",
+                passive: { title: "PASSIVE TRACK", desc: "Silence & Observation. Your star grows automatically. Just exist." },
+                active: { title: "ACTIVE TRACK", desc: "Economy, War, & Vanity. Acquire Stardust. Bid for the Core." },
+                permadeath: { title: "PERMADEATH", desc: "Stop subscribing, and you vanish. Your coordinates are recycled." },
+                scroll: "SCROLL TO INITIALIZE",
+                arch: { title: "01. ARCHITECTURE", sub: "// THE BEDROCK" },
+                stack: { server: "SERVER (ASP.NET CORE 8)", client: "CLIENT (UNITY 6 + DOTS)", perfTitle: "PROTOCOL EFFICIENCY COMPARISON", perfCap: "DATA: INTERNAL BENCHMARK v8.3" },
+                serverList: ["MessagePack Protocol: 80% traffic reduction vs JSON.", "Redis Cluster: High-speed backplane & position caching.", "Multi-threaded Workers: Background services for Physics/Auctions.", "Rate Limiting: 5 ops/sec throttling per client.", "DevOps: AWS Global Accelerator (Seoul/Singapore Regions)."],
+                clientList: ["LOD System: Mesh (Near) -> Instancing (Mid) -> Points (Far).", "ECS Job System: Parallel processing for 1M orbit calculations.", "URP Bloom: High-performance glow effects for stars.", "Localization: English/Korean/Thai dynamic font fallback."],
+                hierarchy: { title: "02. THE HIERARCHY", desc: "\"Capital determines physical location and power. Subscribe to survive.\"" },
+                tiers: {
+                    nomad: { zone: "Outer (3)", reset: "Daily (Random)", visual: "White Dot", growth: "1.0x" },
+                    settler: { zone: "Ring (2)", reset: "Weekly (Select)", visual: "Blue Aura", growth: "1.5x" },
+                    royal: { zone: "Core (1)", reset: "Manual (1-30d)", visual: "Gold Ring", growth: "2.0x" },
+                    heritage: { sub: "INVITE ONLY", sub2: "Top 0.1% Net Worth", zone: "Sanctum (0)", tax: "50% Reduction", visual: "Diamond + Platinum", perk: "Physical Card" }
+                },
+                btn: { select: "SELECT", view: "VIEW CRITERIA" },
+                economy: { title: "03. AI ECONOMY", desc: "The \"AI Central Bank\" monitors Stardust (SD) circulation in real-time. It automatically adjusts interest rates and item prices to control inflation.", stats: { inf: "GLOBAL INFLATION", burn: "TOTAL SD BURNED", auct: "ACTIVE AUCTIONS" }, warn: "WARNING: If you unsubscribe, your star enters \"Blackhole State\" instantly.", chart: "STARDUST FLOW SIMULATION" },
+                global: { title: "03.5 GLOBAL & PROFIT", sub: "// EXPANSION PLAN", strat: "LOCALIZATION STRATEGY", profit: "MONTHLY REVENUE PROJECTION", total: "EST. TOTAL", based: "Based on 1M Downloads / 30% MAU / 5% Payer Conversion" },
+                langs: {
+                    en: { title: "ENGLISH (GLOBAL)", tone: "Tone: Dry, SF, Void", tag: "PRIMARY" },
+                    ko: { title: "KOREAN (DOMESTIC)", tone: "Tone: Poetic, Emotional", tag: "LAUNCH" },
+                    th: { title: "THAI (EMERGING)", tone: "Tone: Polite, Soft", tag: "WAVE 1" }
+                },
+                fui: { title: "04. ORBITAL HUD", sub: "// SYSTEM: ENDLESS FUI PROTOCOL", hint: "HOVER OR TAP TO INTERACT WITH THE HUD" },
+                hud: { system: "SYSTEM", wallet: "WALLET", owner: "OWNER", tier: "TIER", log: "VISITOR LOG", trace: "TRACE SIGNAL" },
+                roadmap: { title: "DEVELOPMENT SEQUENCE", p1: "PHASE 1: SERVER & FOUNDATION", p2: "PHASE 2: COSMOS SIMULATION", p3: "PHASE 3: HYBRID ECONOMY" }
+            },
+            ko: {
+                nav: { vision: "비전", arch: "아키텍처", hier: "계급구조", eco: "경제", glob: "글로벌", fui: "FUI 시스템" },
+                title: "디지털 공허",
+                subtitle: "100만 명의 사용자. 하나의 은하. 절대적 희소성.",
+                passive: { title: "침묵의 관조", desc: "아무것도 하지 마세요. 존재만으로 당신의 별은 빛납니다." },
+                active: { title: "능동적 투쟁", desc: "경매와 전쟁, 그리고 과시. 스타더스트를 모아 우주의 중심으로 나아가세요." },
+                permadeath: { title: "영구적 소멸", desc: "구독을 멈추면 당신의 별은 즉시 사라집니다. 좌표는 회수됩니다." },
+                scroll: "시스템 초기화 중...",
+                arch: { title: "01. 아키텍처", sub: "// 기반 구조" },
+                stack: { server: "서버 (ASP.NET CORE 8)", client: "클라이언트 (UNITY 6 + DOTS)", perfTitle: "프로토콜 효율성 비교", perfCap: "데이터: 내부 벤치마크 v8.3" },
+                serverList: ["MessagePack 프로토콜: JSON 대비 트래픽 80% 절감.", "Redis 클러스터: 초고속 백플레인 및 위치 캐싱.", "멀티스레드 워커: 물리/경매 로직 백그라운드 처리.", "속도 제한: 클라이언트당 초당 5회 요청 제한.", "DevOps: AWS 글로벌 액셀러레이터 (서울/싱가포르 리전)."],
+                clientList: ["LOD 시스템: 메쉬(근거리) -> 인스턴싱(중거리) -> 점(원거리).", "ECS 잡 시스템: 100만 궤도 연산 병렬 처리.", "URP 블룸: 고성능 발광 효과.", "로컬라이제이션: 영/한/태 동적 폰트 폴백."],
+                hierarchy: { title: "02. 계급 구조", desc: "\"자본이 곧 물리적 위치와 권력을 결정합니다. 생존을 위해 구독하십시오.\"" },
+                tiers: {
+                    nomad: { zone: "아우터 (3)", reset: "매일 (무작위)", visual: "하얀 점", growth: "1.0배" },
+                    settler: { zone: "링 (2)", reset: "매주 (선택)", visual: "푸른 오라", growth: "1.5배" },
+                    royal: { zone: "코어 (1)", reset: "수동 (1-30일)", visual: "금색 고리", growth: "2.0배" },
+                    heritage: { sub: "초대 전용", sub2: "상위 0.1% 순자산", zone: "성역 (0)", tax: "50% 감면", visual: "다이아몬드 + 백금", perk: "실물 카드" }
+                },
+                btn: { select: "선택", view: "자격 요건 보기" },
+                economy: { title: "03. AI 경제", desc: "\"AI 중앙은행\"이 실시간으로 스타더스트(SD) 유통량을 감시합니다. 인플레이션을 통제하기 위해 금리와 아이템 가격을 자동으로 조정합니다.", stats: { inf: "글로벌 인플레이션", burn: "총 소각된 SD", auct: "진행 중인 경매" }, warn: "경고: 구독을 해지하면 당신의 별은 즉시 \"블랙홀 상태\"로 전환됩니다.", chart: "스타더스트 흐름 시뮬레이션" },
+                global: { title: "03.5 글로벌 & 수익성", sub: "// 확장 계획", strat: "현지화 전략", profit: "월 예상 매출", total: "예상 합계", based: "기준: 100만 다운로드 / MAU 30% / 결제 전환율 5%" },
+                langs: {
+                    en: { title: "영어 (글로벌)", tone: "톤: 건조, SF, 공허", tag: "기본" },
+                    ko: { title: "한국어 (국내)", tone: "톤: 시적, 감성적", tag: "런칭" },
+                    th: { title: "태국어 (신흥)", tone: "톤: 정중, 부드러움", tag: "1차 확장" }
+                },
+                fui: { title: "04. 오비탈 HUD", sub: "// 시스템: 엔드리스 FUI 프로토콜", hint: "HUD와 상호작용하려면 마우스를 올리거나 탭하세요" },
+                hud: { system: "시스템", wallet: "지갑", owner: "소유자", tier: "티어", log: "방문 기록", trace: "신호 추적" },
+                roadmap: { title: "개발 순서", p1: "1단계: 서버 & 기반", p2: "2단계: 우주 시뮬레이션", p3: "3단계: 하이브리드 경제" }
+            },
+            th: {
+                nav: { vision: "วิสัยทัศน์", arch: "สถาปัตยกรรม", hier: "ลำดับชั้น", eco: "เศรษฐกิจ", glob: "ทั่วโลก", fui: "ระบบ FUI" },
+                title: "ความว่างเปล่าดิจิทัล",
+                subtitle: "1,000,000 ผู้ใช้ 1 กาแล็กซี ความหายากที่แท้จริง",
+                passive: { title: "เส้นทางสงบ", desc: "ความเงียบและการเฝ้าดู ดาวของคุณจะเติบโตโดยอัตโนมัติ เพียงแค่ดำรงอยู่" },
+                active: { title: "เส้นทางต่อสู้", desc: "เศรษฐกิจ สงคราม และความภาคภูมิใจ ครอบครอง Stardust ประมูลเพื่อแกนกลาง" },
+                permadeath: { title: "ความตายถาวร", desc: "หากหยุดสมัครสมาชิก คุณจะหายไปทันที พิกัดของคุณจะถูกนำกลับมาใช้ใหม่" },
+                scroll: "เลื่อนเพื่อเริ่มต้น",
+                arch: { title: "01. สถาปัตยกรรม", sub: "// รากฐาน" },
+                stack: { server: "เซิร์ฟเวอร์ (ASP.NET CORE 8)", client: "ลูกค้า (UNITY 6 + DOTS)", perfTitle: "การเปรียบเทียบประสิทธิภาพโปรโตคอล", perfCap: "ข้อมูล: เกณฑ์มาตรฐานภายใน v8.3" },
+                serverList: ["โปรโตคอล MessagePack: ลดการรับส่งข้อมูล 80% เทียบกับ JSON", "Redis Cluster: แบ็คเพลนความเร็วสูงและการแคชตำแหน่ง", "Multi-threaded Workers: บริการพื้นหลังสำหรับฟิสิกส์/การประมูล", "การจำกัดอัตรา: 5 ops/วินาที ต่อลูกค้า", "DevOps: AWS Global Accelerator (ภูมิภาคโซล/สิงคโปร์)"],
+                clientList: ["ระบบ LOD: เมช (ใกล้) -> อินสแตนซ์ (กลาง) -> จุด (ไกล)", "ระบบงาน ECS: การประมวลผลแบบขนานสำหรับการคำนวณวงโคจร 1 ล้าน", "URP Bloom: เอฟเฟกต์เรืองแสงประสิทธิภาพสูงสำหรับดาว", "การแปลภาษา: รองรับฟอนต์ไดนามิก อังกฤษ/เกาหลี/ไทย"],
+                hierarchy: { title: "02. ลำดับชั้น", desc: "\"ทุนกำหนดตำแหน่งและอำนาจทางกายภาพ สมัครสมาชิกเพื่ออยู่รอด\"" },
+                tiers: {
+                    nomad: { zone: "รอบนอก (3)", reset: "ทุกวัน (สุ่ม)", visual: "จุดสีขาว", growth: "1.0x" },
+                    settler: { zone: "วงแหวน (2)", reset: "รายสัปดาห์ (เลือก)", visual: "ออร่าสีฟ้า", growth: "1.5x" },
+                    royal: { zone: "แกนกลาง (1)", reset: "กำหนดเอง (1-30 วัน)", visual: "วงแหวนทอง", growth: "2.0x" },
+                    heritage: { sub: "เชิญเท่านั้น", sub2: "ความมั่งคั่งสุทธิสูงสุด 0.1%", zone: "เขตรักษาพันธุ์ (0)", tax: "ลดหย่อน 50%", visual: "เพชร + แพลตตินัม", perk: "บัตรจริง" }
+                },
+                btn: { select: "เลือก", view: "ดูเกณฑ์" },
+                economy: { title: "03. เศรษฐกิจ AI", desc: "\"ธนาคารกลาง AI\" ตรวจสอบการหมุนเวียนของ Stardust (SD) แบบเรียลไทม์ ปรับอัตราดอกเบี้ยและราคาสินค้าโดยอัตโนมัติเพื่อควบคุมเงินเฟ้อ", stats: { inf: "เงินเฟ้อทั่วโลก", burn: "SD ที่ถูกเผาทั้งหมด", auct: "การประมูลที่ใช้งานอยู่" }, warn: "คำเตือน: หากคุณยกเลิกการสมัครสมาชิก ดาวของคุณจะเข้าสู่ \"สถานะหลุมดำ\" ทันที", chart: "การจำลองการไหลของ STARDUST" },
+                global: { title: "03.5 ทั่วโลก & กำไร", sub: "// แผนการขยาย", strat: "กลยุทธ์การแปล", profit: "ประมาณการรายได้รายเดือน", total: "ยอดรวมโดยประมาณ", based: "อิงจาก 1 ล้านดาวน์โหลด / 30% MAU / 5% ผู้จ่ายเงิน" },
+                langs: {
+                    en: { title: "อังกฤษ (ทั่วโลก)", tone: "โทน: แห้ง, SF, ว่างเปล่า", tag: "หลัก" },
+                    ko: { title: "เกาหลี (ในประเทศ)", tone: "โทน: บทกวี, อารมณ์", tag: "เปิดตัว" },
+                    th: { title: "ไทย (ตลาดใหม่)", tone: "โทน: สุภาพ, นุ่มนวล", tag: "คลื่น 1" }
+                },
+                fui: { title: "04. ORBITAL HUD", sub: "// ระบบ: โปรโตคอล ENDLESS FUI", hint: "วางเมาส์หรือแตะเพื่อโต้ตอบกับ HUD" },
+                hud: { system: "ระบบ", wallet: "กระเป๋าเงิน", owner: "เจ้าของ", tier: "ระดับ", log: "บันทึกผู้เข้าชม", trace: "ติดตามสัญญาณ" },
+                roadmap: { title: "ลำดับการพัฒนา", p1: "ระยะที่ 1: เซิร์ฟเวอร์ & รากฐาน", p2: "ระยะที่ 2: การจำลองจักรวาล", p3: "ระยะที่ 3: เศรษฐกิจลูกผสม" }
+            }
+        };
+
+        function changeLang(lang) {
+            const t = translations[lang];
+            
+            // Nav
+            document.getElementById('nav-vision').innerText = t.nav.vision;
+            document.getElementById('nav-architecture').innerText = t.nav.arch;
+            document.getElementById('nav-hierarchy').innerText = t.nav.hier;
+            document.getElementById('nav-economy').innerText = t.nav.eco;
+            document.getElementById('nav-global').innerText = t.nav.glob;
+            document.getElementById('nav-fui').innerText = t.nav.fui;
+
+            // Hero
+            document.getElementById('hero-title').innerText = t.title;
+            document.getElementById('hero-subtitle').innerText = t.subtitle;
+            document.getElementById('card-passive-title').innerText = t.passive.title;
+            document.getElementById('card-passive-desc').innerText = t.passive.desc;
+            document.getElementById('card-active-title').innerText = t.active.title;
+            document.getElementById('card-active-desc').innerText = t.active.desc;
+            document.getElementById('card-permadeath-title').innerText = t.permadeath.title;
+            document.getElementById('card-permadeath-desc').innerText = t.permadeath.desc;
+            document.getElementById('scroll-hint').innerText = t.scroll;
+
+            // Architecture
+            document.getElementById('arch-title').innerText = t.arch.title;
+            document.getElementById('arch-subtitle').innerText = t.arch.sub;
+            document.getElementById('server-title').innerText = t.stack.server;
+            document.getElementById('client-title').innerText = t.stack.client;
+            
+            const serverUl = document.getElementById('server-list');
+            serverUl.innerHTML = '';
+            t.serverList.forEach(item => {
+                const li = document.createElement('li');
+                const split = item.split(':');
+                if(split.length > 1) li.innerHTML = `<strong class="text-white">${split[0]}:</strong>${split[1]}`;
+                else li.innerHTML = item;
+                serverUl.appendChild(li);
+            });
+
+            const clientUl = document.getElementById('client-list');
+            clientUl.innerHTML = '';
+            t.clientList.forEach(item => {
+                 const li = document.createElement('li');
+                 const split = item.split(':');
+                if(split.length > 1) li.innerHTML = `<strong class="text-white">${split[0]}:</strong>${split[1]}`;
+                else li.innerHTML = item;
+                clientUl.appendChild(li);
+            });
+            
+            document.getElementById('perf-chart-title').innerText = t.stack.perfTitle;
+            document.getElementById('perf-chart-caption').innerText = t.stack.perfCap;
+
+
+            // Hierarchy
+            document.getElementById('hierarchy-title').innerText = t.hierarchy.title;
+            document.getElementById('hierarchy-subtitle').innerText = t.hierarchy.desc;
+            
+            // Tier Nomad
+            const nomadList = document.getElementById('tier-nomad-list');
+            nomadList.children[0].children[1].innerText = t.tiers.nomad.zone;
+            nomadList.children[1].children[1].innerText = t.tiers.nomad.reset;
+            nomadList.children[2].children[1].innerText = t.tiers.nomad.visual;
+            nomadList.children[3].children[1].innerText = t.tiers.nomad.growth;
+            
+            // Tier Settler
+            const settlerList = document.getElementById('tier-settler-list');
+            settlerList.children[0].children[1].innerText = t.tiers.settler.zone;
+            settlerList.children[1].children[1].innerText = t.tiers.settler.reset;
+            settlerList.children[2].children[1].innerText = t.tiers.settler.visual;
+            settlerList.children[3].children[1].innerText = t.tiers.settler.growth;
+
+            // Tier Royal
+            const royalList = document.getElementById('tier-royal-list');
+            royalList.children[0].children[1].innerText = t.tiers.royal.zone;
+            royalList.children[1].children[1].innerText = t.tiers.royal.reset;
+            royalList.children[2].children[1].innerText = t.tiers.royal.visual;
+            royalList.children[3].children[1].innerText = t.tiers.royal.growth;
+            
+            // Tier Heritage
+            document.getElementById('tier-heritage-price').innerHTML = `${t.tiers.heritage.sub}<span class="text-xs text-gray-500 block">${t.tiers.heritage.sub2}</span>`;
+            const heritageList = document.getElementById('tier-heritage-list');
+            heritageList.children[0].children[1].innerText = t.tiers.heritage.zone;
+            heritageList.children[1].children[1].innerText = t.tiers.heritage.tax;
+            heritageList.children[2].children[1].innerText = t.tiers.heritage.visual;
+            heritageList.children[3].children[1].innerText = t.tiers.heritage.perk;
+
+            document.querySelectorAll('.tier-select-btn').forEach(b => b.innerText = t.btn.select);
+            document.getElementById('tier-heritage-btn').innerText = t.btn.view;
+
+            // Economy
+            document.getElementById('economy-title').innerText = t.economy.title;
+            document.getElementById('economy-desc').innerText = t.economy.desc;
+            
+            const ecoStats = document.getElementById('economy-stats');
+            ecoStats.children[0].children[0].innerText = t.economy.stats.inf;
+            ecoStats.children[1].children[0].innerText = t.economy.stats.burn;
+            ecoStats.children[2].children[0].innerText = t.economy.stats.auct;
+
+            document.getElementById('economy-warning').innerHTML = t.economy.warn;
+            document.getElementById('economy-chart-title').innerText = t.economy.chart;
+
+            // Global
+            document.getElementById('global-title').innerText = t.global.title;
+            document.getElementById('global-subtitle').innerText = t.global.sub;
+            document.getElementById('local-strat-title').innerText = t.global.strat;
+            
+            document.getElementById('lang-en-title').innerText = t.langs.en.title;
+            document.getElementById('lang-en-tone').innerText = t.langs.en.tone;
+            document.getElementById('lang-en-tag').innerText = t.langs.en.tag;
+
+            document.getElementById('lang-ko-title').innerText = t.langs.ko.title;
+            document.getElementById('lang-ko-tone').innerText = t.langs.ko.tone;
+            document.getElementById('lang-ko-tag').innerText = t.langs.ko.tag;
+
+            document.getElementById('lang-th-title').innerText = t.langs.th.title;
+            document.getElementById('lang-th-tone').innerText = t.langs.th.tone;
+            document.getElementById('lang-th-tag').innerText = t.langs.th.tag;
+
+            document.getElementById('profit-title').innerText = t.global.profit;
+            document.getElementById('profit-est-label').innerText = t.global.total;
+            document.getElementById('profit-desc').innerText = t.global.based;
+
+            // FUI
+            document.getElementById('fui-title').innerText = t.fui.title;
+            document.getElementById('fui-subtitle').innerText = t.fui.sub;
+            document.getElementById('fui-hint').innerText = t.fui.hint;
+
+            document.getElementById('hud-system-label').innerText = t.hud.system;
+            document.getElementById('hud-wallet-label').innerText = t.hud.wallet;
+            document.getElementById('hud-owner-label').innerText = t.hud.owner;
+            document.getElementById('hud-tier-label').innerText = t.hud.tier;
+            document.getElementById('hud-log-label').innerText = t.hud.log;
+            document.getElementById('hud-trace-btn').innerText = t.hud.trace;
+
+            // Roadmap
+            document.getElementById('roadmap-title').innerText = t.roadmap.title;
+            document.getElementById('phase1-title').innerText = t.roadmap.p1;
+            document.getElementById('phase2-title').innerText = t.roadmap.p2;
+            document.getElementById('phase3-title').innerText = t.roadmap.p3;
+        }
+
+        // --- 1. Starfield Animation ---
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const stars = [];
+        const STAR_COUNT = 300; // Optimized for performance in this demo
+
+        function initStars() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            stars.length = 0;
+            
+            for(let i = 0; i < STAR_COUNT; i++) {
+                stars.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    z: Math.random() * 2 + 0.5, // Depth/Speed
+                    alpha: Math.random(),
+                    fade: Math.random() > 0.5 ? 0.01 : -0.01
+                });
+            }
+        }
+
+        function drawStars() {
+            ctx.fillStyle = '#050505';
+            ctx.fillRect(0, 0, width, height);
+
+            stars.forEach(star => {
+                ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.z * 0.8, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Twinkle Logic
+                star.alpha += star.fade;
+                if(star.alpha > 1 || star.alpha < 0.2) star.fade *= -1;
+
+                // Move Logic (Parallax)
+                star.y -= star.z * 0.1; 
+                if(star.y < 0) {
+                    star.y = height;
+                    star.x = Math.random() * width;
+                }
+            });
+
+            requestAnimationFrame(drawStars);
+        }
+
+        window.addEventListener('resize', initStars);
+        initStars();
+        drawStars();
+
+        // --- 2. Tech Stack Radar Chart ---
+        const techCtx = document.getElementById('techChart').getContext('2d');
+        new Chart(techCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Data Size', 'Latency', 'Concurrency', 'Scalability', 'Security', 'Battery Efficiency'],
+                datasets: [{
+                    label: 'Project N/ONE (MessagePack + DOTS)',
+                    data: [95, 90, 100, 95, 90, 85],
+                    backgroundColor: 'rgba(0, 243, 255, 0.2)',
+                    borderColor: '#00F3FF',
+                    pointBackgroundColor: '#00F3FF',
+                    borderWidth: 2
+                }, {
+                    label: 'Standard App (JSON + OOP)',
+                    data: [40, 50, 40, 60, 50, 40],
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    borderColor: 'rgba(255, 255, 255, 0.3)',
+                    borderWidth: 1,
+                    borderDash: [5, 5]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        pointLabels: { 
+                            color: '#ccc', 
+                            font: { family: 'Rajdhani', size: 12 } 
+                        },
+                        ticks: { display: false, backdropColor: 'transparent' }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: '#fff', font: { family: 'Rajdhani' } }
+                    }
+                }
+            }
+        });
+
+        // --- 3. Economy Flow Chart ---
+        const ecoCtx = document.getElementById('economyChart').getContext('2d');
+        const ecoGradient = ecoCtx.createLinearGradient(0, 0, 0, 400);
+        ecoGradient.addColorStop(0, 'rgba(212, 175, 55, 0.5)'); // Gold
+        ecoGradient.addColorStop(1, 'rgba(212, 175, 55, 0.0)');
+
+        new Chart(ecoCtx, {
+            type: 'line',
+            data: {
+                labels: ['T-0', 'T-1h', 'T-2h', 'T-3h', 'T-4h', 'T-5h', 'T-6h'],
+                datasets: [
+                    {
+                        label: 'Total Stardust Mined',
+                        data: [1000, 1200, 1500, 1400, 1800, 2100, 2050],
+                        borderColor: '#D4AF37', // Gold
+                        backgroundColor: ecoGradient,
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Burn Rate (Sunk Cost)',
+                        data: [200, 300, 800, 600, 1200, 1900, 1800],
+                        borderColor: '#FF2A6D', // Red/Danger
+                        borderDash: [5, 5],
+                        tension: 0.4,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#666' } },
+                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#666' } }
+                },
+                plugins: {
+                    legend: { labels: { color: '#fff', font: { family: 'Rajdhani' } } }
+                }
+            }
+        });
+
+        // --- 4. Revenue Doughnut Chart (New) ---
+        const revCtx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(revCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Nomad Sub', 'Settler Sub', 'Royal Sub', 'IAP Vanity', 'IAP Utility'],
+                datasets: [{
+                    data: [198000, 149700, 99950, 150000, 75000],
+                    backgroundColor: ['#333333', '#00F3FF', '#D4AF37', '#FF2A6D', '#FFFFFF'],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { color: '#ccc', font: { family: 'Rajdhani' }, boxWidth: 10 }
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+
+    </script>
+</body>
+</html>
