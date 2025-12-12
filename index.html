@@ -127,12 +127,12 @@
             <h1 class="font-fui font-bold text-2xl tracking-widest text-white">N/ONE <span class="text-xs text-gray-500 ml-2">PROTOCOL v8.3</span></h1>
         </div>
         <div class="hidden md:flex gap-8 font-fui text-sm tracking-wide text-gray-400">
-            <a href="#vision" class="hover:text-cyan transition-colors">VISION</a>
-            <a href="#architecture" class="hover:text-cyan transition-colors">ARCHITECTURE</a>
-            <a href="#hierarchy" class="hover:text-cyan transition-colors">HIERARCHY</a>
-            <a href="#economy" class="hover:text-cyan transition-colors">ECONOMY</a>
-            <a href="#localization" class="hover:text-cyan transition-colors">GLOBAL</a>
-            <a href="#uiux" class="hover:text-cyan transition-colors">FUI SYSTEM</a>
+            <a href="#vision" class="hover:text-cyan transition-colors" id="nav-vision">VISION</a>
+            <a href="#architecture" class="hover:text-cyan transition-colors" id="nav-architecture">ARCHITECTURE</a>
+            <a href="#hierarchy" class="hover:text-cyan transition-colors" id="nav-hierarchy">HIERARCHY</a>
+            <a href="#economy" class="hover:text-cyan transition-colors" id="nav-economy">ECONOMY</a>
+            <a href="#localization" class="hover:text-cyan transition-colors" id="nav-global">GLOBAL</a>
+            <a href="#uiux" class="hover:text-cyan transition-colors" id="nav-fui">FUI SYSTEM</a>
         </div>
         <div class="flex gap-2">
              <button onclick="changeLang('en')" class="border border-white/20 text-gray-400 px-2 py-1 font-fui text-xs hover:border-white hover:text-white transition-all">EN</button>
@@ -177,8 +177,8 @@
 
         <div class="max-w-6xl mx-auto">
             <div class="flex items-end gap-4 mb-12">
-                <h2 class="text-4xl font-fui font-bold text-white">01. ARCHITECTURE</h2>
-                <span class="text-cyan font-fui text-sm mb-2">// THE BEDROCK</span>
+                <h2 id="arch-title" class="text-4xl font-fui font-bold text-white">01. ARCHITECTURE</h2>
+                <span id="arch-subtitle" class="text-cyan font-fui text-sm mb-2">// THE BEDROCK</span>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -186,10 +186,10 @@
                 <div class="space-y-4">
                     <div class="fui-box p-6 fui-corner">
                         <div class="flex justify-between items-center mb-2">
-                            <h3 class="text-cyan font-bold font-fui text-xl">SERVER (ASP.NET CORE 8)</h3>
+                            <h3 id="server-title" class="text-cyan font-bold font-fui text-xl">SERVER (ASP.NET CORE 8)</h3>
                             <i class="fa-solid fa-server text-white/50"></i>
                         </div>
-                        <ul class="text-sm text-gray-400 font-sans space-y-2 list-disc list-inside">
+                        <ul id="server-list" class="text-sm text-gray-400 font-sans space-y-2 list-disc list-inside">
                             <li><strong class="text-white">MessagePack Protocol:</strong> 80% traffic reduction vs JSON.</li>
                             <li><strong class="text-white">Redis Cluster:</strong> High-speed backplane & position caching.</li>
                             <li><strong class="text-white">Multi-threaded Workers:</strong> Background services for Physics/Auctions.</li>
@@ -200,10 +200,10 @@
 
                     <div class="fui-box p-6 fui-corner">
                         <div class="flex justify-between items-center mb-2">
-                            <h3 class="text-gold font-bold font-fui text-xl">CLIENT (UNITY 6 + DOTS)</h3>
+                            <h3 id="client-title" class="text-gold font-bold font-fui text-xl">CLIENT (UNITY 6 + DOTS)</h3>
                             <i class="fa-brands fa-unity text-white/50"></i>
                         </div>
-                        <ul class="text-sm text-gray-400 font-sans space-y-2 list-disc list-inside">
+                        <ul id="client-list" class="text-sm text-gray-400 font-sans space-y-2 list-disc list-inside">
                             <li><strong class="text-white">LOD System:</strong> Mesh (Near) -> Instancing (Mid) -> Points (Far).</li>
                             <li><strong class="text-white">ECS Job System:</strong> Parallel processing for 1M orbit calculations.</li>
                             <li><strong class="text-white">URP Bloom:</strong> High-performance glow effects for stars.</li>
@@ -214,11 +214,11 @@
 
                 <!-- Performance Chart -->
                 <div class="fui-box p-6 bg-void/50">
-                    <h4 class="text-center font-fui text-gray-500 text-sm mb-4">PROTOCOL EFFICIENCY COMPARISON</h4>
+                    <h4 id="perf-chart-title" class="text-center font-fui text-gray-500 text-sm mb-4">PROTOCOL EFFICIENCY COMPARISON</h4>
                     <div class="chart-container">
                         <canvas id="techChart"></canvas>
                     </div>
-                    <p class="text-center text-xs text-gray-500 mt-4 font-fui">DATA: INTERNAL BENCHMARK v8.3</p>
+                    <p id="perf-chart-caption" class="text-center text-xs text-gray-500 mt-4 font-fui">DATA: INTERNAL BENCHMARK v8.3</p>
                 </div>
             </div>
         </div>
@@ -228,8 +228,8 @@
     <section id="hierarchy" class="py-20 px-6 bg-void border-t border-white/5">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-fui font-bold text-white mb-2">02. THE HIERARCHY</h2>
-                <p class="text-gray-400 font-sans max-w-2xl mx-auto">"Capital determines physical location and power. Subscribe to survive."</p>
+                <h2 id="hierarchy-title" class="text-4xl font-fui font-bold text-white mb-2">02. THE HIERARCHY</h2>
+                <p id="hierarchy-subtitle" class="text-gray-400 font-sans max-w-2xl mx-auto">"Capital determines physical location and power. Subscribe to survive."</p>
             </div>
 
             <!-- Tier Cards Grid -->
@@ -240,7 +240,7 @@
                     <h3 class="text-2xl font-serif text-white mb-1">NOMAD</h3>
                     <div class="text-xl font-fui text-gray-400 mb-6">$0.99<span class="text-xs">/mo</span></div>
                     
-                    <div class="space-y-4 text-sm text-gray-400 font-sans border-t border-white/10 pt-4">
+                    <div id="tier-nomad-list" class="space-y-4 text-sm text-gray-400 font-sans border-t border-white/10 pt-4">
                         <div class="flex justify-between">
                             <span>Zone</span>
                             <span class="text-white">Outer (3)</span>
@@ -258,7 +258,7 @@
                             <span class="text-white">1.0x</span>
                         </div>
                     </div>
-                    <button class="w-full mt-8 py-2 border border-gray-600 text-gray-400 font-fui text-sm hover:border-white hover:text-white transition-all">SELECT</button>
+                    <button class="w-full mt-8 py-2 border border-gray-600 text-gray-400 font-fui text-sm hover:border-white hover:text-white transition-all tier-select-btn">SELECT</button>
                 </div>
 
                 <!-- Settler -->
@@ -267,7 +267,7 @@
                     <h3 class="text-2xl font-serif text-cyan mb-1">SETTLER</h3>
                     <div class="text-xl font-fui text-cyan mb-6">$4.99<span class="text-xs">/mo</span></div>
                     
-                    <div class="space-y-4 text-sm text-gray-400 font-sans border-t border-white/10 pt-4">
+                    <div id="tier-settler-list" class="space-y-4 text-sm text-gray-400 font-sans border-t border-white/10 pt-4">
                         <div class="flex justify-between">
                             <span>Zone</span>
                             <span class="text-cyan">Ring (2)</span>
@@ -285,7 +285,7 @@
                             <span class="text-white">1.5x</span>
                         </div>
                     </div>
-                    <button class="w-full mt-8 py-2 bg-cyan/10 border border-cyan text-cyan font-fui text-sm hover:bg-cyan hover:text-black transition-all">SELECT</button>
+                    <button class="w-full mt-8 py-2 bg-cyan/10 border border-cyan text-cyan font-fui text-sm hover:bg-cyan hover:text-black transition-all tier-select-btn">SELECT</button>
                 </div>
 
                 <!-- Royal -->
@@ -295,7 +295,7 @@
                     <h3 class="text-2xl font-serif text-gold mb-1">ROYAL</h3>
                     <div class="text-xl font-fui text-gold mb-6">$19.99<span class="text-xs">/mo</span></div>
                     
-                    <div class="space-y-4 text-sm text-gray-300 font-sans border-t border-white/10 pt-4">
+                    <div id="tier-royal-list" class="space-y-4 text-sm text-gray-300 font-sans border-t border-white/10 pt-4">
                         <div class="flex justify-between">
                             <span>Zone</span>
                             <span class="text-gold">Core (1)</span>
@@ -313,16 +313,16 @@
                             <span class="text-white">2.0x</span>
                         </div>
                     </div>
-                    <button class="w-full mt-8 py-2 bg-gold/10 border border-gold text-gold font-fui text-sm hover:bg-gold hover:text-black transition-all">SELECT</button>
+                    <button class="w-full mt-8 py-2 bg-gold/10 border border-gold text-gold font-fui text-sm hover:bg-gold hover:text-black transition-all tier-select-btn">SELECT</button>
                 </div>
 
                 <!-- Heritage -->
                 <div class="fui-box p-6 bg-gradient-to-b from-white/5 to-transparent border-white/40 fui-corner">
                     <div class="h-1 w-10 bg-white mb-4 shadow-[0_0_10px_white]"></div>
                     <h3 class="text-2xl font-serif text-white mb-1 text-glow">HERITAGE</h3>
-                    <div class="text-xl font-fui text-white mb-6">INVITE ONLY<span class="text-xs text-gray-500 block">Top 0.1% Net Worth</span></div>
+                    <div id="tier-heritage-price" class="text-xl font-fui text-white mb-6">INVITE ONLY<span class="text-xs text-gray-500 block">Top 0.1% Net Worth</span></div>
                     
-                    <div class="space-y-4 text-sm text-gray-300 font-sans border-t border-white/10 pt-4">
+                    <div id="tier-heritage-list" class="space-y-4 text-sm text-gray-300 font-sans border-t border-white/10 pt-4">
                         <div class="flex justify-between">
                             <span>Zone</span>
                             <span class="text-white font-bold">Sanctum (0)</span>
@@ -340,7 +340,7 @@
                             <span class="text-white">Physical Card</span>
                         </div>
                     </div>
-                    <button class="w-full mt-8 py-2 border border-white/50 text-white font-fui text-sm hover:bg-white hover:text-black transition-all">VIEW CRITERIA</button>
+                    <button id="tier-heritage-btn" class="w-full mt-8 py-2 border border-white/50 text-white font-fui text-sm hover:bg-white hover:text-black transition-all">VIEW CRITERIA</button>
                 </div>
             </div>
         </div>
@@ -351,13 +351,13 @@
         <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div class="lg:col-span-1">
                 <div class="flex items-end gap-4 mb-8">
-                    <h2 class="text-4xl font-fui font-bold text-white">03. AI ECONOMY</h2>
+                    <h2 id="economy-title" class="text-4xl font-fui font-bold text-white">03. AI ECONOMY</h2>
                 </div>
-                <p class="text-gray-400 mb-8 font-sans text-sm leading-relaxed">
+                <p id="economy-desc" class="text-gray-400 mb-8 font-sans text-sm leading-relaxed">
                     The "AI Central Bank" monitors Stardust (SD) circulation in real-time. It automatically adjusts interest rates and item prices to control inflation.
                 </p>
                 
-                <div class="space-y-4 font-fui">
+                <div id="economy-stats" class="space-y-4 font-fui">
                     <div class="flex justify-between items-center border-b border-white/10 pb-2">
                         <span class="text-gray-500">GLOBAL INFLATION</span>
                         <span class="text-green-400">2.4% <i class="fa-solid fa-arrow-trend-down"></i></span>
@@ -374,13 +374,13 @@
 
                 <div class="mt-8 p-4 bg-red-900/10 border border-red-500/30 rounded text-xs text-red-300 font-sans">
                     <i class="fa-solid fa-triangle-exclamation mr-2"></i>
-                    <strong>WARNING:</strong> If you unsubscribe, your star enters "Blackhole State" instantly.
+                    <strong id="economy-warning">WARNING: If you unsubscribe, your star enters "Blackhole State" instantly.</strong>
                 </div>
             </div>
 
             <div class="lg:col-span-2">
                 <div class="fui-box p-4 h-full">
-                    <h4 class="font-fui text-gray-500 text-sm mb-4 ml-4">STARDUST FLOW SIMULATION</h4>
+                    <h4 id="economy-chart-title" class="font-fui text-gray-500 text-sm mb-4 ml-4">STARDUST FLOW SIMULATION</h4>
                     <div class="chart-container">
                         <canvas id="economyChart"></canvas>
                     </div>
@@ -393,61 +393,61 @@
     <section id="localization" class="py-20 px-6 bg-void relative border-t border-white/5">
          <div class="max-w-6xl mx-auto">
             <div class="flex items-end gap-4 mb-12">
-                <h2 class="text-4xl font-fui font-bold text-white">03.5 GLOBAL & PROFIT</h2>
-                <span class="text-gold font-fui text-sm mb-2">// EXPANSION PLAN</span>
+                <h2 id="global-title" class="text-4xl font-fui font-bold text-white">03.5 GLOBAL & PROFIT</h2>
+                <span id="global-subtitle" class="text-gold font-fui text-sm mb-2">// EXPANSION PLAN</span>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <!-- Localization Cards -->
                 <div>
-                     <h3 class="text-xl font-fui text-white mb-6">LOCALIZATION STRATEGY</h3>
+                     <h3 id="local-strat-title" class="text-xl font-fui text-white mb-6">LOCALIZATION STRATEGY</h3>
                      <div class="space-y-4">
                         <div class="fui-box p-4 flex items-center justify-between">
                             <div class="flex items-center gap-4">
                                 <span class="text-2xl">🇺🇸</span>
                                 <div>
-                                    <h4 class="text-white font-bold font-fui">ENGLISH (GLOBAL)</h4>
-                                    <p class="text-xs text-gray-400">Tone: Dry, SF, Void</p>
+                                    <h4 class="text-white font-bold font-fui" id="lang-en-title">ENGLISH (GLOBAL)</h4>
+                                    <p class="text-xs text-gray-400" id="lang-en-tone">Tone: Dry, SF, Void</p>
                                 </div>
                             </div>
-                            <span class="text-cyan text-xs font-fui">PRIMARY</span>
+                            <span class="text-cyan text-xs font-fui" id="lang-en-tag">PRIMARY</span>
                         </div>
                         <div class="fui-box p-4 flex items-center justify-between border-cyan/30">
                             <div class="flex items-center gap-4">
                                 <span class="text-2xl">🇰🇷</span>
                                 <div>
-                                    <h4 class="text-cyan font-bold font-fui">KOREAN (DOMESTIC)</h4>
-                                    <p class="text-xs text-gray-400">Tone: Poetic, Emotional</p>
+                                    <h4 class="text-cyan font-bold font-fui" id="lang-ko-title">KOREAN (DOMESTIC)</h4>
+                                    <p class="text-xs text-gray-400" id="lang-ko-tone">Tone: Poetic, Emotional</p>
                                 </div>
                             </div>
-                            <span class="text-gray-500 text-xs font-fui">LAUNCH</span>
+                            <span class="text-gray-500 text-xs font-fui" id="lang-ko-tag">LAUNCH</span>
                         </div>
                         <div class="fui-box p-4 flex items-center justify-between">
                             <div class="flex items-center gap-4">
                                 <span class="text-2xl">🇹🇭</span>
                                 <div>
-                                    <h4 class="text-white font-bold font-fui">THAI (EMERGING)</h4>
-                                    <p class="text-xs text-gray-400">Tone: Polite, Soft</p>
+                                    <h4 class="text-white font-bold font-fui" id="lang-th-title">THAI (EMERGING)</h4>
+                                    <p class="text-xs text-gray-400" id="lang-th-tone">Tone: Polite, Soft</p>
                                 </div>
                             </div>
-                            <span class="text-gray-500 text-xs font-fui">WAVE 1</span>
+                            <span class="text-gray-500 text-xs font-fui" id="lang-th-tag">WAVE 1</span>
                         </div>
                      </div>
                 </div>
 
                 <!-- Profitability Chart -->
                 <div>
-                    <h3 class="text-xl font-fui text-white mb-6">MONTHLY REVENUE PROJECTION</h3>
+                    <h3 id="profit-title" class="text-xl font-fui text-white mb-6">MONTHLY REVENUE PROJECTION</h3>
                     <div class="fui-box p-6 h-64 flex flex-col justify-center relative">
                         <div class="chart-container" style="height: 200px;">
                             <canvas id="revenueChart"></canvas>
                         </div>
                         <div class="absolute top-4 right-4 text-right">
-                             <div class="text-xs text-gray-500">EST. TOTAL</div>
+                             <div class="text-xs text-gray-500" id="profit-est-label">EST. TOTAL</div>
                              <div class="text-xl text-green-400 font-bold font-fui">~$672,650</div>
                         </div>
                     </div>
-                    <p class="text-xs text-gray-500 mt-4 font-sans text-center">Based on 1M Downloads / 30% MAU / 5% Payer Conversion</p>
+                    <p id="profit-desc" class="text-xs text-gray-500 mt-4 font-sans text-center">Based on 1M Downloads / 30% MAU / 5% Payer Conversion</p>
                 </div>
             </div>
          </div>
@@ -460,8 +460,8 @@
 
         <div class="max-w-5xl mx-auto relative z-10">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-fui font-bold text-white mb-2">04. ORBITAL HUD</h2>
-                <p class="text-cyan font-fui text-sm">// SYSTEM: ENDLESS FUI PROTOCOL</p>
+                <h2 id="fui-title" class="text-4xl font-fui font-bold text-white mb-2">04. ORBITAL HUD</h2>
+                <p id="fui-subtitle" class="text-cyan font-fui text-sm">// SYSTEM: ENDLESS FUI PROTOCOL</p>
             </div>
 
             <!-- Interactive UI Mockup -->
@@ -480,11 +480,11 @@
                     <!-- Top Bar -->
                     <div class="flex justify-between items-start">
                         <div class="fui-box px-4 py-2 pointer-events-auto">
-                            <div class="text-xs text-gray-500 font-fui">SYSTEM</div>
+                            <div class="text-xs text-gray-500 font-fui" id="hud-system-label">SYSTEM</div>
                             <div class="text-lg text-white font-fui font-bold tracking-widest">KEPLER-186F</div>
                         </div>
                         <div class="fui-box px-4 py-2 pointer-events-auto text-right">
-                            <div class="text-xs text-gray-500 font-fui">WALLET</div>
+                            <div class="text-xs text-gray-500 font-fui" id="hud-wallet-label">WALLET</div>
                             <div class="text-lg text-gold font-fui font-bold">1,204,500 SD</div>
                         </div>
                     </div>
@@ -501,22 +501,22 @@
                     <div class="absolute right-8 top-1/4 bottom-1/4 w-64 bg-glass border-l border-white/10 backdrop-blur-md transform translate-x-full group-hover:translate-x-0 transition-transform duration-500 p-4 pointer-events-auto">
                         <div class="h-full border-l border-cyan/30 pl-4 flex flex-col gap-4">
                             <div>
-                                <div class="text-xs text-cyan font-fui mb-1">OWNER</div>
+                                <div class="text-xs text-cyan font-fui mb-1" id="hud-owner-label">OWNER</div>
                                 <div class="text-white font-bold">USER_4092</div>
                             </div>
                             <div>
-                                <div class="text-xs text-cyan font-fui mb-1">TIER</div>
+                                <div class="text-xs text-cyan font-fui mb-1" id="hud-tier-label">TIER</div>
                                 <div class="text-gold font-bold">ROYAL CLASS</div>
                             </div>
                             <div class="flex-1 bg-white/5 rounded border border-white/5 p-2">
-                                <div class="text-xs text-gray-500 mb-2">VISITOR LOG</div>
+                                <div class="text-xs text-gray-500 mb-2" id="hud-log-label">VISITOR LOG</div>
                                 <div class="text-xs text-gray-400 space-y-1">
                                     <p>> User_A (Nomad)</p>
                                     <p>> User_B (Settler)</p>
                                     <p class="text-cyan">> Guild_Alpha</p>
                                 </div>
                             </div>
-                            <button class="w-full py-2 bg-cyan text-black font-bold font-fui text-sm hover:bg-white transition-colors">
+                            <button class="w-full py-2 bg-cyan text-black font-bold font-fui text-sm hover:bg-white transition-colors" id="hud-trace-btn">
                                 TRACE SIGNAL
                             </button>
                         </div>
@@ -530,20 +530,20 @@
                     </div>
                 </div>
             </div>
-            <p class="text-center text-xs text-gray-500 mt-4 font-fui">HOVER OR TAP TO INTERACT WITH THE HUD</p>
+            <p id="fui-hint" class="text-center text-xs text-gray-500 mt-4 font-fui">HOVER OR TAP TO INTERACT WITH THE HUD</p>
         </div>
     </section>
 
     <!-- Development Roadmap Checklist -->
     <section id="roadmap" class="py-20 px-6 bg-void-light">
         <div class="max-w-4xl mx-auto">
-            <h2 class="text-3xl font-fui font-bold text-white mb-10 text-center">DEVELOPMENT SEQUENCE</h2>
+            <h2 id="roadmap-title" class="text-3xl font-fui font-bold text-white mb-10 text-center">DEVELOPMENT SEQUENCE</h2>
             
             <div class="space-y-4">
                 <!-- Phase 1 -->
                 <div class="fui-box p-4 border-l-4 border-l-green-500">
                     <div class="flex justify-between items-center cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
-                        <h3 class="text-white font-fui font-bold">PHASE 1: SERVER & FOUNDATION</h3>
+                        <h3 id="phase1-title" class="text-white font-fui font-bold">PHASE 1: SERVER & FOUNDATION</h3>
                         <span class="text-green-500 text-xs font-fui">100% COMPLETE</span>
                     </div>
                     <div class="mt-4 hidden space-y-2 text-sm text-gray-400 font-sans border-t border-white/10 pt-2">
@@ -556,7 +556,7 @@
                 <!-- Phase 2 -->
                 <div class="fui-box p-4 border-l-4 border-l-cyan">
                     <div class="flex justify-between items-center cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
-                        <h3 class="text-white font-fui font-bold">PHASE 2: COSMOS SIMULATION</h3>
+                        <h3 id="phase2-title" class="text-white font-fui font-bold">PHASE 2: COSMOS SIMULATION</h3>
                         <span class="text-cyan text-xs font-fui animate-pulse">IN PROGRESS</span>
                     </div>
                     <div class="mt-4 space-y-2 text-sm text-gray-400 font-sans border-t border-white/10 pt-2">
@@ -569,7 +569,7 @@
                 <!-- Phase 3 -->
                 <div class="fui-box p-4 border-l-4 border-l-gray-600">
                     <div class="flex justify-between items-center cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
-                        <h3 class="text-gray-300 font-fui font-bold">PHASE 3: HYBRID ECONOMY</h3>
+                        <h3 id="phase3-title" class="text-gray-300 font-fui font-bold">PHASE 3: HYBRID ECONOMY</h3>
                         <span class="text-gray-500 text-xs font-fui">PENDING</span>
                     </div>
                     <div class="hidden mt-4 space-y-2 text-sm text-gray-400 font-sans border-t border-white/10 pt-2">
@@ -597,33 +597,112 @@
         // Localization Data
         const translations = {
             en: {
+                nav: { vision: "VISION", arch: "ARCHITECTURE", hier: "HIERARCHY", eco: "ECONOMY", glob: "GLOBAL", fui: "FUI SYSTEM" },
                 title: "THE DIGITAL VOID",
                 subtitle: "1,000,000 USERS. 1 GALAXY. ABSOLUTE SCARCITY.",
                 passive: { title: "PASSIVE TRACK", desc: "Silence & Observation. Your star grows automatically. Just exist." },
                 active: { title: "ACTIVE TRACK", desc: "Economy, War, & Vanity. Acquire Stardust. Bid for the Core." },
                 permadeath: { title: "PERMADEATH", desc: "Stop subscribing, and you vanish. Your coordinates are recycled." },
-                scroll: "SCROLL TO INITIALIZE"
+                scroll: "SCROLL TO INITIALIZE",
+                arch: { title: "01. ARCHITECTURE", sub: "// THE BEDROCK" },
+                stack: { server: "SERVER (ASP.NET CORE 8)", client: "CLIENT (UNITY 6 + DOTS)", perfTitle: "PROTOCOL EFFICIENCY COMPARISON", perfCap: "DATA: INTERNAL BENCHMARK v8.3" },
+                serverList: ["MessagePack Protocol: 80% traffic reduction vs JSON.", "Redis Cluster: High-speed backplane & position caching.", "Multi-threaded Workers: Background services for Physics/Auctions.", "Rate Limiting: 5 ops/sec throttling per client.", "DevOps: AWS Global Accelerator (Seoul/Singapore Regions)."],
+                clientList: ["LOD System: Mesh (Near) -> Instancing (Mid) -> Points (Far).", "ECS Job System: Parallel processing for 1M orbit calculations.", "URP Bloom: High-performance glow effects for stars.", "Localization: English/Korean/Thai dynamic font fallback."],
+                hierarchy: { title: "02. THE HIERARCHY", desc: "\"Capital determines physical location and power. Subscribe to survive.\"" },
+                tiers: {
+                    nomad: { zone: "Outer (3)", reset: "Daily (Random)", visual: "White Dot", growth: "1.0x" },
+                    settler: { zone: "Ring (2)", reset: "Weekly (Select)", visual: "Blue Aura", growth: "1.5x" },
+                    royal: { zone: "Core (1)", reset: "Manual (1-30d)", visual: "Gold Ring", growth: "2.0x" },
+                    heritage: { sub: "INVITE ONLY", sub2: "Top 0.1% Net Worth", zone: "Sanctum (0)", tax: "50% Reduction", visual: "Diamond + Platinum", perk: "Physical Card" }
+                },
+                btn: { select: "SELECT", view: "VIEW CRITERIA" },
+                economy: { title: "03. AI ECONOMY", desc: "The \"AI Central Bank\" monitors Stardust (SD) circulation in real-time. It automatically adjusts interest rates and item prices to control inflation.", stats: { inf: "GLOBAL INFLATION", burn: "TOTAL SD BURNED", auct: "ACTIVE AUCTIONS" }, warn: "WARNING: If you unsubscribe, your star enters \"Blackhole State\" instantly.", chart: "STARDUST FLOW SIMULATION" },
+                global: { title: "03.5 GLOBAL & PROFIT", sub: "// EXPANSION PLAN", strat: "LOCALIZATION STRATEGY", profit: "MONTHLY REVENUE PROJECTION", total: "EST. TOTAL", based: "Based on 1M Downloads / 30% MAU / 5% Payer Conversion" },
+                langs: {
+                    en: { title: "ENGLISH (GLOBAL)", tone: "Tone: Dry, SF, Void", tag: "PRIMARY" },
+                    ko: { title: "KOREAN (DOMESTIC)", tone: "Tone: Poetic, Emotional", tag: "LAUNCH" },
+                    th: { title: "THAI (EMERGING)", tone: "Tone: Polite, Soft", tag: "WAVE 1" }
+                },
+                fui: { title: "04. ORBITAL HUD", sub: "// SYSTEM: ENDLESS FUI PROTOCOL", hint: "HOVER OR TAP TO INTERACT WITH THE HUD" },
+                hud: { system: "SYSTEM", wallet: "WALLET", owner: "OWNER", tier: "TIER", log: "VISITOR LOG", trace: "TRACE SIGNAL" },
+                roadmap: { title: "DEVELOPMENT SEQUENCE", p1: "PHASE 1: SERVER & FOUNDATION", p2: "PHASE 2: COSMOS SIMULATION", p3: "PHASE 3: HYBRID ECONOMY" }
             },
             ko: {
+                nav: { vision: "비전", arch: "아키텍처", hier: "계급구조", eco: "경제", glob: "글로벌", fui: "FUI 시스템" },
                 title: "디지털 공허",
                 subtitle: "100만 명의 사용자. 하나의 은하. 절대적 희소성.",
                 passive: { title: "침묵의 관조", desc: "아무것도 하지 마세요. 존재만으로 당신의 별은 빛납니다." },
                 active: { title: "능동적 투쟁", desc: "경매와 전쟁, 그리고 과시. 스타더스트를 모아 우주의 중심으로 나아가세요." },
                 permadeath: { title: "영구적 소멸", desc: "구독을 멈추면 당신의 별은 즉시 사라집니다. 좌표는 회수됩니다." },
-                scroll: "시스템 초기화 중..."
+                scroll: "시스템 초기화 중...",
+                arch: { title: "01. 아키텍처", sub: "// 기반 구조" },
+                stack: { server: "서버 (ASP.NET CORE 8)", client: "클라이언트 (UNITY 6 + DOTS)", perfTitle: "프로토콜 효율성 비교", perfCap: "데이터: 내부 벤치마크 v8.3" },
+                serverList: ["MessagePack 프로토콜: JSON 대비 트래픽 80% 절감.", "Redis 클러스터: 초고속 백플레인 및 위치 캐싱.", "멀티스레드 워커: 물리/경매 로직 백그라운드 처리.", "속도 제한: 클라이언트당 초당 5회 요청 제한.", "DevOps: AWS 글로벌 액셀러레이터 (서울/싱가포르 리전)."],
+                clientList: ["LOD 시스템: 메쉬(근거리) -> 인스턴싱(중거리) -> 점(원거리).", "ECS 잡 시스템: 100만 궤도 연산 병렬 처리.", "URP 블룸: 고성능 발광 효과.", "로컬라이제이션: 영/한/태 동적 폰트 폴백."],
+                hierarchy: { title: "02. 계급 구조", desc: "\"자본이 곧 물리적 위치와 권력을 결정합니다. 생존을 위해 구독하십시오.\"" },
+                tiers: {
+                    nomad: { zone: "아우터 (3)", reset: "매일 (무작위)", visual: "하얀 점", growth: "1.0배" },
+                    settler: { zone: "링 (2)", reset: "매주 (선택)", visual: "푸른 오라", growth: "1.5배" },
+                    royal: { zone: "코어 (1)", reset: "수동 (1-30일)", visual: "금색 고리", growth: "2.0배" },
+                    heritage: { sub: "초대 전용", sub2: "상위 0.1% 순자산", zone: "성역 (0)", tax: "50% 감면", visual: "다이아몬드 + 백금", perk: "실물 카드" }
+                },
+                btn: { select: "선택", view: "자격 요건 보기" },
+                economy: { title: "03. AI 경제", desc: "\"AI 중앙은행\"이 실시간으로 스타더스트(SD) 유통량을 감시합니다. 인플레이션을 통제하기 위해 금리와 아이템 가격을 자동으로 조정합니다.", stats: { inf: "글로벌 인플레이션", burn: "총 소각된 SD", auct: "진행 중인 경매" }, warn: "경고: 구독을 해지하면 당신의 별은 즉시 \"블랙홀 상태\"로 전환됩니다.", chart: "스타더스트 흐름 시뮬레이션" },
+                global: { title: "03.5 글로벌 & 수익성", sub: "// 확장 계획", strat: "현지화 전략", profit: "월 예상 매출", total: "예상 합계", based: "기준: 100만 다운로드 / MAU 30% / 결제 전환율 5%" },
+                langs: {
+                    en: { title: "영어 (글로벌)", tone: "톤: 건조, SF, 공허", tag: "기본" },
+                    ko: { title: "한국어 (국내)", tone: "톤: 시적, 감성적", tag: "런칭" },
+                    th: { title: "태국어 (신흥)", tone: "톤: 정중, 부드러움", tag: "1차 확장" }
+                },
+                fui: { title: "04. 오비탈 HUD", sub: "// 시스템: 엔드리스 FUI 프로토콜", hint: "HUD와 상호작용하려면 마우스를 올리거나 탭하세요" },
+                hud: { system: "시스템", wallet: "지갑", owner: "소유자", tier: "티어", log: "방문 기록", trace: "신호 추적" },
+                roadmap: { title: "개발 순서", p1: "1단계: 서버 & 기반", p2: "2단계: 우주 시뮬레이션", p3: "3단계: 하이브리드 경제" }
             },
             th: {
+                nav: { vision: "วิสัยทัศน์", arch: "สถาปัตยกรรม", hier: "ลำดับชั้น", eco: "เศรษฐกิจ", glob: "ทั่วโลก", fui: "ระบบ FUI" },
                 title: "ความว่างเปล่าดิจิทัล",
                 subtitle: "1,000,000 ผู้ใช้ 1 กาแล็กซี ความหายากที่แท้จริง",
                 passive: { title: "เส้นทางสงบ", desc: "ความเงียบและการเฝ้าดู ดาวของคุณจะเติบโตโดยอัตโนมัติ เพียงแค่ดำรงอยู่" },
                 active: { title: "เส้นทางต่อสู้", desc: "เศรษฐกิจ สงคราม และความภาคภูมิใจ ครอบครอง Stardust ประมูลเพื่อแกนกลาง" },
                 permadeath: { title: "ความตายถาวร", desc: "หากหยุดสมัครสมาชิก คุณจะหายไปทันที พิกัดของคุณจะถูกนำกลับมาใช้ใหม่" },
-                scroll: "เลื่อนเพื่อเริ่มต้น"
+                scroll: "เลื่อนเพื่อเริ่มต้น",
+                arch: { title: "01. สถาปัตยกรรม", sub: "// รากฐาน" },
+                stack: { server: "เซิร์ฟเวอร์ (ASP.NET CORE 8)", client: "ลูกค้า (UNITY 6 + DOTS)", perfTitle: "การเปรียบเทียบประสิทธิภาพโปรโตคอล", perfCap: "ข้อมูล: เกณฑ์มาตรฐานภายใน v8.3" },
+                serverList: ["โปรโตคอล MessagePack: ลดการรับส่งข้อมูล 80% เทียบกับ JSON", "Redis Cluster: แบ็คเพลนความเร็วสูงและการแคชตำแหน่ง", "Multi-threaded Workers: บริการพื้นหลังสำหรับฟิสิกส์/การประมูล", "การจำกัดอัตรา: 5 ops/วินาที ต่อลูกค้า", "DevOps: AWS Global Accelerator (ภูมิภาคโซล/สิงคโปร์)"],
+                clientList: ["ระบบ LOD: เมช (ใกล้) -> อินสแตนซ์ (กลาง) -> จุด (ไกล)", "ระบบงาน ECS: การประมวลผลแบบขนานสำหรับการคำนวณวงโคจร 1 ล้าน", "URP Bloom: เอฟเฟกต์เรืองแสงประสิทธิภาพสูงสำหรับดาว", "การแปลภาษา: รองรับฟอนต์ไดนามิก อังกฤษ/เกาหลี/ไทย"],
+                hierarchy: { title: "02. ลำดับชั้น", desc: "\"ทุนกำหนดตำแหน่งและอำนาจทางกายภาพ สมัครสมาชิกเพื่ออยู่รอด\"" },
+                tiers: {
+                    nomad: { zone: "รอบนอก (3)", reset: "ทุกวัน (สุ่ม)", visual: "จุดสีขาว", growth: "1.0x" },
+                    settler: { zone: "วงแหวน (2)", reset: "รายสัปดาห์ (เลือก)", visual: "ออร่าสีฟ้า", growth: "1.5x" },
+                    royal: { zone: "แกนกลาง (1)", reset: "กำหนดเอง (1-30 วัน)", visual: "วงแหวนทอง", growth: "2.0x" },
+                    heritage: { sub: "เชิญเท่านั้น", sub2: "ความมั่งคั่งสุทธิสูงสุด 0.1%", zone: "เขตรักษาพันธุ์ (0)", tax: "ลดหย่อน 50%", visual: "เพชร + แพลตตินัม", perk: "บัตรจริง" }
+                },
+                btn: { select: "เลือก", view: "ดูเกณฑ์" },
+                economy: { title: "03. เศรษฐกิจ AI", desc: "\"ธนาคารกลาง AI\" ตรวจสอบการหมุนเวียนของ Stardust (SD) แบบเรียลไทม์ ปรับอัตราดอกเบี้ยและราคาสินค้าโดยอัตโนมัติเพื่อควบคุมเงินเฟ้อ", stats: { inf: "เงินเฟ้อทั่วโลก", burn: "SD ที่ถูกเผาทั้งหมด", auct: "การประมูลที่ใช้งานอยู่" }, warn: "คำเตือน: หากคุณยกเลิกการสมัครสมาชิก ดาวของคุณจะเข้าสู่ \"สถานะหลุมดำ\" ทันที", chart: "การจำลองการไหลของ STARDUST" },
+                global: { title: "03.5 ทั่วโลก & กำไร", sub: "// แผนการขยาย", strat: "กลยุทธ์การแปล", profit: "ประมาณการรายได้รายเดือน", total: "ยอดรวมโดยประมาณ", based: "อิงจาก 1 ล้านดาวน์โหลด / 30% MAU / 5% ผู้จ่ายเงิน" },
+                langs: {
+                    en: { title: "อังกฤษ (ทั่วโลก)", tone: "โทน: แห้ง, SF, ว่างเปล่า", tag: "หลัก" },
+                    ko: { title: "เกาหลี (ในประเทศ)", tone: "โทน: บทกวี, อารมณ์", tag: "เปิดตัว" },
+                    th: { title: "ไทย (ตลาดใหม่)", tone: "โทน: สุภาพ, นุ่มนวล", tag: "คลื่น 1" }
+                },
+                fui: { title: "04. ORBITAL HUD", sub: "// ระบบ: โปรโตคอล ENDLESS FUI", hint: "วางเมาส์หรือแตะเพื่อโต้ตอบกับ HUD" },
+                hud: { system: "ระบบ", wallet: "กระเป๋าเงิน", owner: "เจ้าของ", tier: "ระดับ", log: "บันทึกผู้เข้าชม", trace: "ติดตามสัญญาณ" },
+                roadmap: { title: "ลำดับการพัฒนา", p1: "ระยะที่ 1: เซิร์ฟเวอร์ & รากฐาน", p2: "ระยะที่ 2: การจำลองจักรวาล", p3: "ระยะที่ 3: เศรษฐกิจลูกผสม" }
             }
         };
 
         function changeLang(lang) {
             const t = translations[lang];
+            
+            // Nav
+            document.getElementById('nav-vision').innerText = t.nav.vision;
+            document.getElementById('nav-architecture').innerText = t.nav.arch;
+            document.getElementById('nav-hierarchy').innerText = t.nav.hier;
+            document.getElementById('nav-economy').innerText = t.nav.eco;
+            document.getElementById('nav-global').innerText = t.nav.glob;
+            document.getElementById('nav-fui').innerText = t.nav.fui;
+
+            // Hero
             document.getElementById('hero-title').innerText = t.title;
             document.getElementById('hero-subtitle').innerText = t.subtitle;
             document.getElementById('card-passive-title').innerText = t.passive.title;
@@ -633,6 +712,123 @@
             document.getElementById('card-permadeath-title').innerText = t.permadeath.title;
             document.getElementById('card-permadeath-desc').innerText = t.permadeath.desc;
             document.getElementById('scroll-hint').innerText = t.scroll;
+
+            // Architecture
+            document.getElementById('arch-title').innerText = t.arch.title;
+            document.getElementById('arch-subtitle').innerText = t.arch.sub;
+            document.getElementById('server-title').innerText = t.stack.server;
+            document.getElementById('client-title').innerText = t.stack.client;
+            
+            const serverUl = document.getElementById('server-list');
+            serverUl.innerHTML = '';
+            t.serverList.forEach(item => {
+                const li = document.createElement('li');
+                const split = item.split(':');
+                if(split.length > 1) li.innerHTML = `<strong class="text-white">${split[0]}:</strong>${split[1]}`;
+                else li.innerHTML = item;
+                serverUl.appendChild(li);
+            });
+
+            const clientUl = document.getElementById('client-list');
+            clientUl.innerHTML = '';
+            t.clientList.forEach(item => {
+                 const li = document.createElement('li');
+                 const split = item.split(':');
+                if(split.length > 1) li.innerHTML = `<strong class="text-white">${split[0]}:</strong>${split[1]}`;
+                else li.innerHTML = item;
+                clientUl.appendChild(li);
+            });
+            
+            document.getElementById('perf-chart-title').innerText = t.stack.perfTitle;
+            document.getElementById('perf-chart-caption').innerText = t.stack.perfCap;
+
+
+            // Hierarchy
+            document.getElementById('hierarchy-title').innerText = t.hierarchy.title;
+            document.getElementById('hierarchy-subtitle').innerText = t.hierarchy.desc;
+            
+            // Tier Nomad
+            const nomadList = document.getElementById('tier-nomad-list');
+            nomadList.children[0].children[1].innerText = t.tiers.nomad.zone;
+            nomadList.children[1].children[1].innerText = t.tiers.nomad.reset;
+            nomadList.children[2].children[1].innerText = t.tiers.nomad.visual;
+            nomadList.children[3].children[1].innerText = t.tiers.nomad.growth;
+            
+            // Tier Settler
+            const settlerList = document.getElementById('tier-settler-list');
+            settlerList.children[0].children[1].innerText = t.tiers.settler.zone;
+            settlerList.children[1].children[1].innerText = t.tiers.settler.reset;
+            settlerList.children[2].children[1].innerText = t.tiers.settler.visual;
+            settlerList.children[3].children[1].innerText = t.tiers.settler.growth;
+
+            // Tier Royal
+            const royalList = document.getElementById('tier-royal-list');
+            royalList.children[0].children[1].innerText = t.tiers.royal.zone;
+            royalList.children[1].children[1].innerText = t.tiers.royal.reset;
+            royalList.children[2].children[1].innerText = t.tiers.royal.visual;
+            royalList.children[3].children[1].innerText = t.tiers.royal.growth;
+            
+            // Tier Heritage
+            document.getElementById('tier-heritage-price').innerHTML = `${t.tiers.heritage.sub}<span class="text-xs text-gray-500 block">${t.tiers.heritage.sub2}</span>`;
+            const heritageList = document.getElementById('tier-heritage-list');
+            heritageList.children[0].children[1].innerText = t.tiers.heritage.zone;
+            heritageList.children[1].children[1].innerText = t.tiers.heritage.tax;
+            heritageList.children[2].children[1].innerText = t.tiers.heritage.visual;
+            heritageList.children[3].children[1].innerText = t.tiers.heritage.perk;
+
+            document.querySelectorAll('.tier-select-btn').forEach(b => b.innerText = t.btn.select);
+            document.getElementById('tier-heritage-btn').innerText = t.btn.view;
+
+            // Economy
+            document.getElementById('economy-title').innerText = t.economy.title;
+            document.getElementById('economy-desc').innerText = t.economy.desc;
+            
+            const ecoStats = document.getElementById('economy-stats');
+            ecoStats.children[0].children[0].innerText = t.economy.stats.inf;
+            ecoStats.children[1].children[0].innerText = t.economy.stats.burn;
+            ecoStats.children[2].children[0].innerText = t.economy.stats.auct;
+
+            document.getElementById('economy-warning').innerHTML = t.economy.warn;
+            document.getElementById('economy-chart-title').innerText = t.economy.chart;
+
+            // Global
+            document.getElementById('global-title').innerText = t.global.title;
+            document.getElementById('global-subtitle').innerText = t.global.sub;
+            document.getElementById('local-strat-title').innerText = t.global.strat;
+            
+            document.getElementById('lang-en-title').innerText = t.langs.en.title;
+            document.getElementById('lang-en-tone').innerText = t.langs.en.tone;
+            document.getElementById('lang-en-tag').innerText = t.langs.en.tag;
+
+            document.getElementById('lang-ko-title').innerText = t.langs.ko.title;
+            document.getElementById('lang-ko-tone').innerText = t.langs.ko.tone;
+            document.getElementById('lang-ko-tag').innerText = t.langs.ko.tag;
+
+            document.getElementById('lang-th-title').innerText = t.langs.th.title;
+            document.getElementById('lang-th-tone').innerText = t.langs.th.tone;
+            document.getElementById('lang-th-tag').innerText = t.langs.th.tag;
+
+            document.getElementById('profit-title').innerText = t.global.profit;
+            document.getElementById('profit-est-label').innerText = t.global.total;
+            document.getElementById('profit-desc').innerText = t.global.based;
+
+            // FUI
+            document.getElementById('fui-title').innerText = t.fui.title;
+            document.getElementById('fui-subtitle').innerText = t.fui.sub;
+            document.getElementById('fui-hint').innerText = t.fui.hint;
+
+            document.getElementById('hud-system-label').innerText = t.hud.system;
+            document.getElementById('hud-wallet-label').innerText = t.hud.wallet;
+            document.getElementById('hud-owner-label').innerText = t.hud.owner;
+            document.getElementById('hud-tier-label').innerText = t.hud.tier;
+            document.getElementById('hud-log-label').innerText = t.hud.log;
+            document.getElementById('hud-trace-btn').innerText = t.hud.trace;
+
+            // Roadmap
+            document.getElementById('roadmap-title').innerText = t.roadmap.title;
+            document.getElementById('phase1-title').innerText = t.roadmap.p1;
+            document.getElementById('phase2-title').innerText = t.roadmap.p2;
+            document.getElementById('phase3-title').innerText = t.roadmap.p3;
         }
 
         // --- 1. Starfield Animation ---
